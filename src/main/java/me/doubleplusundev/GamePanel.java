@@ -7,8 +7,12 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import me.doubleplusundev.game.IUpdatable;
+import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.MapHandler;
 import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.player.PlayerController;
+import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.Vector2;
 
 public class GamePanel extends JPanel implements IUpdatable {
@@ -16,6 +20,8 @@ public class GamePanel extends JPanel implements IUpdatable {
     private BufferedImage seaDeep;
     private BufferedImage seaShore;
     private BufferedImage lake;
+
+    private int tileSize;
 
     public GamePanel() {
         setFocusable(true);
@@ -30,6 +36,8 @@ public class GamePanel extends JPanel implements IUpdatable {
         }
 
         UpdateManager.getInstance().register(this);
+    
+        tileSize = Config.getInt("tile_render_size", 40);
     }
 
     @Override
@@ -39,13 +47,8 @@ public class GamePanel extends JPanel implements IUpdatable {
         Graphics2D graphics = (Graphics2D)g;
 
         Vector2 playerPosition = PlayerController.getInstance().getPosition();
-        System.out.println("hey");
         double leftXCoord = playerPosition.x;
         double topYCoord = playerPosition.y;
-
-        System.out.println(leftXCoord + " " + topYCoord);
-
-        int tileSize = 40;
  
         int leftXFloor = (int)Math.floor(leftXCoord);
         int topYFloor = (int)Math.floor(topYCoord);

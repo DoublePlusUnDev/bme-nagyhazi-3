@@ -1,25 +1,28 @@
-package me.doubleplusundev;
+package me.doubleplusundev.player;
 
 import java.awt.event.KeyEvent;
 
-import me.doubleplusundev.util.InputManager;
+import me.doubleplusundev.game.IUpdatable;
+import me.doubleplusundev.game.UpdateManager;
+import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.Vector2;
 
 public class PlayerController implements IUpdatable {
     private static PlayerController instance;
     
-    private Vector2 position;
-    private double speed;
+    private final Vector2 position;
+    private final double speed;
 
     private PlayerController() {
         position = new Vector2();
         speed = (double)Config.getInt("player_speed", 10);
+
+        UpdateManager.getInstance().register(instance);
     }
 
     public static PlayerController getInstance(){
         if (instance == null){
             instance = new PlayerController();
-            UpdateManager.getInstance().register(instance);
         }
         return instance;
     }
@@ -48,8 +51,6 @@ public class PlayerController implements IUpdatable {
         else if (rightPressed && !leftPressed){
             position.x += speed * UpdateManager.getInstance().getDeltaTime();
         }
-
-        System.out.println(position + " " + speed);
     }
 
     

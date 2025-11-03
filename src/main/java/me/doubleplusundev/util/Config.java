@@ -1,16 +1,17 @@
-package me.doubleplusundev;
+package me.doubleplusundev.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
     
     static {
         try {
             InputStream in = Config.class.getResourceAsStream("/config/config.properties");
             properties.load(in);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

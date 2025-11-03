@@ -1,9 +1,11 @@
-package me.doubleplusundev;
+package me.doubleplusundev.game;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Timer;
+
+import me.doubleplusundev.util.Config;
 
 //implement proper deltatime later
 public class UpdateManager {
