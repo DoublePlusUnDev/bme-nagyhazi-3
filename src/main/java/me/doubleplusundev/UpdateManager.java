@@ -8,8 +8,8 @@ import javax.swing.Timer;
 //implement proper deltatime later
 public class UpdateManager {
     private static UpdateManager instance;
-    private List<IUpdatable> updatables;
-    private List<ITickable> tickables;
+    private final List<IUpdatable> updatables;
+    private final List<ITickable> tickables;
     private final Timer updateTimer;
     private final Timer tickTimer;
     int updateRate;
@@ -45,6 +45,7 @@ public class UpdateManager {
     private void update(){
         for (IUpdatable updatable : updatables){
             updatable.update();
+            System.out.println("heye");
         }
     }
 
@@ -66,10 +67,10 @@ public class UpdateManager {
     }
 
     public double getDeltaTime(){
-        return 1 / updateRate;
+        return 1.0 / updateRate;
     }
 
     public double getDeltaTick(){
-        return 1 / tickRate;
+        return 1.0 / tickRate;
     }
 }

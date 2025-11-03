@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import me.doubleplusundev.util.InputManager;
+
 public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("NHF3");
@@ -21,6 +23,11 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
+        gamePanel.addKeyListener(InputManager.getInstance());
+        
+        
+        UpdateManager.getInstance().start();
+        PlayerController.getInstance();
         
     }
 }

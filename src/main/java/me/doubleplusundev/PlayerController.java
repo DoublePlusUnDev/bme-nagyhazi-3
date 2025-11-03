@@ -1,14 +1,19 @@
 package me.doubleplusundev;
 
+import java.awt.event.KeyEvent;
+
+import me.doubleplusundev.util.InputManager;
 import me.doubleplusundev.util.Vector2;
 
 public class PlayerController implements IUpdatable {
     private static PlayerController instance;
     
-    Vector2 position;
+    private Vector2 position;
+    private double speed;
 
     private PlayerController() {
-        
+        position = new Vector2();
+        speed = (double)Config.getInt("player_speed", 10);
     }
 
     public static PlayerController getInstance(){
@@ -25,7 +30,26 @@ public class PlayerController implements IUpdatable {
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean upPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_W) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_UP);
+        boolean downPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_S) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_DOWN);
+        boolean leftPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_A) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_LEFT);
+        boolean rightPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_D) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_RIGHT);
+
+        if (upPressed && !downPressed){
+            position.y -= speed * UpdateManager.getInstance().getDeltaTime();
+        }
+        else if (downPressed && !upPressed){
+            position.y += speed * UpdateManager.getInstance().getDeltaTime();
+        }
+
+        if (leftPressed && !rightPressed){
+            position.x -= speed * UpdateManager.getInstance().getDeltaTime();
+        }
+        else if (rightPressed && !leftPressed){
+            position.x += speed * UpdateManager.getInstance().getDeltaTime();
+        }
+
+        System.out.println(position + " " + speed);
     }
 
     
