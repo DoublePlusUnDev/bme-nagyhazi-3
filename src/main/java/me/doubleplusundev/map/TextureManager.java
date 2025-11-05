@@ -16,13 +16,17 @@ public class TextureManager {
     private Map<TileType, String> tilePaths = Map.ofEntries(
         Map.entry(TileType.GRASS, "/textures/grass.png"),
         Map.entry(TileType.LAKE, "/textures/lake.png"),
+        Map.entry(TileType.ROCK, "/textures/rock.png"),
+        Map.entry(TileType.SAND, "/textures/sand.png"),
         Map.entry(TileType.SEA_DEEP, "/textures/sea_deep.png"),
-        Map.entry(TileType.SEA_SHORE, "/textures/sea_shore.png")
+        Map.entry(TileType.SEA_SHORE, "/textures/sea_shore.png"),
+        Map.entry(TileType.SNOW, "/textures/snow.png")
         );
     private Map<TileType, BufferedImage> tileImages;
 
     private Map<StructureType, String> structurePaths = Map.ofEntries(
-        Map.entry(StructureType.ROAD, "/textures/road.png")
+        Map.entry(StructureType.ROAD, "/textures/road.png"),
+        Map.entry(StructureType.CENTER, "/textures/center.png")
         );
     private Map<StructureType, BufferedImage> structureImages;
 

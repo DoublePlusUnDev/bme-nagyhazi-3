@@ -5,10 +5,6 @@ public class Road extends Structure {
         super(StructureType.ROAD);
     }
 
-    static {
-        Structure.register(StructureType.ROAD, Road::new);
-    }
-
     @Override
     public void update() {
         

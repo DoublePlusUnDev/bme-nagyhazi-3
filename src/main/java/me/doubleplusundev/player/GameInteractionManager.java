@@ -27,10 +27,7 @@ public class GameInteractionManager implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        System.out.println(event.getX() + " " + event.getY());
-        System.out.println(pixelToTile(event.getPoint()));
-
-        GameMapHandler.getInstance().placeStructure(event.getPoint().x, event.getPoint().y, StructureType.CENTER);
+        GameMapHandler.getInstance().placeStructure(pixelToTile(event.getPoint()).x, pixelToTile(event.getPoint()).y, StructureType.CENTER);
     }
 
     @Override
@@ -53,8 +50,8 @@ public class GameInteractionManager implements MouseListener {
 
     }
 
-    private Vector2 pixelToTile(Point pixelCoords) {
+    private Point pixelToTile(Point pixelCoords) {
         Vector2 playerPosition = PlayerController.getInstance().getPosition();
-        return new Vector2((double)pixelCoords.x / tileSize + playerPosition.x, (double)pixelCoords.y / tileSize + playerPosition.y);
+        return new Point((int)Math.floor((double)pixelCoords.x / tileSize + playerPosition.x), (int)Math.floor((double)pixelCoords.y / tileSize + playerPosition.y));
     }
 }

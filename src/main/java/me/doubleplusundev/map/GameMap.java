@@ -1,5 +1,6 @@
 package me.doubleplusundev.map;
 
+import me.doubleplusundev.map.structures.Center;
 import me.doubleplusundev.map.structures.Road;
 
 public class GameMap {
@@ -22,7 +23,7 @@ public class GameMap {
         worldObjects = new WorldObject[width][height];
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
-                worldObjects[x][y] = new Road();
+                //worldObjects[x][y] = new Road();
             }
         }
     }
@@ -63,7 +64,6 @@ public class GameMap {
         if (x < 0 || width <= x || y < 0 || height <= y){
             throw new IllegalArgumentException();
         }
-
-        worldObjects[x][y] = object;
+        worldObjects[x][y] = new Center();
     }
 }

@@ -5,10 +5,6 @@ public class Center extends Structure {
         super(StructureType.CENTER);
     }
 
-    static {
-        Structure.register(StructureType.CENTER, Center::new);
-    }
-
     @Override
     public void update() {
 
