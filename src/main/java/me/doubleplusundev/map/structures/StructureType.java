@@ -1,4 +1,4 @@
-package me.doubleplusundev.map;
+package me.doubleplusundev.map.structures;
 
 public enum StructureType {
     CENTER,

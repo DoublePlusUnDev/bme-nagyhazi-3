@@ -2,38 +2,27 @@ package me.doubleplusundev;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.game.UpdateManager;
-import me.doubleplusundev.map.MapHandler;
+import me.doubleplusundev.map.GameMapHandler;
+import me.doubleplusundev.map.ResourceNode;
+import me.doubleplusundev.map.TextureManager;
 import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.WorldObject;
+import me.doubleplusundev.map.structures.Structure;
+import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.Vector2;
 
 public class GamePanel extends JPanel implements IUpdatable {
-    private BufferedImage grass;
-    private BufferedImage seaDeep;
-    private BufferedImage seaShore;
-    private BufferedImage lake;
-
     private int tileSize;
 
     public GamePanel() {
         setFocusable(true);
-        try{
-            grass = ImageIO.read(getClass().getResource("/textures/grass.png"));
-            seaDeep = ImageIO.read(getClass().getResource("/textures/sea_deep.png"));
-            seaShore = ImageIO.read(getClass().getResource("/textures/sea_shore.png"));
-            lake = ImageIO.read(getClass().getResource("/textures/lake.png"));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
         UpdateManager.getInstance().register(this);
     
@@ -55,15 +44,20 @@ public class GamePanel extends JPanel implements IUpdatable {
 
         for (int x = leftXFloor; (x - leftXFloor - 1) * tileSize < getWidth(); x++){
             for (int y = topYFloor; (y - topYFloor - 1) * tileSize < getHeight(); y++){
-                TileType type = MapHandler.getInstance().getTile(x, y);
+                TileType tile = GameMapHandler.getInstance().getTile(x, y);
+                WorldObject worldObject = GameMapHandler.getInstance().getWorldObject(x, y);
 
                 int drawX = (int) Math.floor((x - leftXCoord) * tileSize);
                 int drawY = (int) Math.floor((y - topYCoord ) * tileSize);
 
-                if (type == TileType.GRASS)
-                    graphics.drawImage(grass, drawX, drawY, tileSize, tileSize, null);
-                else if (type == TileType.SEA_DEEP)
-                    graphics.drawImage(seaDeep, drawX, drawY, tileSize, tileSize, null);
+                graphics.drawImage(TextureManager.getInstance().getTile(tile), drawX, drawY, tileSize, tileSize, null);
+            
+                if (worldObject instanceof Structure structure) {
+                    graphics.drawImage(TextureManager.getInstance().getStructure(structure.getType()), drawX, drawY, tileSize, tileSize, null);
+                }
+                else if (worldObject instanceof ResourceNode resourceNode) {
+                    graphics.drawImage(TextureManager.getInstance().getResourceNode(resourceNode.getType()), drawX, drawY, tileSize, tileSize, null);
+                }
             }
         }
     }

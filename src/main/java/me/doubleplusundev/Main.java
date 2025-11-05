@@ -1,4 +1,3 @@
-
 package me.doubleplusundev;
 
 import me.doubleplusundev.game.UpdateManager;
@@ -12,4 +11,4 @@ public class Main {
         PlayerController.getInstance();
         
     }
-}
+} 

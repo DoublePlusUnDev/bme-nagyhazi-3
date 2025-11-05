@@ -47,7 +47,6 @@ public class UpdateManager {
     private void update(){
         for (IUpdatable updatable : updatables){
             updatable.update();
-            System.out.println("heye");
         }
     }
 

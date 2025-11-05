@@ -17,7 +17,7 @@ public class PlayerController implements IUpdatable {
         position = new Vector2();
         speed = (double)Config.getInt("player_speed", 10);
 
-        UpdateManager.getInstance().register(instance);
+        UpdateManager.getInstance().register(this);
     }
 
     public static PlayerController getInstance(){
