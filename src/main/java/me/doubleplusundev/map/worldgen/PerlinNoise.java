@@ -1,4 +1,4 @@
-package me.doubleplusundev.map;
+package me.doubleplusundev.map.worldgen;
 
 //based on the reference implementation https://cs.nyu.edu/~perlin/noise/
 // JAVA REFERENCE IMPLEMENTATION OF IMPROVED NOISE - COPYRIGHT 2002 KEN PERLIN.

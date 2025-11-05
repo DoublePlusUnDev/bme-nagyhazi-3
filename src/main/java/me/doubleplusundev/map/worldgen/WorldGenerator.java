@@ -1,4 +1,7 @@
-package me.doubleplusundev.map;
+package me.doubleplusundev.map.worldgen;
+
+import me.doubleplusundev.map.GameMap;
+import me.doubleplusundev.map.TileType;
 
 public class WorldGenerator {
     public static GameMap generateWorld(int xSize, int ySize){

@@ -1,4 +1,4 @@
-package me.doubleplusundev.map;
+package me.doubleplusundev.util;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.resourcenodes.ResourceNodeType;
 import me.doubleplusundev.map.structures.StructureType;
 

@@ -1,4 +1,4 @@
-package me.doubleplusundev.map;
+package me.doubleplusundev.resource;
 
 public enum ResourceType {
     WOOD,

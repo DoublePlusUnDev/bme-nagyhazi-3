@@ -1,4 +1,4 @@
-package me.doubleplusundev;
+package me.doubleplusundev.ui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,13 +8,13 @@ import javax.swing.JPanel;
 import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
-import me.doubleplusundev.map.TextureManager;
 import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.WorldObject;
 import me.doubleplusundev.map.resourcenodes.ResourceNode;
 import me.doubleplusundev.map.structures.Structure;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.util.Config;
+import me.doubleplusundev.util.TextureManager;
 import me.doubleplusundev.util.Vector2;
 
 public class GamePanel extends JPanel implements IUpdatable {
