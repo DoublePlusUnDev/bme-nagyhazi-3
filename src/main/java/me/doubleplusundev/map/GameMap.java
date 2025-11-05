@@ -3,10 +3,10 @@ package me.doubleplusundev.map;
 import me.doubleplusundev.map.structures.Road;
 
 public class GameMap {
-    int width;
-    int height;
-    TileType[][] tiles;
-    WorldObject[][] worldObjects;
+    private int width;
+    private int height;
+    private TileType[][] tiles;
+    private WorldObject[][] worldObjects;
     
     public GameMap(int width, int height) {
         this.width = width;
@@ -57,5 +57,13 @@ public class GameMap {
 
     public int getHeight() {
         return height;
+    }
+
+    public void setWorldObjet(int x, int y, WorldObject object) {
+        if (x < 0 || width <= x || y < 0 || height <= y){
+            throw new IllegalArgumentException();
+        }
+
+        worldObjects[x][y] = object;
     }
 }

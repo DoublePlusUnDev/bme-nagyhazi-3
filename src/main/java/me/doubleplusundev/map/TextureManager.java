@@ -1,34 +1,36 @@
 package me.doubleplusundev.map;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import me.doubleplusundev.map.resourcenodes.ResourceNodeType;
 import me.doubleplusundev.map.structures.StructureType;
 
 public class TextureManager {
     private static TextureManager instance;
 
-    Map<TileType, String> tilePaths = Map.ofEntries(
+    private Map<TileType, String> tilePaths = Map.ofEntries(
         Map.entry(TileType.GRASS, "/textures/grass.png"),
         Map.entry(TileType.LAKE, "/textures/lake.png"),
         Map.entry(TileType.SEA_DEEP, "/textures/sea_deep.png"),
         Map.entry(TileType.SEA_SHORE, "/textures/sea_shore.png")
         );
-    Map<TileType, BufferedImage> tileImages;
+    private Map<TileType, BufferedImage> tileImages;
 
-    Map<StructureType, String> structurePaths = Map.ofEntries(
+    private Map<StructureType, String> structurePaths = Map.ofEntries(
         Map.entry(StructureType.ROAD, "/textures/road.png")
         );
-    Map<StructureType, BufferedImage> structureImages;
+    private Map<StructureType, BufferedImage> structureImages;
 
-    Map<ResourceNodeType, String> resourceNodePaths = Map.ofEntries(
+    private Map<ResourceNodeType, String> resourceNodePaths = Map.ofEntries(
         Map.entry(ResourceNodeType.TREE, "/textures/tree.png"),
        Map.entry(ResourceNodeType.BOULDER, "/textures/boulder.png")
         );
-    Map<ResourceNodeType, BufferedImage> resourceNodeImages;
+    private Map<ResourceNodeType, BufferedImage> resourceNodeImages;
 
     private TextureManager() {
         tileImages = new HashMap<TileType, BufferedImage>();
@@ -36,7 +38,7 @@ public class TextureManager {
             try{
                 tileImages.put(tile.getKey(), ImageIO.read(getClass().getResource(tile.getValue())));
             }
-            catch (Exception e){
+            catch (IOException e){
                 e.printStackTrace();
             }
         }
@@ -46,7 +48,7 @@ public class TextureManager {
             try{
                 structureImages.put(structure.getKey(), ImageIO.read(getClass().getResource(structure.getValue())));
             }
-            catch (Exception e){
+            catch (IOException e){
                 e.printStackTrace();
             }
         }
@@ -56,7 +58,7 @@ public class TextureManager {
             try{
                 resourceNodeImages.put(resourceNode.getKey(), ImageIO.read(getClass().getResource(resourceNode.getValue())));
             }
-            catch (Exception e){
+            catch (IOException e){
                 e.printStackTrace();
             }
         }

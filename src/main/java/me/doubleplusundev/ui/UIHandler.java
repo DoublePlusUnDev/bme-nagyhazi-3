@@ -8,7 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import me.doubleplusundev.GamePanel;
-import me.doubleplusundev.player.InputManager;
+import me.doubleplusundev.player.GameInteractionManager;
+import me.doubleplusundev.player.KeyInputManager;
 
 public class UIHandler {
     private static UIHandler instance;
@@ -24,7 +25,7 @@ public class UIHandler {
         return instance;
     }
     
-    public void initialize(){
+    public void initialize() {
         JFrame frame = new JFrame("NHF3");
         GamePanel gamePanel = new GamePanel();
 
@@ -37,6 +38,7 @@ public class UIHandler {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
-        gamePanel.addKeyListener(InputManager.getInstance());
+        gamePanel.addKeyListener(KeyInputManager.getInstance());
+        gamePanel.addMouseListener(GameInteractionManager.getInstance());
     }
 }

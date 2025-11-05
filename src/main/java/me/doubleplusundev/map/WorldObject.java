@@ -1,5 +1,8 @@
 package me.doubleplusundev.map;
 
-public abstract class WorldObject {
+import me.doubleplusundev.game.ITickable;
+import me.doubleplusundev.game.IUpdatable;
+
+public abstract class WorldObject implements IUpdatable, ITickable {
 
 }

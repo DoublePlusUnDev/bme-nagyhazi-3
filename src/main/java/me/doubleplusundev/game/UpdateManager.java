@@ -14,9 +14,9 @@ public class UpdateManager {
     private final List<ITickable> tickables;
     private final Timer updateTimer;
     private final Timer tickTimer;
-    int updateRate;
-    int tickRate;
-    int tickCount;
+    private int updateRate;
+    private int tickRate;
+    private int tickCount;
     
     
     private UpdateManager(){

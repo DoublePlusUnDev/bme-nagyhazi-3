@@ -2,21 +2,22 @@ package me.doubleplusundev.player;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
-public class InputManager implements KeyListener {
-    private static InputManager instance;
+public class KeyInputManager implements KeyListener {
+    private static KeyInputManager instance;
     
     Set<Integer> pressedKeys;
 
-    private InputManager() {
+    private KeyInputManager() {
         pressedKeys = new HashSet<>();   
     }
 
-    public static InputManager getInstance() {
+    public static KeyInputManager getInstance() {
         if (instance == null)
-            instance = new InputManager();
+            instance = new KeyInputManager();
         return instance;
     }
 

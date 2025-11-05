@@ -33,10 +33,10 @@ public class PlayerController implements IUpdatable {
 
     @Override
     public void update() {
-        boolean upPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_W) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_UP);
-        boolean downPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_S) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_DOWN);
-        boolean leftPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_A) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_LEFT);
-        boolean rightPressed = InputManager.getInstance().isKeyPressed(KeyEvent.VK_D) || InputManager.getInstance().isKeyPressed(KeyEvent.VK_RIGHT);
+        boolean upPressed = KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_W) || KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_UP);
+        boolean downPressed = KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_S) || KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_DOWN);
+        boolean leftPressed = KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_A) || KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_LEFT);
+        boolean rightPressed = KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_D) || KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_RIGHT);
 
         if (upPressed && !downPressed){
             position.y -= speed * UpdateManager.getInstance().getDeltaTime();

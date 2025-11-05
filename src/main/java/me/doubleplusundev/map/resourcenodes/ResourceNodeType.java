@@ -1,4 +1,4 @@
-package me.doubleplusundev.map;
+package me.doubleplusundev.map.resourcenodes;
 
 public enum ResourceNodeType {
     TREE,

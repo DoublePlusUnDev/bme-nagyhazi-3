@@ -1,21 +1,22 @@
 package me.doubleplusundev.map.structures;
 
-public class Road extends Structure {
-    public Road(){
-        super(StructureType.ROAD);
+public class Center extends Structure {
+    public Center() {
+        super(StructureType.CENTER);
     }
 
     static {
-        Structure.register(StructureType.ROAD, Road::new);
+        Structure.register(StructureType.CENTER, Center::new);
     }
 
     @Override
     public void update() {
-        
+
     }
 
     @Override
     public void tick(int count) {
 
     }
+    
 }

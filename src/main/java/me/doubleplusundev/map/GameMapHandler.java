@@ -1,5 +1,8 @@
 package me.doubleplusundev.map;
 
+import me.doubleplusundev.map.structures.Structure;
+import me.doubleplusundev.map.structures.StructureType;
+
 public class GameMapHandler {
     private static GameMapHandler instance;
 
@@ -29,5 +32,12 @@ public class GameMapHandler {
             return map.getWorldObject(x, y);
         else
             return null;
+    }
+
+    public void placeStructure(int x, int y, StructureType type) {
+        if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight())
+            return;
+
+        map.setWorldObjet(x, y, Structure.create(type));
     }
 }
