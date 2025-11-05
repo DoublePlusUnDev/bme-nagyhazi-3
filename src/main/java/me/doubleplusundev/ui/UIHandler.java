@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import me.doubleplusundev.GamePanel;
 import me.doubleplusundev.player.GameInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
 

@@ -4,6 +4,7 @@ import me.doubleplusundev.map.structures.Center;
 import me.doubleplusundev.map.structures.Structure;
 import me.doubleplusundev.map.structures.StructureFactory;
 import me.doubleplusundev.map.structures.StructureType;
+import me.doubleplusundev.map.worldgen.WorldGenerator;
 
 public class GameMapHandler {
     private static GameMapHandler instance;
