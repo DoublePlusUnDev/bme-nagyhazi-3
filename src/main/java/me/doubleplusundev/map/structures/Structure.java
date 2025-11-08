@@ -12,4 +12,14 @@ public abstract  class Structure extends WorldObject {
     public StructureType getType() {
         return type;
     }
+
+    @Override
+    public void update() {
+        
+    }
+
+    @Override
+    public void tick(int count) {
+        
+    }
 }

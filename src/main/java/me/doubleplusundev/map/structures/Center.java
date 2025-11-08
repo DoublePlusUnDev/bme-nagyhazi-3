@@ -5,14 +5,5 @@ public class Center extends Structure {
         super(StructureType.CENTER);
     }
 
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void tick(int count) {
-
-    }
     
 }

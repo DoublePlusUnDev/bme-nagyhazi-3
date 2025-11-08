@@ -2,6 +2,9 @@ package me.doubleplusundev.ui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -12,6 +15,8 @@ import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.WorldObject;
 import me.doubleplusundev.map.resourcenodes.ResourceNode;
 import me.doubleplusundev.map.structures.Structure;
+import me.doubleplusundev.player.GameInteractionManager;
+import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.TextureManager;
@@ -21,7 +26,17 @@ public class GamePanel extends JPanel implements IUpdatable {
     private int tileSize;
 
     public GamePanel() {
+        super();
         setFocusable(true);
+        addMouseListener(GameInteractionManager.getInstance());
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                requestFocus();
+                super.mouseClicked(arg0);
+            }
+        });
+        addKeyListener(KeyInputManager.getInstance());
 
         UpdateManager.getInstance().register(this);
     

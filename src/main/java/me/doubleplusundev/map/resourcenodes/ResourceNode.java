@@ -8,4 +8,16 @@ public abstract class ResourceNode extends WorldObject {
     public ResourceNodeType getType() {
         return type;
     }
+
+    @Override
+    public void update() {
+        
+    }
+
+    @Override
+    public void tick(int count) {
+        
+    }
+
+    
 }

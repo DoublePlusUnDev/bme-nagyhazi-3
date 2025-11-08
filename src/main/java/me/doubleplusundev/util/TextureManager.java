@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.resourcenodes.ResourceNodeType;
 import me.doubleplusundev.map.structures.StructureType;
+import me.doubleplusundev.resource.ResourceType;
 
 public class TextureManager {
     private static TextureManager instance;
@@ -22,20 +23,27 @@ public class TextureManager {
         Map.entry(TileType.SEA_DEEP, "/textures/sea_deep.png"),
         Map.entry(TileType.SEA_SHORE, "/textures/sea_shore.png"),
         Map.entry(TileType.SNOW, "/textures/snow.png")
-        );
+    );
     private Map<TileType, BufferedImage> tileImages;
 
     private Map<StructureType, String> structurePaths = Map.ofEntries(
         Map.entry(StructureType.ROAD, "/textures/road.png"),
         Map.entry(StructureType.CENTER, "/textures/center.png")
-        );
+    );
     private Map<StructureType, BufferedImage> structureImages;
 
     private Map<ResourceNodeType, String> resourceNodePaths = Map.ofEntries(
         Map.entry(ResourceNodeType.TREE, "/textures/tree.png"),
-       Map.entry(ResourceNodeType.BOULDER, "/textures/boulder.png")
-        );
+        Map.entry(ResourceNodeType.BOULDER, "/textures/boulder.png")
+    );
     private Map<ResourceNodeType, BufferedImage> resourceNodeImages;
+
+    private Map<ResourceType, String> resourcePaths = Map.ofEntries(
+        Map.entry(ResourceType.WOOD, "/textures/wood.png"),
+        Map.entry(ResourceType.STONE, "/textures/stone.png"),
+        Map.entry(ResourceType.IRON, "/textures/iron.png")
+    );
+    private Map<ResourceType, BufferedImage> resourceImages;
 
     private TextureManager() {
         tileImages = new HashMap<TileType, BufferedImage>();
@@ -67,6 +75,16 @@ public class TextureManager {
                 e.printStackTrace();
             }
         }
+
+        resourceImages = new HashMap<ResourceType, BufferedImage>();
+        for (Map.Entry<ResourceType, String> resource : resourcePaths.entrySet()) {
+            try{
+                resourceImages.put(resource.getKey(), ImageIO.read(getClass().getResource(resource.getValue())));
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
     
     public static TextureManager getInstance() {
@@ -84,7 +102,11 @@ public class TextureManager {
         return structureImages.get(structure);
     }
 
-    public BufferedImage getResourceNode(ResourceNodeType resource) {
-        return resourceNodeImages.get(resource);
+    public BufferedImage getResourceNode(ResourceNodeType resourceNode) {
+        return resourceNodeImages.get(resourceNode);
+    }
+
+    public BufferedImage getResource(ResourceType resource) {
+        return resourceImages.get(resource);
     }
 }
