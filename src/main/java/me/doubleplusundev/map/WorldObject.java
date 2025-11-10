@@ -6,22 +6,22 @@ import me.doubleplusundev.game.ITickable;
 import me.doubleplusundev.game.IUpdatable;
 
 public abstract class WorldObject implements IUpdatable, ITickable, Serializable {
-    protected final transient GameMapHandler gameMapHandler;
+    protected final transient GameMap gameMap;
     protected int xPos;
     protected int yPos;
     
-    protected WorldObject(int xPos, int yPos, GameMapHandler gameMapHandler) {
-        this.gameMapHandler = gameMapHandler;
+    protected WorldObject(int xPos, int yPos, GameMap gameMap) {
+        this.gameMap = gameMap;
         this.xPos = xPos;
         this.yPos = yPos;
 
     }
 
     public void create () {
-        gameMapHandler.setWorldObject(xPos, yPos, this);
+        gameMap.setWorldObject(xPos, yPos, this);
     }
 
     public void destroy() {
-        gameMapHandler.setWorldObject(xPos, yPos, null);
+        gameMap.setWorldObject(xPos, yPos, null);
     }
 }

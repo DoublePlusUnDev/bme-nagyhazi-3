@@ -1,13 +1,13 @@
 package me.doubleplusundev.map.structures;
 
-import me.doubleplusundev.map.GameMapHandler;
+import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.WorldObject;
 
 public abstract  class Structure extends WorldObject {
     protected StructureType type;
 
-    protected Structure(int xPos, int yPos, StructureType type, GameMapHandler gameMapHandler) {
-        super(xPos, yPos, gameMapHandler);
+    protected Structure(int xPos, int yPos, StructureType type, GameMap gameMap) {
+        super(xPos, yPos, gameMap);
         this.type = type;
     }
 

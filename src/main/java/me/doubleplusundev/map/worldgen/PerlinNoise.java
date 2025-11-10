@@ -1,6 +1,11 @@
 package me.doubleplusundev.map.worldgen;
 
+import java.util.Arrays;
+
 //based on the reference implementation https://cs.nyu.edu/~perlin/noise/
+
+import java.util.Random;
+
 // JAVA REFERENCE IMPLEMENTATION OF IMPROVED NOISE - COPYRIGHT 2002 KEN PERLIN.
 
 public class PerlinNoise {
@@ -14,17 +19,17 @@ public class PerlinNoise {
       double u = fade(x),                                // COMPUTE FADE CURVES
              v = fade(y),                                // FOR EACH OF X,Y,Z.
              w = fade(z);
-      int A = p[X  ]+Y, AA = p[A]+Z, AB = p[A+1]+Z,      // HASH COORDINATES OF
-          B = p[X+1]+Y, BA = p[B]+Z, BB = p[B+1]+Z;      // THE 8 CUBE CORNERS,
+      int A = pshuffled[X  ]+Y, AA = pshuffled[A]+Z, AB = pshuffled[A+1]+Z,      // HASH COORDINATES OF
+          B = pshuffled[X+1]+Y, BA = pshuffled[B]+Z, BB = pshuffled[B+1]+Z;      // THE 8 CUBE CORNERS,
 
-      return lerp(w, lerp(v, lerp(u, grad(p[AA  ], x  , y  , z   ),  // AND ADD
-                                     grad(p[BA  ], x-1, y  , z   )), // BLENDED
-                             lerp(u, grad(p[AB  ], x  , y-1, z   ),  // RESULTS
-                                     grad(p[BB  ], x-1, y-1, z   ))),// FROM  8
-                     lerp(v, lerp(u, grad(p[AA+1], x  , y  , z-1 ),  // CORNERS
-                                     grad(p[BA+1], x-1, y  , z-1 )), // OF CUBE
-                             lerp(u, grad(p[AB+1], x  , y-1, z-1 ),
-                                     grad(p[BB+1], x-1, y-1, z-1 ))));
+      return lerp(w, lerp(v, lerp(u, grad(pshuffled[AA  ], x  , y  , z   ),  // AND ADD
+                                     grad(pshuffled[BA  ], x-1, y  , z   )), // BLENDED
+                             lerp(u, grad(pshuffled[AB  ], x  , y-1, z   ),  // RESULTS
+                                     grad(pshuffled[BB  ], x-1, y-1, z   ))),// FROM  8
+                     lerp(v, lerp(u, grad(pshuffled[AA+1], x  , y  , z-1 ),  // CORNERS
+                                     grad(pshuffled[BA+1], x-1, y  , z-1 )), // OF CUBE
+                             lerp(u, grad(pshuffled[AB+1], x  , y-1, z-1 ),
+                                     grad(pshuffled[BB+1], x-1, y-1, z-1 ))));
    }
    static double fade(double t) { return t * t * t * (t * (t * 6 - 15) + 10); }
    static double lerp(double t, double a, double b) { return a + t * (b - a); }
@@ -49,4 +54,23 @@ public class PerlinNoise {
    138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
    };
    static { for (int i=0; i < 256 ; i++) p[256+i] = p[i] = permutation[i]; }
+
+   static int pshuffled[] = Arrays.copyOf(p, p.length);
+
+   static void setSeed(long seed) {
+        for (int i = 0; i < 256; i++)
+            pshuffled[i] = p[i];
+
+        Random random = new Random(seed);
+        for (int i = 255; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            int tmp = pshuffled[i];
+            pshuffled[i] = pshuffled[j];
+            pshuffled[j] = tmp;
+        }
+
+        for (int i = 0; i < 256; i++) {
+            pshuffled[256 + i] = pshuffled[i];
+        }
+   }
 }

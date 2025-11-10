@@ -1,9 +1,9 @@
 package me.doubleplusundev.map.structures;
 
-import me.doubleplusundev.map.GameMapHandler;
+import me.doubleplusundev.map.GameMap;
 
 public class Road extends Structure {
-    public Road(int xPos, int yPos, GameMapHandler gameMapHandler) {
-        super(xPos, yPos, StructureType.ROAD, gameMapHandler);
+    public Road(int xPos, int yPos, GameMap gameMap) {
+        super(xPos, yPos, StructureType.ROAD, gameMap);
     }
 }

@@ -12,7 +12,6 @@ import com.google.gson.JsonSyntaxException;
 import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.WorldObject;
-import me.doubleplusundev.map.worldgen.WorldObjectAdapter;
 
 public class SaveGameManager {
     Gson gson;

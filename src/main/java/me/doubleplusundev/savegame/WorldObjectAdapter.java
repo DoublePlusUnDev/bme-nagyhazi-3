@@ -1,4 +1,4 @@
-package me.doubleplusundev.map.worldgen;
+package me.doubleplusundev.savegame;
 
 import java.lang.reflect.Type;
 

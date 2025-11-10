@@ -1,9 +1,9 @@
 package me.doubleplusundev.map.resourcenodes;
 
-import me.doubleplusundev.map.GameMapHandler;
+import me.doubleplusundev.map.GameMap;
 
 public class Tree extends ResourceNode {
-    public Tree(int xPos, int yPos, GameMapHandler gameMapHandler) {
-        super(xPos, yPos, ResourceNodeType.TREE, gameMapHandler);
+    public Tree(int xPos, int yPos, GameMap gameMap) {
+        super(xPos, yPos, ResourceNodeType.TREE, gameMap);
     }  
 }

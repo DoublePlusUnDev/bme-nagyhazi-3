@@ -1,12 +1,18 @@
 package me.doubleplusundev.map.worldgen;
 
+import java.util.Random;
+
 import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.resourcenodes.Tree;
 
 public class WorldGenerator {
-    public static GameMap generateWorld(int xSize, int ySize){
+    public static GameMap generateWorld(int xSize, int ySize, long seed){
         GameMap map = new GameMap(xSize, ySize);
         
+        PerlinNoise.setSeed(seed);
+        Random random = new Random(seed);
+
         for (int x = 0; x < xSize; x++){
             for (int y = 0; y < ySize; y++) {
 
@@ -20,19 +26,28 @@ public class WorldGenerator {
                 double height = noise - mask;
                 
                 TileType tile;
-
-                if (height > 0.35)
+                
+                if (height > 0.35){
                     tile = TileType.SNOW;
-                else if (height  > 0.15)
+                }   
+                else if (height  > 0.15) {
                     tile = TileType.ROCK;
-                else if (height  > -0.1)
+                }
+                else if (height  > -0.1) {
                     tile = TileType.GRASS;
-                else if (height  > -0.2)
+                    if (random.nextDouble() < 0.1) {
+                        map.setWorldObject(x, y, new Tree(x, y, map));
+                    }
+                }
+                else if (height  > -0.2) {
                     tile = TileType.SAND;
-                else if (height  > -0.35)
+                }
+                else if (height  > -0.35) {
                     tile = TileType.SEA_SHORE;
-                else
+                }
+                else {
                     tile = TileType.SEA_DEEP;
+                }
 
                 map.setTile(x, y, tile);
             }

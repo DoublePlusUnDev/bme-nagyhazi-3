@@ -8,7 +8,7 @@ public class GameMapHandler {
     GameMap map;
 
     public GameMapHandler() {
-        this.map = WorldGenerator.generateWorld(500, 500);
+        this.map = WorldGenerator.generateWorld(500, 500, 0);
     }
 
     public TileType getTile(int x, int y){
@@ -27,7 +27,7 @@ public class GameMapHandler {
 
     public void buildStructure(int x, int y, StructureType type) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            StructureFactory.create(x, y, type, this);
+            StructureFactory.create(x, y, type, map);
         }
     }
 
