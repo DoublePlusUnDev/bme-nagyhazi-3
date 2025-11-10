@@ -11,6 +11,8 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import me.doubleplusundev.map.WorldObject;
+import me.doubleplusundev.map.resourcenodes.Boulder;
+import me.doubleplusundev.map.resourcenodes.Tree;
 import me.doubleplusundev.map.structures.Center;
 import me.doubleplusundev.map.structures.Road;
 
@@ -21,6 +23,8 @@ public class WorldObjectAdapter implements JsonSerializer<WorldObject>, JsonDese
         JsonObject obj = context.serialize(src).getAsJsonObject();
         if (src instanceof Center) obj.addProperty("wotype", "Center");
         if (src instanceof Road) obj.addProperty("wotype", "Road");
+        if (src instanceof Tree) obj.addProperty("wotype", "Tree");
+        if (src instanceof Boulder) obj.addProperty("wotype", "Boulder");
         return obj;
     }
 
@@ -34,6 +38,12 @@ public class WorldObjectAdapter implements JsonSerializer<WorldObject>, JsonDese
             }
             case "Road" -> {
                 return context.deserialize(json, Road.class);
+            }
+            case "Tree" -> {
+                return context.deserialize(json, Tree.class);
+            }
+            case "Boulder" -> {
+                return context.deserialize(json, Boulder.class);
             }
             default -> throw new RuntimeException("Unknown type:" + type);
         }

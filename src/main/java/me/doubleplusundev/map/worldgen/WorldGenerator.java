@@ -4,6 +4,7 @@ import java.util.Random;
 
 import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.resourcenodes.Boulder;
 import me.doubleplusundev.map.resourcenodes.Tree;
 
 public class WorldGenerator {
@@ -29,9 +30,15 @@ public class WorldGenerator {
                 
                 if (height > 0.35){
                     tile = TileType.SNOW;
+                    if (random.nextDouble() < 0.15) {
+                        map.setWorldObject(x, y, new Boulder(x, y, map));
+                    }
                 }   
                 else if (height  > 0.15) {
                     tile = TileType.ROCK;
+                    if (random.nextDouble() < 0.3) {
+                        map.setWorldObject(x, y, new Boulder(x, y, map));
+                    }
                 }
                 else if (height  > -0.1) {
                     tile = TileType.GRASS;
