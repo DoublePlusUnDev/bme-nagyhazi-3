@@ -27,7 +27,10 @@ public class TextureManager {
 
     private static final Map<StructureType, String> structurePaths = Map.ofEntries(
         Map.entry(StructureType.ROAD, "/textures/road.png"),
-        Map.entry(StructureType.CENTER, "/textures/center.png")
+        Map.entry(StructureType.CENTER, "/textures/center.png"),
+        Map.entry(StructureType.LUMBERHUT, "/textures/lumberhut.png"),
+        Map.entry(StructureType.QUARRY, "/textures/quarry.png"),
+        Map.entry(StructureType.BLACKSMITH, "/textures/blacksmith.png")
     );
     private static final Map<StructureType, BufferedImage> structureImages;
 

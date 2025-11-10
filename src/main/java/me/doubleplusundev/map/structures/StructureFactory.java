@@ -13,7 +13,10 @@ public class StructureFactory {
 
     private static final Map<StructureType, StructureCreator> registry = Map.ofEntries(
         Map.entry(StructureType.ROAD, Road::new),
-        Map.entry(StructureType.CENTER, Center::new)
+        Map.entry(StructureType.CENTER, Center::new),
+        Map.entry(StructureType.LUMBERHUT, LumberHut::new),
+        Map.entry(StructureType.QUARRY, Quarry::new),
+        Map.entry(StructureType.BLACKSMITH, BlackSmith::new)
     );
 
     private StructureFactory() {
