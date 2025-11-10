@@ -1,11 +1,12 @@
 package me.doubleplusundev.map;
 
-import me.doubleplusundev.map.structures.Center;
-import me.doubleplusundev.map.structures.Road;
+import java.io.Serializable;
 
-public class GameMap {
-    private int width;
-    private int height;
+public class GameMap implements Serializable{
+    private static final long serialVersionUID = 1L;
+
+    private final int width;
+    private final int height;
     private TileType[][] tiles;
     private WorldObject[][] worldObjects;
     
@@ -17,13 +18,6 @@ public class GameMap {
         for (int x = 0; x < width; x++){
             for (int y = 0; y < height; y++){
                 tiles[x][y] = TileType.GRASS;
-            }
-        }
-
-        worldObjects = new WorldObject[width][height];
-        for (int x = 0; x < width; x++){
-            for (int y = 0; y < height; y++){
-                //worldObjects[x][y] = new Road();
             }
         }
     }
