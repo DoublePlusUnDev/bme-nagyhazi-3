@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
@@ -79,6 +80,12 @@ public class UIHandler {
     private void initializeResourcePanel(JFrame frame) {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.Y_AXIS));
+
+        JTextArea topLabel = new JTextArea("Resource  Amount  Change");
+        topLabel.setMaximumSize(new Dimension(200, 18));
+        topLabel.setFocusable(false);
+        topLabel.setOpaque(false);
+        resourcePanel.add(topLabel);
 
         ResourceMonitor woodDisplay = new ResourceMonitor(ResourceType.WOOD, resourceManager);
         updateManager.registerForUpdate(woodDisplay);
