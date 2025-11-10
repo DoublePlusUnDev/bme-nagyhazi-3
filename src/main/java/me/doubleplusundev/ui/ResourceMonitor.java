@@ -26,8 +26,8 @@ public class ResourceMonitor extends JPanel implements IUpdatable {
     
     private final int tickRate;
     private double currentValue;
-    private LinkedList<Double> previousValues = new LinkedList<>();
-    private int trackLength = 113;
+    private final LinkedList<Double> previousValues = new LinkedList<>();
+    private static final int TRACKLENGTH = 113;
 
     public ResourceMonitor(ResourceType type, ResourceManager resourceManager) {
         super();
@@ -71,7 +71,7 @@ public class ResourceMonitor extends JPanel implements IUpdatable {
         updateAmount();
         updateChange();
         previousValues.addFirst(currentValue);
-        if (previousValues.size() > trackLength)
+        if (previousValues.size() > TRACKLENGTH)
             previousValues.removeLast();
     }
 
@@ -90,7 +90,7 @@ public class ResourceMonitor extends JPanel implements IUpdatable {
             isFirst = false;
             previousValue = value;
         }
-        double changeRate = totalChange / trackLength * tickRate;
+        double changeRate = totalChange / TRACKLENGTH * tickRate;
         changeText.setText(String.format("%10.1f", changeRate));
     }
 }
