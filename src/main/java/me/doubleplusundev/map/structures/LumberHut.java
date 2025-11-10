@@ -4,6 +4,7 @@ import java.util.Map;
 
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMap;
+import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceStore;
 import me.doubleplusundev.resource.ResourceType;
@@ -14,5 +15,17 @@ public class LumberHut extends Structure {
         super(xPos, yPos, StructureType.LUMBERHUT, gameMap, resourceManager, updateManager);
         production = new ResourceStore(Map.of(ResourceType.WOOD, 0.2));
     }
+
+    @Override
+    public void create() {
+        if (gameMap.getTile(xPos, yPos) != TileType.SAND && gameMap.getTile(xPos, yPos) != TileType.SAND)
+            return;
+
+        if (gameMap.getWorldObject(xPos, yPos) != null)
+            return;
+    
+        super.create();
+    }
+    
     
 }

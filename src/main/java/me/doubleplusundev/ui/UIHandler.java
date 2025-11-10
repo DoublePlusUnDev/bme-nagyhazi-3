@@ -74,7 +74,6 @@ public class UIHandler {
         initializeBottomRow(frame);
 
         frame.setVisible(true);
-
     }
 
     private void initializeResourcePanel(JFrame frame) {
