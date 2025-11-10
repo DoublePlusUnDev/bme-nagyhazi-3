@@ -8,6 +8,8 @@ import java.util.Random;
 
 // JAVA REFERENCE IMPLEMENTATION OF IMPROVED NOISE - COPYRIGHT 2002 KEN PERLIN.
 
+//suppress warnings coming from reference code
+@SuppressWarnings({"java:S1118", "java:S1124", "java:S117", "java:S1659", "java:S3358", "java:S1197"})
 public class PerlinNoise {
     static public double noise(double x, double y, double z) {
       int X = (int)Math.floor(x) & 255,                  // FIND UNIT CUBE THAT
@@ -55,11 +57,10 @@ public class PerlinNoise {
    };
    static { for (int i=0; i < 256 ; i++) p[256+i] = p[i] = permutation[i]; }
 
-   static int pshuffled[] = Arrays.copyOf(p, p.length);
+   static int[] pshuffled = Arrays.copyOf(p, p.length);
 
    static void setSeed(long seed) {
-        for (int i = 0; i < 256; i++)
-            pshuffled[i] = p[i];
+        System.arraycopy(p, 0, pshuffled, 0, 256);
 
         Random random = new Random(seed);
         for (int i = 255; i > 0; i--) {
@@ -69,8 +70,6 @@ public class PerlinNoise {
             pshuffled[j] = tmp;
         }
 
-        for (int i = 0; i < 256; i++) {
-            pshuffled[256 + i] = pshuffled[i];
-        }
+        System.arraycopy(pshuffled, 0, pshuffled, 256, 256);
    }
 }

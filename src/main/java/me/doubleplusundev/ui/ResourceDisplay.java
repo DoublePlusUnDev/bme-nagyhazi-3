@@ -61,17 +61,16 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
         changeText.setFont(new Font("Monospaced", Font.PLAIN, 12));
         changeText.setOpaque(false);
         
-        add(changeText);
+        add(changeText); 
     }
 
     @Override
     public void update() {
-        resourceManager.setResource(ResourceType.WOOD, lastAmount+1);
-        currentAmount = resourceManager.getResource(type);
+        resourceManager.setResource(ResourceType.WOOD, resourceManager.getResource(ResourceType.WOOD)+1);
+        currentAmount = (int)Math.floor(resourceManager.getResource(type));
         updateAmount();
         updateChange();
-
-        lastAmount = resourceManager.getResource(type);
+        lastAmount = (int)Math.floor(resourceManager.getResource(type));
     }
 
     private void updateAmount() {

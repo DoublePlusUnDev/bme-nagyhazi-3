@@ -26,41 +26,49 @@ public class WorldGenerator {
 
                 double height = noise - mask;
                 
-                TileType tile;
-                
-                if (height > 0.35){
-                    tile = TileType.SNOW;
-                    if (random.nextDouble() < 0.15) {
-                        map.setWorldObject(x, y, new Boulder(x, y, map));
-                    }
-                }   
-                else if (height  > 0.15) {
-                    tile = TileType.ROCK;
-                    if (random.nextDouble() < 0.3) {
-                        map.setWorldObject(x, y, new Boulder(x, y, map));
-                    }
-                }
-                else if (height  > -0.1) {
-                    tile = TileType.GRASS;
-                    if (random.nextDouble() < 0.1) {
-                        map.setWorldObject(x, y, new Tree(x, y, map));
-                    }
-                }
-                else if (height  > -0.2) {
-                    tile = TileType.SAND;
-                }
-                else if (height  > -0.35) {
-                    tile = TileType.SEA_SHORE;
-                }
-                else {
-                    tile = TileType.SEA_DEEP;
-                }
+                TileType tile = generateTile(map, random, x, y, height);
 
                 map.setTile(x, y, tile);
             }
         }
 
         return map;
+    }
+
+    private static TileType generateTile(GameMap map, Random random, int x, int y, double height) {
+        TileType tile;
+        
+        if (height > 0.35){
+            tile = TileType.SNOW;
+            if (random.nextDouble() < 0.15) {
+                map.setWorldObject(x, y, new Boulder(x, y, map));
+            }
+        }   
+        else if (height  > 0.15) {
+            tile = TileType.ROCK;
+            if (random.nextDouble() < 0.3) {
+                map.setWorldObject(x, y, new Boulder(x, y, map));
+            }
+        }
+        else if (height  > -0.1) {
+            tile = TileType.GRASS;
+            if (random.nextDouble() < 0.1) {
+                map.setWorldObject(x, y, new Tree(x, y, map));
+            }
+        }
+        else if (height  > -0.2) {
+            tile = TileType.SAND;
+        }
+        else if (height  > -0.35) {
+            tile = TileType.SEA_SHORE;
+        }
+        else {
+            tile = TileType.SEA_DEEP;
+        }
+        return tile;
     } 
     
+    private WorldGenerator() {
+
+    }
 }

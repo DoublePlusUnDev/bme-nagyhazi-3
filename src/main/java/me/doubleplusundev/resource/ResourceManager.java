@@ -1,25 +1,29 @@
 package me.doubleplusundev.resource;
 
-import java.util.EnumMap;
-
 public class ResourceManager {
-    private final EnumMap<ResourceType, Integer> resources;
+    private ResourceStore resources;
 
     public ResourceManager() {
-        resources = new EnumMap<>(ResourceType.class);
+        resources = new ResourceStore();
         
-        for (ResourceType resource : ResourceType.values()) {
-            resources.put(resource, 0);
-        }
-        resources.put(ResourceType.WOOD, 20);
-        resources.put(ResourceType.STONE, 200);
+        resources.setResource(ResourceType.WOOD, -500.0);
     }
     
-    public void setResource(ResourceType type, int amount) {
-        resources.put(type, amount);
+    public void setResource(ResourceType type, double amount) {
+        System.out.println(hashCode() + " " + type.toString() + " set " + amount);
+        resources.setResource(type, amount);
     }
 
-    public int getResource(ResourceType type) {
-        return resources.get(type);
+    public double getResource(ResourceType type) {
+        System.out.println(hashCode() + " " + type.toString() + " got " + resources.getResource(type));
+        return resources.getResource(type);
+    }
+
+    public ResourceStore getResources() {
+        return resources;
+    }
+
+    public void setResources(ResourceStore resources) {
+        this.resources = resources;
     }
 }

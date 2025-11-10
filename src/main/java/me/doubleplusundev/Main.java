@@ -23,8 +23,6 @@ public class Main {
         UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, playerController, keyInputManager);
         uiHandler.initialize();
 
-        
         updateManager.start();
-        
     }
 } 

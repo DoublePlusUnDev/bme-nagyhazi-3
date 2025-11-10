@@ -11,6 +11,7 @@ import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.resourcenodes.ResourceNodeType;
 import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.resource.ResourceType;
+import me.doubleplusundev.ui.ExceptionUI;
 
 public class TextureManager {
     private static final Map<TileType, String> tilePaths = Map.ofEntries(
@@ -50,7 +51,7 @@ public class TextureManager {
                 tileImages.put(tile.getKey(), ImageIO.read(TextureManager.class.getResource(tile.getValue())));
             }
             catch (IOException e){
-                e.printStackTrace();
+                ExceptionUI.showException(e);
             }
         }
 
@@ -60,7 +61,7 @@ public class TextureManager {
                 structureImages.put(structure.getKey(), ImageIO.read(TextureManager.class.getResource(structure.getValue())));
             }
             catch (IOException e){
-                e.printStackTrace();
+                ExceptionUI.showException(e);
             }
         }
 
@@ -70,7 +71,7 @@ public class TextureManager {
                 resourceNodeImages.put(resourceNode.getKey(), ImageIO.read(TextureManager.class.getResource(resourceNode.getValue())));
             }
             catch (IOException e){
-                e.printStackTrace();
+                ExceptionUI.showException(e);
             }
         }
 
@@ -80,7 +81,7 @@ public class TextureManager {
                 resourceImages.put(resource.getKey(), ImageIO.read(TextureManager.class.getResource(resource.getValue())));
             }
             catch (IOException e){
-                e.printStackTrace();
+                ExceptionUI.showException(e);
             }
         }
     }
