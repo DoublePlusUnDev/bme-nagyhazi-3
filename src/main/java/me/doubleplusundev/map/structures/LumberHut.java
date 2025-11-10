@@ -18,7 +18,7 @@ public class LumberHut extends Structure {
 
     @Override
     public void create() {
-        if (gameMap.getTile(xPos, yPos) != TileType.SAND && gameMap.getTile(xPos, yPos) != TileType.SAND)
+        if (gameMap.getTile(xPos, yPos) != TileType.SAND && gameMap.getTile(xPos, yPos) != TileType.GRASS)
             return;
 
         if (gameMap.getWorldObject(xPos, yPos) != null)
