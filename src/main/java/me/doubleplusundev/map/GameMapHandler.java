@@ -5,24 +5,10 @@ import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.map.worldgen.WorldGenerator;
 
 public class GameMapHandler {
-    private static GameMapHandler instance;
-
     GameMap map;
 
-    private GameMapHandler() {
+    public GameMapHandler() {
         this.map = WorldGenerator.generateWorld(500, 500);
-    }
-
-    public static GameMapHandler getInstance() {
-        if (instance == null){
-            instance = new GameMapHandler();
-        }
-    
-        return instance;
-    }
-
-    public static void setInstance(GameMapHandler mock) {
-        GameMapHandler.instance = mock;
     }
 
     public TileType getTile(int x, int y){
@@ -41,7 +27,7 @@ public class GameMapHandler {
 
     public void buildStructure(int x, int y, StructureType type) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            StructureFactory.create(x, y, type);
+            StructureFactory.create(x, y, type, this);
         }
     }
 

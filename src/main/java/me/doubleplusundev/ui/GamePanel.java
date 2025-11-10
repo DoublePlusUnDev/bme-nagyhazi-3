@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 import me.doubleplusundev.game.IUpdatable;
-import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.WorldObject;
@@ -22,12 +21,17 @@ import me.doubleplusundev.util.TextureManager;
 import me.doubleplusundev.util.Vector2;
 
 public class GamePanel extends JPanel implements IUpdatable {
+    private final transient PlayerController playerController;
+    private final transient GameMapHandler gameMapHandler;
     private final int tileSize;
 
-    public GamePanel() {
+    public GamePanel(GameMapHandler gameMapHandler, PlayerController playerController, GameInteractionManager gameInteractionManager) {
         super();
+        this.gameMapHandler = gameMapHandler;
+        this.playerController = playerController;
+
         setFocusable(true);
-        addMouseListener(GameInteractionManager.getInstance());
+        addMouseListener(gameInteractionManager);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -36,8 +40,6 @@ public class GamePanel extends JPanel implements IUpdatable {
             }
         });
         addKeyListener(KeyInputManager.getInstance());
-
-        UpdateManager.getInstance().register(this);
     
         tileSize = Config.getInt("tile_render_size", 40);
     }
@@ -48,7 +50,7 @@ public class GamePanel extends JPanel implements IUpdatable {
 
         Graphics2D graphics = (Graphics2D)g;
 
-        Vector2 playerPosition = PlayerController.getInstance().getPosition();
+        Vector2 playerPosition = playerController.getPosition();
         double leftXCoord = playerPosition.x;
         double topYCoord = playerPosition.y;
  
@@ -57,20 +59,20 @@ public class GamePanel extends JPanel implements IUpdatable {
 
         for (int x = leftXFloor; (x - leftXFloor - 1) * tileSize < getWidth(); x++){
             for (int y = topYFloor; (y - topYFloor - 1) * tileSize < getHeight(); y++){
-                TileType tile = GameMapHandler.getInstance().getTile(x, y);
-                WorldObject worldObject = GameMapHandler.getInstance().getWorldObject(x, y);
+                TileType tile = gameMapHandler.getTile(x, y);
+                WorldObject worldObject = gameMapHandler.getWorldObject(x, y);
 
                 int drawX = (int) Math.round((x - leftXCoord) * tileSize);
                 int drawY = (int) Math.round((y - topYCoord ) * tileSize);
 
-                graphics.drawImage(TextureManager.getInstance().getTile(tile), drawX, drawY, tileSize, tileSize, null);
+                graphics.drawImage(TextureManager.getTile(tile), drawX, drawY, tileSize, tileSize, null);
             
-                if (worldObject instanceof Structure structure) {
-                    graphics.drawImage(TextureManager.getInstance().getStructure(structure.getType()), drawX, drawY, tileSize, tileSize, null);
-                }
-                else if (worldObject instanceof ResourceNode resourceNode) {
-                    graphics.drawImage(TextureManager.getInstance().getResourceNode(resourceNode.getType()), drawX, drawY, tileSize, tileSize, null);
-                }
+                if (worldObject instanceof Structure structure) 
+                    graphics.drawImage(TextureManager.getStructure(structure.getType()), drawX, drawY, tileSize, tileSize, null);
+                
+                if (worldObject instanceof ResourceNode resourceNode) 
+                    graphics.drawImage(TextureManager.getResourceNode(resourceNode.getType()), drawX, drawY, tileSize, tileSize, null);
+                
             }
         }
     }

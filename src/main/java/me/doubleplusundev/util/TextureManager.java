@@ -13,9 +13,7 @@ import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.resource.ResourceType;
 
 public class TextureManager {
-    private static TextureManager instance;
-
-    private Map<TileType, String> tilePaths = Map.ofEntries(
+    private static final Map<TileType, String> tilePaths = Map.ofEntries(
         Map.entry(TileType.GRASS, "/textures/grass.png"),
         Map.entry(TileType.LAKE, "/textures/lake.png"),
         Map.entry(TileType.ROCK, "/textures/rock.png"),
@@ -24,32 +22,32 @@ public class TextureManager {
         Map.entry(TileType.SEA_SHORE, "/textures/sea_shore.png"),
         Map.entry(TileType.SNOW, "/textures/snow.png")
     );
-    private EnumMap<TileType, BufferedImage> tileImages;
+    private static final EnumMap<TileType, BufferedImage> tileImages;
 
-    private Map<StructureType, String> structurePaths = Map.ofEntries(
+    private static final Map<StructureType, String> structurePaths = Map.ofEntries(
         Map.entry(StructureType.ROAD, "/textures/road.png"),
         Map.entry(StructureType.CENTER, "/textures/center.png")
     );
-    private Map<StructureType, BufferedImage> structureImages;
+    private static final Map<StructureType, BufferedImage> structureImages;
 
-    private Map<ResourceNodeType, String> resourceNodePaths = Map.ofEntries(
+    private static final Map<ResourceNodeType, String> resourceNodePaths = Map.ofEntries(
         Map.entry(ResourceNodeType.TREE, "/textures/tree.png"),
         Map.entry(ResourceNodeType.BOULDER, "/textures/boulder.png")
     );
-    private EnumMap<ResourceNodeType, BufferedImage> resourceNodeImages;
+    private static final EnumMap<ResourceNodeType, BufferedImage> resourceNodeImages;
 
-    private Map<ResourceType, String> resourcePaths = Map.ofEntries(
+    private static final Map<ResourceType, String> resourcePaths = Map.ofEntries(
         Map.entry(ResourceType.WOOD, "/textures/wood.png"),
         Map.entry(ResourceType.STONE, "/textures/stone.png"),
         Map.entry(ResourceType.IRON, "/textures/iron.png")
     );
-    private EnumMap<ResourceType, BufferedImage> resourceImages;
+    private static final EnumMap<ResourceType, BufferedImage> resourceImages;
 
-    private TextureManager() {
+    static {
         tileImages = new EnumMap<>(TileType.class);
         for (Map.Entry<TileType, String> tile : tilePaths.entrySet()) {
             try{
-                tileImages.put(tile.getKey(), ImageIO.read(getClass().getResource(tile.getValue())));
+                tileImages.put(tile.getKey(), ImageIO.read(TextureManager.class.getResource(tile.getValue())));
             }
             catch (IOException e){
                 e.printStackTrace();
@@ -59,7 +57,7 @@ public class TextureManager {
         structureImages = new EnumMap<>(StructureType.class);
         for (Map.Entry<StructureType, String> structure : structurePaths.entrySet()) {
             try{
-                structureImages.put(structure.getKey(), ImageIO.read(getClass().getResource(structure.getValue())));
+                structureImages.put(structure.getKey(), ImageIO.read(TextureManager.class.getResource(structure.getValue())));
             }
             catch (IOException e){
                 e.printStackTrace();
@@ -69,7 +67,7 @@ public class TextureManager {
         resourceNodeImages = new EnumMap<>(ResourceNodeType.class);
         for (Map.Entry<ResourceNodeType, String> resourceNode : resourceNodePaths.entrySet()) {
             try{
-                resourceNodeImages.put(resourceNode.getKey(), ImageIO.read(getClass().getResource(resourceNode.getValue())));
+                resourceNodeImages.put(resourceNode.getKey(), ImageIO.read(TextureManager.class.getResource(resourceNode.getValue())));
             }
             catch (IOException e){
                 e.printStackTrace();
@@ -79,38 +77,31 @@ public class TextureManager {
         resourceImages = new EnumMap<>(ResourceType.class);
         for (Map.Entry<ResourceType, String> resource : resourcePaths.entrySet()) {
             try{
-                resourceImages.put(resource.getKey(), ImageIO.read(getClass().getResource(resource.getValue())));
+                resourceImages.put(resource.getKey(), ImageIO.read(TextureManager.class.getResource(resource.getValue())));
             }
             catch (IOException e){
                 e.printStackTrace();
             }
         }
     }
-    
-    public static TextureManager getInstance() {
-        if (instance == null) {
-            instance = new TextureManager();
-        }
-        return instance;
-    }
 
-    public static void setInstance(TextureManager mock) {
-        instance = mock;
+    private TextureManager() {
+        
     }
     
-    public BufferedImage getTile(TileType tile) {
+    public static BufferedImage getTile(TileType tile) {
         return tileImages.get(tile);
     }
 
-    public BufferedImage getStructure(StructureType structure) {
+    public static BufferedImage getStructure(StructureType structure) {
         return structureImages.get(structure);
     }
 
-    public BufferedImage getResourceNode(ResourceNodeType resourceNode) {
+    public static BufferedImage getResourceNode(ResourceNodeType resourceNode) {
         return resourceNodeImages.get(resourceNode);
     }
 
-    public BufferedImage getResource(ResourceType resource) {
+    public static BufferedImage getResource(ResourceType resource) {
         return resourceImages.get(resource);
     }
 }

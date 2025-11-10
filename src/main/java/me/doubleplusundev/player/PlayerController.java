@@ -14,7 +14,7 @@ public class PlayerController implements IUpdatable {
         DESTROY
     }
 
-    private static PlayerController instance;
+    private final UpdateManager updateManager;
 
     private PlayerInteractionMode interactionMode = PlayerInteractionMode.BUILD;
     private StructureType selectedStructure;
@@ -22,26 +22,14 @@ public class PlayerController implements IUpdatable {
     private final Vector2 position;
     private final double speed;
 
-    private PlayerController() {
+    public  PlayerController(UpdateManager updateManager) {
+        this.updateManager = updateManager;
         position = new Vector2();
         speed = Config.getInt("player_speed", 10);
-
-        UpdateManager.getInstance().register(this);
-    }
-
-    public static PlayerController getInstance(){
-        if (instance == null){
-            instance = new PlayerController();
-        }
-        return instance;
     }
 
     public Vector2 getPosition(){
         return position;
-    }
-
-    public static void setInstance(PlayerController mock) {
-        instance = mock;
     }
 
     @Override
@@ -52,17 +40,17 @@ public class PlayerController implements IUpdatable {
         boolean rightPressed = KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_D) || KeyInputManager.getInstance().isKeyPressed(KeyEvent.VK_RIGHT);
 
         if (upPressed && !downPressed){
-            position.y -= speed * UpdateManager.getInstance().getDeltaTime();
+            position.y -= speed * updateManager.getDeltaTime();
         }
         else if (downPressed && !upPressed){
-            position.y += speed * UpdateManager.getInstance().getDeltaTime();
+            position.y += speed * updateManager.getDeltaTime();
         }
 
         if (leftPressed && !rightPressed){
-            position.x -= speed * UpdateManager.getInstance().getDeltaTime();
+            position.x -= speed * updateManager.getDeltaTime();
         }
         else if (rightPressed && !leftPressed){
-            position.x += speed * UpdateManager.getInstance().getDeltaTime();
+            position.x += speed * updateManager.getDeltaTime();
         }
     }
 

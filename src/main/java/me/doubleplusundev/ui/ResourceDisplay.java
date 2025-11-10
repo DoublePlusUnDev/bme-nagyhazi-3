@@ -10,13 +10,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import me.doubleplusundev.game.IUpdatable;
-import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.TextureManager;
 
-public class ResourceDisplay extends JPanel implements IUpdatable {
+public class ResourceDisplay extends JPanel implements IUpdatable {    
+    private final transient ResourceManager resourceManager;
+    
     private final ResourceType type;
     
     private JTextArea amountText;
@@ -26,22 +27,23 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
     private int lastAmount;
     private int currentAmount;
 
-    public ResourceDisplay(ResourceType type) {
+    public ResourceDisplay(ResourceType type, ResourceManager resourceManager) {
         super();
+
+        this.resourceManager = resourceManager;
+
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         this.type = type;
 
-        UpdateManager.getInstance().register(this);
-
         tickRate = Config.getInt("tick_speed", 20);
-
         setupUI(type);
 
+        
     }
 
     private void setupUI(ResourceType type1) {
-        JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getInstance().getResource(type1)));
+        JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getResource(type1)));
         add(imageLabel);
 
         amountText = new JTextArea();
@@ -52,31 +54,32 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
         amountText.setOpaque(false);
         add(amountText);
 
-        changeText = new JTextArea("0");
+        changeText = new JTextArea();
         changeText.setEditable(false);
         changeText.setFocusable(false);
         changeText.setMaximumSize(new Dimension(200, changeText.getPreferredSize().height));
         changeText.setFont(new Font("Monospaced", Font.PLAIN, 12));
         changeText.setOpaque(false);
+        
         add(changeText);
     }
 
     @Override
     public void update() {
-        ResourceManager.getInstance().setResource(ResourceType.WOOD, lastAmount+1);
-        currentAmount = ResourceManager.getInstance().getResource(type);
-        updateAmount();
-        updateChange();
+        resourceManager.setResource(ResourceType.WOOD, lastAmount+1);
+        currentAmount = resourceManager.getResource(type);
+        //updateAmount();
+        //updateChange();
 
-        lastAmount = ResourceManager.getInstance().getResource(type);
+        lastAmount = resourceManager.getResource(type);
     }
 
     private void updateAmount() {
-        amountText.setText(String.format("%10s", String.valueOf(currentAmount)));
+        amountText.setText("yolo");//String.format("%10s", String.valueOf(currentAmount)));
     }
 
     private void updateChange() {
         int changeRate = (currentAmount - lastAmount) * tickRate;
-        changeText.setText(String.format("%10s", changeRate > 0 ? "+" + String.valueOf(changeRate) : String.valueOf(changeRate)));
+        changeText.setText(String.format("%10s", changeRate > 0 ? "+" + changeRate : String.valueOf(changeRate)));
     }
 }

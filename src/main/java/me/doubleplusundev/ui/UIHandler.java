@@ -21,29 +21,31 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import me.doubleplusundev.game.UpdateManager;
+import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.structures.StructureType;
+import me.doubleplusundev.player.GameInteractionManager;
 import me.doubleplusundev.player.PlayerController;
+import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.util.TextureManager;
 
 public class UIHandler {
-    private static UIHandler instance;
+    private final GameMapHandler gameMapHandler;
+    private final ResourceManager resourceManager;
+    private final UpdateManager updateManager;
+    private final PlayerController playerController;
+    private final GameInteractionManager gameInteractionManager;
+    
     private  JPanel structureRow;
     private JLabel lastSelectedLabel;
 
-    private UIHandler(){
-
-    }
-
-    public static UIHandler getInstance() {
-        if (instance == null){
-            instance = new UIHandler();
-        }
-        return instance;
-    }
-
-    public static void setInstance(UIHandler mock) {
-        instance = mock;
+    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, PlayerController playerController){
+        this.gameMapHandler = gameMapHandler;
+        this.resourceManager = resourceManager;
+        this.updateManager = updateManager;
+        this.playerController = playerController;
+        this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController);
     }
     
     public void initialize() {
@@ -58,9 +60,9 @@ public class UIHandler {
 
         initializeGamePanel(frame);
 
-        initializeResourcePanel(frame);
-
         initializeBottomRow(frame);
+
+        initializeResourcePanel(frame);
 
         frame.setVisible(true);
 
@@ -70,20 +72,24 @@ public class UIHandler {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.Y_AXIS));
 
-        ResourceDisplay woodDisplay = new ResourceDisplay(ResourceType.WOOD);
+        ResourceDisplay woodDisplay = new ResourceDisplay(ResourceType.WOOD, resourceManager);
+        updateManager.register(woodDisplay);
         resourcePanel.add(woodDisplay);
 
-        ResourceDisplay stoneDisplay = new ResourceDisplay(ResourceType.STONE);
+        ResourceDisplay stoneDisplay = new ResourceDisplay(ResourceType.STONE, resourceManager);
+        updateManager.register(stoneDisplay);
         resourcePanel.add(stoneDisplay);
 
-        ResourceDisplay ironDisplay = new ResourceDisplay(ResourceType.IRON);
+        ResourceDisplay ironDisplay = new ResourceDisplay(ResourceType.IRON, resourceManager);
+        updateManager.register(ironDisplay);
         resourcePanel.add(ironDisplay);
 
         frame.add(resourcePanel, BorderLayout.WEST);
     }
 
     private void initializeGamePanel(JFrame frame) {
-        GamePanel gamePanel = new GamePanel();        
+        GamePanel gamePanel = new GamePanel(gameMapHandler, playerController, gameInteractionManager);     
+        updateManager.register(gamePanel);   
         frame.add(gamePanel, BorderLayout.CENTER);
     }
 
@@ -118,7 +124,7 @@ public class UIHandler {
         JButton buildButton = new JButton("Build");
         buildButton.setFocusable(false);
         buildButton.addActionListener(event -> { 
-            PlayerController.getInstance().setInteractionMode(PlayerController.PlayerInteractionMode.BUILD);structureRow.setVisible(false);
+            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.BUILD);structureRow.setVisible(false);
             structureRow.setVisible(true);
         });
         buttonRow.add(buildButton);
@@ -126,7 +132,7 @@ public class UIHandler {
         JButton destroyButton = new JButton("Destroy");
         destroyButton.setFocusable(false);
         destroyButton.addActionListener(event -> { 
-            PlayerController.getInstance().setInteractionMode(PlayerController.PlayerInteractionMode.DESTROY);
+            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.DESTROY);
             structureRow.setVisible(false);
         });
         buttonRow.add(destroyButton);
@@ -134,7 +140,7 @@ public class UIHandler {
 
         structureRow = new JPanel(new FlowLayout());
         for (StructureType structure : StructureType.values()) {
-            JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getInstance().getStructure(structure).getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
+            JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getStructure(structure).getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
             imageLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -157,7 +163,7 @@ public class UIHandler {
     private void selectLabel(StructureType structure, JLabel imageLabel) {
         if (lastSelectedLabel != null)
             lastSelectedLabel.setBorder(BorderFactory.createEmptyBorder());
-        PlayerController.getInstance().selectStructure(structure);
+        playerController.selectStructure(structure);
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
         lastSelectedLabel = imageLabel;
     }
