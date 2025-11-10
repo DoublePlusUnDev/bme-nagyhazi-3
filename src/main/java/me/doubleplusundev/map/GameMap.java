@@ -20,6 +20,8 @@ public class GameMap implements Serializable{
                 tiles[x][y] = TileType.GRASS;
             }
         }
+
+        worldObjects = new WorldObject[width][height];
     }
 
     public TileType getTile(int x, int y) {

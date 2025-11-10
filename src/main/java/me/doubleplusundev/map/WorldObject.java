@@ -9,7 +9,7 @@ public abstract class WorldObject implements IUpdatable, ITickable, Serializable
     protected int xPos;
     protected int yPos;
     
-    public WorldObject(int xPos, int yPos) {
+    protected WorldObject(int xPos, int yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
 
