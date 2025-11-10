@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
@@ -29,6 +31,7 @@ import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceType;
+import me.doubleplusundev.savegame.SaveGameManager;
 import me.doubleplusundev.util.TextureManager;
 
 public class UIHandler {
@@ -38,6 +41,7 @@ public class UIHandler {
     private final PlayerController playerController;
     private final KeyInputManager keyInputManager;
     private final GameInteractionManager gameInteractionManager;
+    private final SaveGameManager saveGameManager;
 
     private  JPanel structureRow;
     private JLabel lastSelectedLabel;
@@ -49,6 +53,7 @@ public class UIHandler {
         this.playerController = playerController;
         this.keyInputManager = keyInputManager;
         this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController);
+        this.saveGameManager = new SaveGameManager(gameMapHandler);
     }
     
     public void initialize() {
@@ -101,15 +106,35 @@ public class UIHandler {
 
         JButton saveMapButton = new JButton("Save Map");
         saveMapButton.setFocusable(false);
+        saveMapButton.addActionListener(event -> saveGameManager.save());
         bottomRow.add(saveMapButton);
 
         JTextField saveField = new JTextField(20);
         saveField.setFocusable(true);
+        saveField.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                saveGameManager.setLocation(saveField.getText());
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                saveGameManager.setLocation(saveField.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                saveGameManager.setLocation(saveField.getText());
+            }
+            
+        });
         addPlaceHolder(saveField, "File Name...");
         bottomRow.add(saveField);
 
         JButton loadMapButton = new JButton("Load Map");
         saveMapButton.setFocusable(false);
+        loadMapButton.addActionListener(event -> saveGameManager.load());
         bottomRow.add(loadMapButton);
         frame.add(bottomRow, BorderLayout.SOUTH);
 

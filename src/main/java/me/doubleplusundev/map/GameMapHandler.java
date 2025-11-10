@@ -42,4 +42,12 @@ public class GameMapHandler {
             map.setWorldObject(x, y, object);
         }
     }    
+
+    public GameMap getMap() {
+        return map;
+    }
+
+    public void setMap(GameMap map) {
+        this.map = map;
+    }
 }
