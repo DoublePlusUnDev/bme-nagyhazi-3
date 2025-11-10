@@ -1,9 +1,7 @@
-package me.doubleplusundev.game;
+package me.doubleplusundev.resource;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import me.doubleplusundev.resource.ResourceType;
 
 public class ResourceManager {
     private Map<ResourceType, Integer> resources;
@@ -17,6 +15,7 @@ public class ResourceManager {
             resources.put(resource, 0);
         }
         resources.put(ResourceType.WOOD, 20);
+        resources.put(ResourceType.STONE, 200);
     }
 
     public static ResourceManager getInstance() {

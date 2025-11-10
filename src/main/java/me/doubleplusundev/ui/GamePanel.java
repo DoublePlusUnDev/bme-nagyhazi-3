@@ -61,8 +61,8 @@ public class GamePanel extends JPanel implements IUpdatable {
                 TileType tile = GameMapHandler.getInstance().getTile(x, y);
                 WorldObject worldObject = GameMapHandler.getInstance().getWorldObject(x, y);
 
-                int drawX = (int) Math.floor((x - leftXCoord) * tileSize);
-                int drawY = (int) Math.floor((y - topYCoord ) * tileSize);
+                int drawX = (int) Math.round((x - leftXCoord) * tileSize);
+                int drawY = (int) Math.round((y - topYCoord ) * tileSize);
 
                 graphics.drawImage(TextureManager.getInstance().getTile(tile), drawX, drawY, tileSize, tileSize, null);
             

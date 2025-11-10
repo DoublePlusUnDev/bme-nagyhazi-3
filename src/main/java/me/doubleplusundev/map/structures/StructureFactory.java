@@ -1,21 +1,28 @@
 package me.doubleplusundev.map.structures;
 
 import java.util.Map;
-import java.util.function.Supplier;
+
+import me.doubleplusundev.map.GameMap;
 
 public class StructureFactory {
-    private static Map<StructureType, Supplier<? extends Structure>> registry = Map.ofEntries(
-        Map.entry(StructureType.ROAD, Road::new),
-        Map.entry(StructureType.CENTER, Center::new)
+    @FunctionalInterface
+    interface StructureCreator {
+        Structure create(int x, int y);
+    }
+
+    private static Map<StructureType, StructureCreator> registry = Map.ofEntries(
+        Map.entry(StructureType.ROAD, (x, y) -> new Road(x, y)),
+        Map.entry(StructureType.CENTER, (x, y) -> new Center(x, y))
     );
     
-    public static Structure create(StructureType type) {
-        Supplier<? extends Structure> supplier = registry.get(type);
+    public static Structure create(GameMap map, int xPos, int yPos, StructureType type) {
+        StructureCreator structureCreator = registry.get(type);
         
-        if (supplier == null) {
+        if (structureCreator == null) {
             throw new IllegalArgumentException("Unregistered structure type: " + type);
         }
-
-        return supplier.get();
+        Structure structure = structureCreator.create(xPos, yPos);
+        structure.create();
+        return structure;
     }
 }

@@ -27,7 +27,12 @@ public class GameInteractionManager implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        GameMapHandler.getInstance().placeStructure(pixelToTile(event.getPoint()).x, pixelToTile(event.getPoint()).y, StructureType.CENTER);
+        int x = pixelToTile(event.getPoint()).x;
+        int y = pixelToTile(event.getPoint()).y;
+        if (PlayerController.getInstance().getInteractionMode() == PlayerController.PlayerInteractionMode.BUILD)
+            GameMapHandler.getInstance().buildStructure(x, y, PlayerController.getInstance().getSelectedStructure());
+        else
+            GameMapHandler.getInstance().destroyWorldObject(x, y);
     }
 
     @Override

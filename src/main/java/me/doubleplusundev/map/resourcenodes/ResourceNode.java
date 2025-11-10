@@ -5,6 +5,11 @@ import me.doubleplusundev.map.WorldObject;
 public abstract class ResourceNode extends WorldObject {
     ResourceNodeType type;
 
+    protected ResourceNode (int xPos, int yPos, ResourceNodeType type) {
+        super(xPos, yPos);
+        this.type = type;
+    }
+
     public ResourceNodeType getType() {
         return type;
     }

@@ -5,7 +5,8 @@ import me.doubleplusundev.map.WorldObject;
 public abstract  class Structure extends WorldObject {
     protected StructureType type;
 
-    protected Structure(StructureType type) {
+    protected Structure(int xPos, int yPos, StructureType type) {
+        super(xPos, yPos);
         this.type = type;
     }
 

@@ -5,24 +5,36 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import me.doubleplusundev.map.structures.Structure;
+import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.player.GameInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
+import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.resource.ResourceType;
+import me.doubleplusundev.util.TextureManager;
 
 public class UIHandler {
     private static UIHandler instance;
+    private  JPanel structureRow;
+    private JLabel lastSelectedLabel;
 
     private UIHandler(){
 
@@ -43,7 +55,7 @@ public class UIHandler {
         
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
-        initializeTopRow(frame);
+        initializeTop(frame);
 
         initializeGamePanel(frame);
 
@@ -95,21 +107,60 @@ public class UIHandler {
 
         JButton quitButton = new JButton("Quit Game");
         quitButton.setFocusable(false);
+        quitButton.addActionListener(event -> System.exit(0));
         bottomRow.add(quitButton);
     }
 
-    private void initializeTopRow(JFrame frame) {
-        JPanel topRow = new JPanel(new FlowLayout());
+    private void initializeTop(JFrame frame) {
+        JPanel top = new JPanel();
+        top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
+        JPanel buttonRow = new JPanel(new FlowLayout());
 
         JButton buildButton = new JButton("Build");
         buildButton.setFocusable(false);
-        topRow.add(buildButton);
+        buildButton.addActionListener(event -> { 
+            PlayerController.getInstance().setInteractionMode(PlayerController.PlayerInteractionMode.BUILD);structureRow.setVisible(false);
+            structureRow.setVisible(true);
+        });
+        buttonRow.add(buildButton);
 
         JButton destroyButton = new JButton("Destroy");
         destroyButton.setFocusable(false);
-        topRow.add(destroyButton);
-        
-        frame.add(topRow, BorderLayout.NORTH);
+        destroyButton.addActionListener(event -> { 
+            PlayerController.getInstance().setInteractionMode(PlayerController.PlayerInteractionMode.DESTROY);
+            structureRow.setVisible(false);
+        });
+        buttonRow.add(destroyButton);
+        top.add(buttonRow);
+
+        structureRow = new JPanel(new FlowLayout());
+        for (StructureType structure : StructureType.values()) {
+            JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getInstance().getStructure(structure).getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
+            imageLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    selectLabel(structure, imageLabel);
+                }
+            });
+
+            if (structure == StructureType.CENTER) {
+                selectLabel(structure, imageLabel);
+            }
+
+            structureRow.add(imageLabel);
+        }
+        top.add(structureRow);
+
+        frame.add(top, BorderLayout.NORTH);
+    }
+
+    private void selectLabel(StructureType structure, JLabel imageLabel) {
+        if (lastSelectedLabel != null)
+            lastSelectedLabel.setBorder(BorderFactory.createEmptyBorder());
+        PlayerController.getInstance().selectStructure(structure);
+        imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        lastSelectedLabel = imageLabel;
     }
 
     private static void addPlaceHolder(JTextField field, String placeHolderText) {

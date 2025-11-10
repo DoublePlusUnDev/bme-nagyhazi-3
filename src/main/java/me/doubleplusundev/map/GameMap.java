@@ -60,10 +60,10 @@ public class GameMap {
         return height;
     }
 
-    public void setWorldObjet(int x, int y, WorldObject object) {
+    public void setWorldObject(int x, int y, WorldObject object) {
         if (x < 0 || width <= x || y < 0 || height <= y){
             throw new IllegalArgumentException();
         }
-        worldObjects[x][y] = new Center();
+        worldObjects[x][y] = object;
     }
 }

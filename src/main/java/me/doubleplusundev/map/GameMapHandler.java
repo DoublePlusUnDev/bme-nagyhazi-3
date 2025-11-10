@@ -37,9 +37,21 @@ public class GameMapHandler {
             return null;
     }
 
-    public void placeStructure(int x, int y, StructureType type) {
+    public void buildStructure(int x, int y, StructureType type) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            map.setWorldObjet(x, y, StructureFactory.create(type));
+            StructureFactory.create(map, x, y, type);
         }
     }
+
+    public void destroyWorldObject(int x, int y) {
+        if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight() && map.getWorldObject(x, y) != null) {
+            map.getWorldObject(x, y).destroy();
+        }
+    }
+
+    public void setWorldObject(int x, int y, WorldObject object) {
+        if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
+            map.setWorldObject(x, y, object);
+        }
+    }    
 }
