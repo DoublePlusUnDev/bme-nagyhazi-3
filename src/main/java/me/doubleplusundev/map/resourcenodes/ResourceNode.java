@@ -1,5 +1,6 @@
 package me.doubleplusundev.map.resourcenodes;
 
+import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.WorldObject;
 import me.doubleplusundev.resource.ResourceManager;
@@ -10,8 +11,8 @@ public abstract class ResourceNode extends WorldObject {
     
     protected ResourceNodeType type;
 
-    protected ResourceNode (int xPos, int yPos, ResourceNodeType type, GameMap gameMap, ResourceManager resourceManager) {
-        super(xPos, yPos, gameMap, resourceManager);
+    protected ResourceNode (int xPos, int yPos, ResourceNodeType type, GameMap gameMap, ResourceManager resourceManager, UpdateManager updateManager) {
+        super(xPos, yPos, gameMap, resourceManager, updateManager);
         this.type = type;
     }
 

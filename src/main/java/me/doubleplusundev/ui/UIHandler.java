@@ -81,15 +81,15 @@ public class UIHandler {
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.Y_AXIS));
 
         ResourceDisplay woodDisplay = new ResourceDisplay(ResourceType.WOOD, resourceManager);
-        updateManager.register(woodDisplay);
+        updateManager.registerForUpdate(woodDisplay);
         resourcePanel.add(woodDisplay);
 
         ResourceDisplay stoneDisplay = new ResourceDisplay(ResourceType.STONE, resourceManager);
-        updateManager.register(stoneDisplay);
+        updateManager.registerForUpdate(stoneDisplay);
         resourcePanel.add(stoneDisplay);
 
         ResourceDisplay ironDisplay = new ResourceDisplay(ResourceType.IRON, resourceManager);
-        updateManager.register(ironDisplay);
+        updateManager.registerForUpdate(ironDisplay);
         resourcePanel.add(ironDisplay);
 
         frame.add(resourcePanel, BorderLayout.WEST);
@@ -97,7 +97,7 @@ public class UIHandler {
 
     private void initializeGamePanel(JFrame frame) {
         GamePanel gamePanel = new GamePanel(gameMapHandler, playerController, gameInteractionManager, keyInputManager);     
-        updateManager.register(gamePanel);   
+        updateManager.registerForUpdate(gamePanel);   
         frame.add(gamePanel, BorderLayout.CENTER);
     }
 

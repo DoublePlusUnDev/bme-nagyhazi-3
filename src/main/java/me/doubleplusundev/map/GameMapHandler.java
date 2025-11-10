@@ -1,5 +1,6 @@
 package me.doubleplusundev.map;
 
+import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.resourcenodes.ResourceNodeFactory;
 import me.doubleplusundev.map.resourcenodes.ResourceNodeType;
 import me.doubleplusundev.map.structures.StructureFactory;
@@ -9,11 +10,13 @@ import me.doubleplusundev.resource.ResourceManager;
 
 public class GameMapHandler {
     private GameMap map;
+    private final UpdateManager updateManager;
     private final ResourceManager resourceManager;
 
-    public GameMapHandler(ResourceManager resourceManager) {
+    public GameMapHandler(UpdateManager updateManager, ResourceManager resourceManager) {
+        this.updateManager = updateManager;
         this.resourceManager = resourceManager;
-        this.map = WorldGenerator.generateWorld(500, 500, 0, resourceManager);
+        this.map = WorldGenerator.generateWorld(500, 500, 0, resourceManager, updateManager);
     }
 
     public TileType getTile(int x, int y){
@@ -32,13 +35,13 @@ public class GameMapHandler {
 
     public void buildStructure(int x, int y, StructureType type) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            StructureFactory.create(x, y, type, map, resourceManager);
+            StructureFactory.create(x, y, type, map, resourceManager, updateManager);
         }
     }
 
      public void spawnResourceNode(int x, int y, ResourceNodeType type) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            ResourceNodeFactory.create(x, y, type, map, resourceManager);
+            ResourceNodeFactory.create(x, y, type, map, resourceManager, updateManager);
         }
     }
 

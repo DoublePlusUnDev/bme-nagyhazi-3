@@ -2,13 +2,14 @@ package me.doubleplusundev.map.resourcenodes;
 
 import java.util.Map;
 
+import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.resource.ResourceManager;
 
 public class ResourceNodeFactory {
     @FunctionalInterface
     interface ResourceNodeCreator {
-        ResourceNode create(int x, int y, GameMap gameMap, ResourceManager resourceManager);
+        ResourceNode create(int x, int y, GameMap gameMap, ResourceManager resourceManager, UpdateManager updateManager);
     }
 
     private static final Map<ResourceNodeType, ResourceNodeCreator> registry = Map.ofEntries(
@@ -20,13 +21,13 @@ public class ResourceNodeFactory {
 
     }
 
-    public static ResourceNode create(int xPos, int yPos, ResourceNodeType type, GameMap gameMap, ResourceManager resourceManager) {
+    public static ResourceNode create(int xPos, int yPos, ResourceNodeType type, GameMap gameMap, ResourceManager resourceManager, UpdateManager updateManager) {
         ResourceNodeCreator resourceNodeCreator = registry.get(type);
 
         if (resourceNodeCreator == null) {
             throw new IllegalArgumentException("Unregistered structure type: " + type.toString());
         }
-        ResourceNode resourceNode = resourceNodeCreator.create(xPos, yPos, gameMap, resourceManager);
+        ResourceNode resourceNode = resourceNodeCreator.create(xPos, yPos, gameMap, resourceManager, updateManager);
         resourceNode.create();
         return resourceNode;
     }

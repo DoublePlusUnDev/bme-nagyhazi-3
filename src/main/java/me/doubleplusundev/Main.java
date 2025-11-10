@@ -9,16 +9,16 @@ import me.doubleplusundev.ui.UIHandler;
 
 public class Main {
     public static void main(String[] args) {
+        UpdateManager updateManager = new UpdateManager();
+
         ResourceManager resourceManager = new ResourceManager();
 
-        GameMapHandler gameMapHandler = new GameMapHandler(resourceManager);
-
-        UpdateManager updateManager = new UpdateManager();
+        GameMapHandler gameMapHandler = new GameMapHandler(updateManager, resourceManager);
 
         KeyInputManager keyInputManager = new KeyInputManager();
 
         PlayerController playerController = new PlayerController(updateManager, keyInputManager);
-        updateManager.register(playerController);
+        updateManager.registerForUpdate(playerController);
 
         UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, playerController, keyInputManager);
         uiHandler.initialize();

@@ -48,12 +48,12 @@ public class UpdateManager {
         tickCount++;
     }
 
-    public void register(IUpdatable updatable){
+    public void registerForUpdate(IUpdatable updatable){
         if (!updatables.contains(updatable))
             updatables.add(updatable);
     }
 
-    public void register(ITickable tickable){
+    public void registerForTick(ITickable tickable){
         if (!tickables.contains(tickable))
             tickables.add(tickable);
     }

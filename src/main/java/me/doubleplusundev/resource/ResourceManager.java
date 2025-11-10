@@ -19,6 +19,10 @@ public class ResourceManager {
         resources.forceMerge(other);
     }
 
+    public boolean tryMergeResources(ResourceStore other) {
+        return resources.tryMerge(other);
+    }
+
     public ResourceStore getResources() {
         return resources;
     }
