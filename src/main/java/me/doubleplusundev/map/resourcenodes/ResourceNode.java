@@ -3,9 +3,12 @@ package me.doubleplusundev.map.resourcenodes;
 import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.WorldObject;
 import me.doubleplusundev.resource.ResourceManager;
+import me.doubleplusundev.resource.ResourceStore;
 
 public abstract class ResourceNode extends WorldObject {
-    ResourceNodeType type;
+    protected ResourceStore resourcesOnRemoval;
+    
+    protected ResourceNodeType type;
 
     protected ResourceNode (int xPos, int yPos, ResourceNodeType type, GameMap gameMap, ResourceManager resourceManager) {
         super(xPos, yPos, gameMap, resourceManager);
@@ -26,5 +29,10 @@ public abstract class ResourceNode extends WorldObject {
         
     }
 
-    
+    @Override
+    public void destroy() {
+        super.destroy();
+        resourceManager.mergeResources(resourcesOnRemoval);
+        
+    }
 }

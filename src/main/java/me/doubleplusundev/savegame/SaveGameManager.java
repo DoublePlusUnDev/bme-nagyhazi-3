@@ -12,7 +12,6 @@ import com.google.gson.JsonSyntaxException;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.WorldObject;
 import me.doubleplusundev.resource.ResourceManager;
-import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.ui.ExceptionUI;
 
 public class SaveGameManager {

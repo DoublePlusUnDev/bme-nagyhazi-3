@@ -60,13 +60,11 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
         changeText.setMaximumSize(new Dimension(200, changeText.getPreferredSize().height));
         changeText.setFont(new Font("Monospaced", Font.PLAIN, 12));
         changeText.setOpaque(false);
-        
         add(changeText); 
     }
 
     @Override
     public void update() {
-        resourceManager.setResource(ResourceType.WOOD, resourceManager.getResource(ResourceType.WOOD)+1);
         currentAmount = (int)Math.floor(resourceManager.getResource(type));
         updateAmount();
         updateChange();

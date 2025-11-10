@@ -5,8 +5,6 @@ public class ResourceManager {
 
     public ResourceManager() {
         resources = new ResourceStore();
-        
-        resources.setResource(ResourceType.WOOD, -500.0);
     }
     
     public void setResource(ResourceType type, double amount) {
@@ -15,6 +13,10 @@ public class ResourceManager {
 
     public double getResource(ResourceType type) {
         return resources.getResource(type);
+    }
+
+    public void mergeResources(ResourceStore other) {
+        resources.forceMerge(other);
     }
 
     public ResourceStore getResources() {
