@@ -12,7 +12,7 @@ public class BlackSmith extends Structure {
 
     protected BlackSmith(int xPos, int yPos, GameMap gameMap, ResourceManager resourceManager, UpdateManager updateManager) {
         super(xPos, yPos, StructureType.BLACKSMITH, gameMap, resourceManager, updateManager);
-        production = new ResourceStore(Map.of(ResourceType.WOOD , -30.0, ResourceType.STONE, -20.0, ResourceType.IRON, 10.0));
+        production = new ResourceStore(Map.of(ResourceType.WOOD , -0.3, ResourceType.STONE, -0.2, ResourceType.IRON, 0.1));
     }
     
 }

@@ -12,7 +12,7 @@ public class LumberHut extends Structure {
 
     protected LumberHut(int xPos, int yPos, GameMap gameMap, ResourceManager resourceManager, UpdateManager updateManager) {
         super(xPos, yPos, StructureType.LUMBERHUT, gameMap, resourceManager, updateManager);
-        production = new ResourceStore(Map.of(ResourceType.WOOD, 20.0));
+        production = new ResourceStore(Map.of(ResourceType.WOOD, 0.2));
     }
     
 }

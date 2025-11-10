@@ -7,7 +7,7 @@ import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceStore;
 
 public abstract  class Structure extends WorldObject {
-    protected ResourceStore production;
+    protected ResourceStore production = new ResourceStore();
     
     protected StructureType type;
 

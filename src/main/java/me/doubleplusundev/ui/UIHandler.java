@@ -80,15 +80,15 @@ public class UIHandler {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.Y_AXIS));
 
-        ResourceDisplay woodDisplay = new ResourceDisplay(ResourceType.WOOD, resourceManager);
+        ResourceMonitor woodDisplay = new ResourceMonitor(ResourceType.WOOD, resourceManager);
         updateManager.registerForUpdate(woodDisplay);
         resourcePanel.add(woodDisplay);
 
-        ResourceDisplay stoneDisplay = new ResourceDisplay(ResourceType.STONE, resourceManager);
+        ResourceMonitor stoneDisplay = new ResourceMonitor(ResourceType.STONE, resourceManager);
         updateManager.registerForUpdate(stoneDisplay);
         resourcePanel.add(stoneDisplay);
 
-        ResourceDisplay ironDisplay = new ResourceDisplay(ResourceType.IRON, resourceManager);
+        ResourceMonitor ironDisplay = new ResourceMonitor(ResourceType.IRON, resourceManager);
         updateManager.registerForUpdate(ironDisplay);
         resourcePanel.add(ironDisplay);
 

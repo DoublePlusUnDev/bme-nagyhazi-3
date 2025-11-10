@@ -2,6 +2,7 @@ package me.doubleplusundev.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.LinkedList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -15,7 +16,7 @@ import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.TextureManager;
 
-public class ResourceDisplay extends JPanel implements IUpdatable {    
+public class ResourceMonitor extends JPanel implements IUpdatable {    
     private final transient ResourceManager resourceManager;
     
     private final ResourceType type;
@@ -24,10 +25,11 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
     private JTextArea changeText;
     
     private final int tickRate;
-    private int lastAmount;
-    private int currentAmount;
+    private double currentValue;
+    private LinkedList<Double> previousValues = new LinkedList<>();
+    private int trackLength = 113;
 
-    public ResourceDisplay(ResourceType type, ResourceManager resourceManager) {
+    public ResourceMonitor(ResourceType type, ResourceManager resourceManager) {
         super();
 
         this.resourceManager = resourceManager;
@@ -65,18 +67,30 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
 
     @Override
     public void update() {
-        currentAmount = (int)Math.floor(resourceManager.getResource(type));
+        currentValue = resourceManager.getResource(type);
         updateAmount();
         updateChange();
-        lastAmount = (int)Math.floor(resourceManager.getResource(type));
+        previousValues.addFirst(currentValue);
+        if (previousValues.size() > trackLength)
+            previousValues.removeLast();
     }
 
     private void updateAmount() {
-        amountText.setText(String.format("%10s", String.valueOf(currentAmount)));
+        amountText.setText(String.format("%10.1f", currentValue));
     }
 
     private void updateChange() {
-        int changeRate = (currentAmount - lastAmount) * tickRate;
-        changeText.setText(String.format("%10s", changeRate > 0 ? "+" + changeRate : String.valueOf(changeRate)));
+        double totalChange = 0;
+        double previousValue = 0;
+        boolean isFirst = true;
+        for (double value : previousValues) {
+            if (!isFirst)
+                totalChange += (previousValue - value);
+
+            isFirst = false;
+            previousValue = value;
+        }
+        double changeRate = totalChange / trackLength * tickRate;
+        changeText.setText(String.format("%10.1f", changeRate));
     }
 }

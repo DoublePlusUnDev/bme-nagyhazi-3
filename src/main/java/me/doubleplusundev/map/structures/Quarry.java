@@ -12,6 +12,6 @@ public class Quarry extends Structure {
 
     protected Quarry(int xPos, int yPos, GameMap gameMap, ResourceManager resourceManager, UpdateManager updateManager) {
         super(xPos, yPos, StructureType.QUARRY, gameMap, resourceManager, updateManager);
-        production = new ResourceStore(Map.of(ResourceType.STONE, 10.0));
+        production = new ResourceStore(Map.of(ResourceType.STONE, 0.1));
     }
 }

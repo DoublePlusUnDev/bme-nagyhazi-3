@@ -7,7 +7,7 @@ import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceStore;
 
 public abstract class ResourceNode extends WorldObject {
-    protected ResourceStore resourcesOnRemoval;
+    protected ResourceStore resourcesOnRemoval = new ResourceStore();
     
     protected ResourceNodeType type;
 
