@@ -33,6 +33,6 @@ public class GameInteractionManager extends MouseAdapter{
 
     private Point pixelToTile(Point pixelCoords) {
         Vector2 playerPosition = playerController.getPosition();
-        return new Point((int)Math.floor((double)pixelCoords.x / tileSize + playerPosition.x), (int)Math.floor((double)pixelCoords.y / tileSize + playerPosition.y));
+        return new Point((int)Math.floor((double)pixelCoords.x / tileSize + playerPosition.getX()), (int)Math.floor((double)pixelCoords.y / tileSize + playerPosition.getY()));
     }
 }

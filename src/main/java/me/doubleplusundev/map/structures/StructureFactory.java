@@ -11,8 +11,8 @@ public class StructureFactory {
     }
 
     private static final Map<StructureType, StructureCreator> registry = Map.ofEntries(
-        Map.entry(StructureType.ROAD, (x, y, gameMapHandler) -> new Road(x, y, gameMapHandler)),
-        Map.entry(StructureType.CENTER, (x, y, gameMapHandler) -> new Center(x, y, gameMapHandler))
+        Map.entry(StructureType.ROAD, Road::new),
+        Map.entry(StructureType.CENTER, Center::new)
     );
 
     private StructureFactory() {

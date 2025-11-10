@@ -5,19 +5,11 @@ import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-public class KeyInputManager extends KeyAdapter{
-    private static KeyInputManager instance;
-    
+public class KeyInputManager extends KeyAdapter {    
     Set<Integer> pressedKeys;
 
-    private KeyInputManager() {
+    public KeyInputManager() {
         pressedKeys = new HashSet<>();   
-    }
-
-    public static KeyInputManager getInstance() {
-        if (instance == null)
-            instance = new KeyInputManager();
-        return instance;
     }
 
     public boolean isKeyPressed(int keyCode){

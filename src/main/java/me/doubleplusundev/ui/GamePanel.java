@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements IUpdatable {
     private final transient GameMapHandler gameMapHandler;
     private final int tileSize;
 
-    public GamePanel(GameMapHandler gameMapHandler, PlayerController playerController, GameInteractionManager gameInteractionManager) {
+    public GamePanel(GameMapHandler gameMapHandler, PlayerController playerController, GameInteractionManager gameInteractionManager, KeyInputManager keyInputManager) {
         super();
         this.gameMapHandler = gameMapHandler;
         this.playerController = playerController;
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements IUpdatable {
                 super.mouseClicked(arg0);
             }
         });
-        addKeyListener(KeyInputManager.getInstance());
+        addKeyListener(keyInputManager);
     
         tileSize = Config.getInt("tile_render_size", 40);
     }
@@ -51,8 +51,8 @@ public class GamePanel extends JPanel implements IUpdatable {
         Graphics2D graphics = (Graphics2D)g;
 
         Vector2 playerPosition = playerController.getPosition();
-        double leftXCoord = playerPosition.x;
-        double topYCoord = playerPosition.y;
+        double leftXCoord = playerPosition.getX();
+        double topYCoord = playerPosition.getY();
  
         int leftXFloor = (int)Math.floor(leftXCoord);
         int topYFloor = (int)Math.floor(topYCoord);

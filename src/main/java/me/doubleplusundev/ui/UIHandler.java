@@ -25,6 +25,7 @@ import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.player.GameInteractionManager;
+import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceType;
@@ -35,16 +36,18 @@ public class UIHandler {
     private final ResourceManager resourceManager;
     private final UpdateManager updateManager;
     private final PlayerController playerController;
+    private final KeyInputManager keyInputManager;
     private final GameInteractionManager gameInteractionManager;
-    
+
     private  JPanel structureRow;
     private JLabel lastSelectedLabel;
 
-    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, PlayerController playerController){
+    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, PlayerController playerController, KeyInputManager keyInputManager){
         this.gameMapHandler = gameMapHandler;
         this.resourceManager = resourceManager;
         this.updateManager = updateManager;
         this.playerController = playerController;
+        this.keyInputManager = keyInputManager;
         this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController);
     }
     
@@ -60,9 +63,9 @@ public class UIHandler {
 
         initializeGamePanel(frame);
 
-        initializeBottomRow(frame);
-
         initializeResourcePanel(frame);
+
+        initializeBottomRow(frame);
 
         frame.setVisible(true);
 
@@ -88,7 +91,7 @@ public class UIHandler {
     }
 
     private void initializeGamePanel(JFrame frame) {
-        GamePanel gamePanel = new GamePanel(gameMapHandler, playerController, gameInteractionManager);     
+        GamePanel gamePanel = new GamePanel(gameMapHandler, playerController, gameInteractionManager, keyInputManager);     
         updateManager.register(gamePanel);   
         frame.add(gamePanel, BorderLayout.CENTER);
     }
@@ -124,7 +127,7 @@ public class UIHandler {
         JButton buildButton = new JButton("Build");
         buildButton.setFocusable(false);
         buildButton.addActionListener(event -> { 
-            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.BUILD);structureRow.setVisible(false);
+            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.BUILD);
             structureRow.setVisible(true);
         });
         buttonRow.add(buildButton);
@@ -136,7 +139,7 @@ public class UIHandler {
             structureRow.setVisible(false);
         });
         buttonRow.add(destroyButton);
-        top.add(buttonRow);
+       top.add(buttonRow);
 
         structureRow = new JPanel(new FlowLayout());
         for (StructureType structure : StructureType.values()) {

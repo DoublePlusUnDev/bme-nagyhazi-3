@@ -7,8 +7,8 @@ public class GameMap implements Serializable{
 
     private final int width;
     private final int height;
-    private TileType[][] tiles;
-    private WorldObject[][] worldObjects;
+    private final TileType[][] tiles;
+    private final WorldObject[][] worldObjects;
     
     public GameMap(int width, int height) {
         this.width = width;

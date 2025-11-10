@@ -68,14 +68,14 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
     public void update() {
         resourceManager.setResource(ResourceType.WOOD, lastAmount+1);
         currentAmount = resourceManager.getResource(type);
-        //updateAmount();
-        //updateChange();
+        updateAmount();
+        updateChange();
 
         lastAmount = resourceManager.getResource(type);
     }
 
     private void updateAmount() {
-        amountText.setText("yolo");//String.format("%10s", String.valueOf(currentAmount)));
+        amountText.setText(String.format("%10s", String.valueOf(currentAmount)));
     }
 
     private void updateChange() {
