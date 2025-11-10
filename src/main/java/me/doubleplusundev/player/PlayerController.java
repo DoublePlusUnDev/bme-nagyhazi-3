@@ -23,7 +23,7 @@ public class PlayerController implements IUpdatable {
 
     private PlayerController() {
         position = new Vector2();
-        speed = (double)Config.getInt("player_speed", 10);
+        speed = Config.getInt("player_speed", 10);
 
         UpdateManager.getInstance().register(this);
     }
@@ -37,6 +37,10 @@ public class PlayerController implements IUpdatable {
 
     public Vector2 getPosition(){
         return position;
+    }
+
+    static void setInstance(PlayerController mock) {
+        instance = mock;
     }
 
     @Override

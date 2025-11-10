@@ -93,6 +93,10 @@ public class TextureManager {
         }
         return instance;
     }
+
+    static void setInstance(TextureManager mock) {
+        instance = mock;
+    }
     
     public BufferedImage getTile(TileType tile) {
         return tileImages.get(tile);

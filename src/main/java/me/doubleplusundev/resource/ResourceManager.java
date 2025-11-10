@@ -23,6 +23,10 @@ public class ResourceManager {
         }
         return instance;
     }
+
+    static void setInstance(ResourceManager mock) {
+        instance = mock;
+    }
     
     public void setResource(ResourceType type, int amount) {
         resources.put(type, amount);

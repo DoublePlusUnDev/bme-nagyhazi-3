@@ -41,6 +41,10 @@ public class UIHandler {
         }
         return instance;
     }
+
+    static void setInstance(UIHandler mock) {
+        instance = mock;
+    }
     
     public void initialize() {
         JFrame frame = new JFrame("NHF3");
