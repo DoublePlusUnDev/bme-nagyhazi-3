@@ -24,7 +24,7 @@ public class ResourceManager {
         return instance;
     }
 
-    static void setInstance(ResourceManager mock) {
+    public static void setInstance(ResourceManager mock) {
         instance = mock;
     }
     

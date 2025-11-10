@@ -94,7 +94,7 @@ public class TextureManager {
         return instance;
     }
 
-    static void setInstance(TextureManager mock) {
+    public static void setInstance(TextureManager mock) {
         instance = mock;
     }
     

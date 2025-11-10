@@ -39,7 +39,7 @@ public class PlayerController implements IUpdatable {
         return position;
     }
 
-    static void setInstance(PlayerController mock) {
+    public static void setInstance(PlayerController mock) {
         instance = mock;
     }
 

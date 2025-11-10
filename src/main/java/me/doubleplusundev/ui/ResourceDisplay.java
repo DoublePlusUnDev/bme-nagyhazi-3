@@ -1,8 +1,6 @@
 package me.doubleplusundev.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.BoxLayout;
@@ -10,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.game.UpdateManager;
@@ -25,7 +22,7 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
     private JTextArea amountText;
     private JTextArea changeText;
     
-    private int tickRate;
+    private final int tickRate;
     private int lastAmount;
     private int currentAmount;
 

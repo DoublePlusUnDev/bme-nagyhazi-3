@@ -42,7 +42,7 @@ public class UIHandler {
         return instance;
     }
 
-    static void setInstance(UIHandler mock) {
+    public static void setInstance(UIHandler mock) {
         instance = mock;
     }
     
