@@ -10,16 +10,16 @@ import me.doubleplusundev.util.Config;
 //implement proper deltatime later
 public class UpdateManager {
     private static UpdateManager instance;
+
     private final List<IUpdatable> updatables;
     private final List<ITickable> tickables;
     private final Timer updateTimer;
     private final Timer tickTimer;
-    private int updateRate;
-    private int tickRate;
+    private final int updateRate;
+    private final int tickRate;
     private int tickCount;
     
-    
-    private UpdateManager(){
+    private UpdateManager() {
         updateRate = Config.getInt("target_fps", 60);
         tickRate = Config.getInt("tick_speed", 20);
 
@@ -37,6 +37,10 @@ public class UpdateManager {
             instance = new UpdateManager();
         }
         return instance;
+    }
+
+    public static void setInstance(UpdateManager mock) {
+        UpdateManager.instance = mock;
     }
 
     public void start(){

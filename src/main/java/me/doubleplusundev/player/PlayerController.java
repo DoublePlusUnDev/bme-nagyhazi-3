@@ -15,6 +15,7 @@ public class PlayerController implements IUpdatable {
     }
 
     private static PlayerController instance;
+
     private PlayerInteractionMode interactionMode = PlayerInteractionMode.BUILD;
     private StructureType selectedStructure;
 

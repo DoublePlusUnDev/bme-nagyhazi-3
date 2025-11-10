@@ -13,12 +13,16 @@ public class GameMapHandler {
         this.map = WorldGenerator.generateWorld(500, 500);
     }
 
-    public static GameMapHandler getInstance(){
+    public static GameMapHandler getInstance() {
         if (instance == null){
             instance = new GameMapHandler();
         }
     
         return instance;
+    }
+
+    public static void setInstance(GameMapHandler mock) {
+        GameMapHandler.instance = mock;
     }
 
     public TileType getTile(int x, int y){
@@ -37,7 +41,7 @@ public class GameMapHandler {
 
     public void buildStructure(int x, int y, StructureType type) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            StructureFactory.create(map, x, y, type);
+            StructureFactory.create(x, y, type);
         }
     }
 
