@@ -9,7 +9,9 @@ import me.doubleplusundev.ui.UIHandler;
 
 public class Main {
     public static void main(String[] args) {
-        GameMapHandler gameMapHandler = new GameMapHandler();
+        ResourceManager resourceManager = new ResourceManager();
+
+        GameMapHandler gameMapHandler = new GameMapHandler(resourceManager);
 
         UpdateManager updateManager = new UpdateManager();
 
@@ -17,8 +19,6 @@ public class Main {
 
         PlayerController playerController = new PlayerController(updateManager, keyInputManager);
         updateManager.register(playerController);
-
-        ResourceManager resourceManager = new ResourceManager();
 
         UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, playerController, keyInputManager);
         uiHandler.initialize();

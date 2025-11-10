@@ -10,12 +10,10 @@ public class ResourceManager {
     }
     
     public void setResource(ResourceType type, double amount) {
-        System.out.println(hashCode() + " " + type.toString() + " set " + amount);
         resources.setResource(type, amount);
     }
 
     public double getResource(ResourceType type) {
-        System.out.println(hashCode() + " " + type.toString() + " got " + resources.getResource(type));
         return resources.getResource(type);
     }
 

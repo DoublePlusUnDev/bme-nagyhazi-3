@@ -2,12 +2,13 @@ package me.doubleplusundev.map.resourcenodes;
 
 import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.WorldObject;
+import me.doubleplusundev.resource.ResourceManager;
 
 public abstract class ResourceNode extends WorldObject {
     ResourceNodeType type;
 
-    protected ResourceNode (int xPos, int yPos, ResourceNodeType type, GameMap gameMap) {
-        super(xPos, yPos, gameMap);
+    protected ResourceNode (int xPos, int yPos, ResourceNodeType type, GameMap gameMap, ResourceManager resourceManager) {
+        super(xPos, yPos, gameMap, resourceManager);
         this.type = type;
     }
 

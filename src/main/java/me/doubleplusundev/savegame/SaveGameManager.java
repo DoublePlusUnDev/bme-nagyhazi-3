@@ -30,7 +30,6 @@ public class SaveGameManager {
 
 
     public void save() {
-        System.out.println(resourceManager.getResource(ResourceType.WOOD));
         SaveData saveData = new SaveData(gameMapHandler.getMap(), resourceManager.getResources());
         String jsonString = gson.toJson(saveData);
         try (FileWriter fw = new FileWriter(saveGameLocation)){
