@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -23,7 +22,7 @@ import me.doubleplusundev.util.TextureManager;
 import me.doubleplusundev.util.Vector2;
 
 public class GamePanel extends JPanel implements IUpdatable {
-    private int tileSize;
+    private final int tileSize;
 
     public GamePanel() {
         super();

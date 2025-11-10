@@ -1,12 +1,11 @@
 package me.doubleplusundev.player;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
-public class KeyInputManager implements KeyListener {
+public class KeyInputManager extends KeyAdapter{
     private static KeyInputManager instance;
     
     Set<Integer> pressedKeys;
@@ -33,10 +32,5 @@ public class KeyInputManager implements KeyListener {
     @Override
     public void keyReleased(KeyEvent event) {
         pressedKeys.remove(event.getKeyCode());
-    }
-
-    @Override
-    public void keyTyped(KeyEvent event){
-
     }
 }  

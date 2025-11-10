@@ -16,12 +16,18 @@ import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceType;
+import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.TextureManager;
 
 public class ResourceDisplay extends JPanel implements IUpdatable {
-    private ResourceType type;
+    private final ResourceType type;
     
     private JTextArea amountText;
+    private JTextArea changeText;
+    
+    private int tickRate;
+    private int lastAmount;
+    private int currentAmount;
 
     public ResourceDisplay(ResourceType type) {
         super();
@@ -31,8 +37,16 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
 
         UpdateManager.getInstance().register(this);
 
-        JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getInstance().getResource(type)));
+        tickRate = Config.getInt("tick_speed", 20);
+
+        setupUI(type);
+
+    }
+
+    private void setupUI(ResourceType type1) {
+        JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getInstance().getResource(type1)));
         add(imageLabel);
+
         amountText = new JTextArea();
         amountText.setEditable(false);
         amountText.setFocusable(false);
@@ -40,18 +54,32 @@ public class ResourceDisplay extends JPanel implements IUpdatable {
         amountText.setFont(new Font("Monospaced", Font.PLAIN, 12));
         amountText.setOpaque(false);
         add(amountText);
+
+        changeText = new JTextArea("0");
+        changeText.setEditable(false);
+        changeText.setFocusable(false);
+        changeText.setMaximumSize(new Dimension(200, changeText.getPreferredSize().height));
+        changeText.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        changeText.setOpaque(false);
+        add(changeText);
     }
-
-
-
-    private void updateAmount() {
-        amountText.setText(String.format("%10s", String.valueOf(ResourceManager.getInstance().getResource(type))));
-    }
-
-
 
     @Override
     public void update() {
+        ResourceManager.getInstance().setResource(ResourceType.WOOD, lastAmount+1);
+        currentAmount = ResourceManager.getInstance().getResource(type);
         updateAmount();
+        updateChange();
+
+        lastAmount = ResourceManager.getInstance().getResource(type);
+    }
+
+    private void updateAmount() {
+        amountText.setText(String.format("%10s", String.valueOf(currentAmount)));
+    }
+
+    private void updateChange() {
+        int changeRate = (currentAmount - lastAmount) * tickRate;
+        changeText.setText(String.format("%10s", changeRate > 0 ? "+" + String.valueOf(changeRate) : String.valueOf(changeRate)));
     }
 }

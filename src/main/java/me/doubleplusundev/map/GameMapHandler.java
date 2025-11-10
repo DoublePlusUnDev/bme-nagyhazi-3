@@ -1,7 +1,5 @@
 package me.doubleplusundev.map;
 
-import me.doubleplusundev.map.structures.Center;
-import me.doubleplusundev.map.structures.Structure;
 import me.doubleplusundev.map.structures.StructureFactory;
 import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.map.worldgen.WorldGenerator;

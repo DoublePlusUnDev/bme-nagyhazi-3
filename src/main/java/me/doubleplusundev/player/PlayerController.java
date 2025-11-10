@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 
 import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.game.UpdateManager;
-import me.doubleplusundev.map.structures.Structure;
 import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.Vector2;

@@ -2,7 +2,6 @@ package me.doubleplusundev.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -20,13 +19,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import me.doubleplusundev.map.structures.Structure;
 import me.doubleplusundev.map.structures.StructureType;
-import me.doubleplusundev.player.GameInteractionManager;
-import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.util.TextureManager;
@@ -177,6 +172,7 @@ public class UIHandler {
                 }
             }
 
+            @Override
             public void focusLost(FocusEvent event) {
                 if (field.getText().isEmpty()) {
                     field.setForeground(placeHolderColor);

@@ -1,15 +1,14 @@
 package me.doubleplusundev.resource;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 
 public class ResourceManager {
-    private Map<ResourceType, Integer> resources;
+    private final EnumMap<ResourceType, Integer> resources;
 
     private static ResourceManager instance;
 
     private ResourceManager() {
-        resources = new HashMap<ResourceType,Integer>();
+        resources = new EnumMap<>(ResourceType.class);
         
         for (ResourceType resource : ResourceType.values()) {
             resources.put(resource, 0);
@@ -25,6 +24,10 @@ public class ResourceManager {
         return instance;
     }
     
+    public void setResource(ResourceType type, int amount) {
+        resources.put(type, amount);
+    }
+
     public int getResource(ResourceType type) {
         return resources.get(type);
     }
