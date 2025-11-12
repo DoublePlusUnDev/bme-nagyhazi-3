@@ -20,7 +20,12 @@ public class GameMapHandler {
 
     public GameMapHandler(WorldObjectFactory worldObjectFactory) {
         this.worldObjectFactory = worldObjectFactory;
-        setMap(WorldGenerator.generateWorld(500, 500, 0, worldObjectFactory));
+
+        map = new GameMap(0, 0);
+    }
+
+    public void generateWorld(long seed) {
+        setMap(WorldGenerator.generateWorld(500, 500, seed, worldObjectFactory));
     }
 
     public TileType getTile(int x, int y){

@@ -6,6 +6,8 @@ import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.resource.ResourceManager;
+import me.doubleplusundev.savegame.SaveGameManager;
+import me.doubleplusundev.ui.MainMenuUI;
 import me.doubleplusundev.ui.UIHandler;
 
 public class Main {
@@ -20,11 +22,15 @@ public class Main {
 
         KeyInputManager keyInputManager = new KeyInputManager();
 
+        SaveGameManager saveGameManager = new SaveGameManager(gameMapHandler, resourceManager, updateManager);
+
         PlayerController playerController = new PlayerController(updateManager, keyInputManager);
         updateManager.registerForUpdate(playerController);
 
-        UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, playerController, keyInputManager);
-        uiHandler.initialize();
+        UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, saveGameManager, playerController, keyInputManager);
+        
+        MainMenuUI mainMenuUI = new MainMenuUI(uiHandler, gameMapHandler, saveGameManager);
+        mainMenuUI.initialize();
 
         updateManager.start();
     }

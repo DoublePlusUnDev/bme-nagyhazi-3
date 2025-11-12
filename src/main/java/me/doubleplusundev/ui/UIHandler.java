@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -34,27 +32,29 @@ import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.savegame.SaveGameManager;
 import me.doubleplusundev.util.TextureManager;
+import me.doubleplusundev.util.UIUtils;
 
 public class UIHandler {
     private final GameMapHandler gameMapHandler;
     private final ResourceManager resourceManager;
     private final UpdateManager updateManager;
+    private final SaveGameManager saveGameManager;
     private final PlayerController playerController;
     private final KeyInputManager keyInputManager;
     private final GameInteractionManager gameInteractionManager;
-    private final SaveGameManager saveGameManager;
 
-    private  JPanel structureRow;
+    private JPanel structureRow;
     private JLabel lastSelectedLabel;
 
-    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, PlayerController playerController, KeyInputManager keyInputManager){
+    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, SaveGameManager saveGameManager,
+                     PlayerController playerController, KeyInputManager keyInputManager){
         this.gameMapHandler = gameMapHandler;
         this.resourceManager = resourceManager;
         this.updateManager = updateManager;
+        this.saveGameManager = saveGameManager;
         this.playerController = playerController;
         this.keyInputManager = keyInputManager;
         this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController, resourceManager);
-        this.saveGameManager = new SaveGameManager(gameMapHandler, resourceManager, updateManager);
     }
     
     public void initialize() {
@@ -135,7 +135,7 @@ public class UIHandler {
             }
             
         });
-        addPlaceHolder(saveField, "File Name...");
+        UIUtils.addPlaceHolder(saveField, "File Name...");
         bottomRow.add(saveField);
 
         JButton loadMapButton = new JButton("Load Map");
@@ -201,29 +201,5 @@ public class UIHandler {
         playerController.selectStructure(structure);
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
         lastSelectedLabel = imageLabel;
-    }
-
-    private static void addPlaceHolder(JTextField field, String placeHolderText) {
-        Color placeHolderColor = Color.LIGHT_GRAY;
-        field.setForeground(placeHolderColor);
-        field.setText(placeHolderText);
-
-        field.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent event) {
-                if (field.getForeground() == placeHolderColor) {
-                    field.setText("");
-                    field.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent event) {
-                if (field.getText().isEmpty()) {
-                    field.setForeground(placeHolderColor);
-                    field.setText(placeHolderText);
-                }
-            }
-        });
     }
 }
