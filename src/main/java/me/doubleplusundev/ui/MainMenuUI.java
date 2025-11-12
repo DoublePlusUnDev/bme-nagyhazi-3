@@ -1,6 +1,7 @@
 package me.doubleplusundev.ui;
 
 import java.awt.Dimension;
+import java.util.Random;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,6 +18,7 @@ public class MainMenuUI {
     private final UIHandler uiHandler;
     private final GameMapHandler gameMapHandler;
     private final SaveGameManager saveGameManager;
+    private final Random random;
 
     private JTextField seedField;
     private JTextField saveField;
@@ -25,6 +27,7 @@ public class MainMenuUI {
         this.uiHandler = uiHandler;
         this.gameMapHandler = gameMapHandler;
         this.saveGameManager = saveGameManager;
+        this.random = new Random();
     }
 
     public void initialize() {
@@ -36,7 +39,11 @@ public class MainMenuUI {
 
         JButton newGameButton = new JButton("Start New Game");
         newGameButton.addActionListener(event -> {
-            gameMapHandler.generateWorld(seedField.getText().hashCode());
+            if (seedField.getText().equals("Random seed...")){
+                gameMapHandler.generateWorld(random.nextLong());
+            }
+            else
+                gameMapHandler.generateWorld(seedField.getText().hashCode());
             uiHandler.initialize();
             frame.setVisible(false);
         });
@@ -45,7 +52,7 @@ public class MainMenuUI {
         
         seedField = new JTextField();
         seedField.setMaximumSize(new Dimension(200, 18));
-        UIUtils.addPlaceHolder(seedField, "Enter seed");
+        UIUtils.addPlaceHolder(seedField, "Random seed...");
         frame.add(seedField);
         frame.add(Box.createRigidArea(new Dimension(0, 10)));
 
