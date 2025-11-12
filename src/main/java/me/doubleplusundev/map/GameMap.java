@@ -2,6 +2,8 @@ package me.doubleplusundev.map;
 
 import java.io.Serializable;
 
+import me.doubleplusundev.map.worldobject.WorldObject;
+
 public class GameMap implements Serializable{
     private static final long serialVersionUID = 1L;
 

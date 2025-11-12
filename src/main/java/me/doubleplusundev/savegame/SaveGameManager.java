@@ -9,8 +9,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
-import me.doubleplusundev.map.WorldObject;
+import me.doubleplusundev.map.worldobject.WorldObject;
+import me.doubleplusundev.map.worldobject.component.Component;
 import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.ui.ExceptionUI;
 
@@ -21,10 +23,11 @@ public class SaveGameManager {
 
     private String saveGameLocation;
 
-    public SaveGameManager(GameMapHandler gameMapHandler, ResourceManager resourceManager) {
+    public SaveGameManager(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager) {
         this.gameMapHandler = gameMapHandler;
         this.resourceManager = resourceManager;
-        this.gson = new GsonBuilder().registerTypeAdapter(WorldObject.class, new WorldObjectAdapter()).create();
+
+        gson = new GsonBuilder().registerTypeAdapter(Component.class, new ComponentSaveAdapter(resourceManager, updateManager)).create();
     }
 
 
@@ -43,6 +46,16 @@ public class SaveGameManager {
         try {
             String jsonString = Files.readString(new File(saveGameLocation).toPath());
             SaveData saveData = gson.fromJson(jsonString, SaveData.class);
+
+            for (int x = 0; x < saveData.getMap().getWidth(); x++) {
+                for (int y = 0; y < saveData.getMap().getHeight(); y++) {
+                    WorldObject worldObject = new WorldObject(x, y);
+                    for (Component component : worldObject.getComponents()) {
+                        component.setOwner(worldObject);
+                    }
+                }
+            }
+
             gameMapHandler.setMap(saveData.getMap());
             resourceManager.setResources(saveData.getResources());
         }

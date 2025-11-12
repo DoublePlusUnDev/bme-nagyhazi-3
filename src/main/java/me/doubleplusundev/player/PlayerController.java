@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.game.UpdateManager;
-import me.doubleplusundev.map.structures.StructureType;
+import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.Vector2;
 
@@ -18,7 +18,7 @@ public class PlayerController implements IUpdatable {
     private final KeyInputManager keyInputManager;
 
     private PlayerInteractionMode interactionMode = PlayerInteractionMode.BUILD;
-    private StructureType selectedStructure = StructureType.CENTER;
+    private WorldObjectType selectedBuilding = WorldObjectType.CENTER;
 
     private final Vector2 position;
     private final double speed;
@@ -65,11 +65,11 @@ public class PlayerController implements IUpdatable {
         this.interactionMode = mode;
     }    
 
-    public void selectStructure(StructureType type) {
-        this.selectedStructure = type;
+    public void selectStructure(WorldObjectType type) {
+        this.selectedBuilding = type;
     }
 
-    public StructureType getSelectedStructure() {
-        return selectedStructure;
+    public WorldObjectType getSelectedBuilding() {
+        return selectedBuilding;
     }
 }

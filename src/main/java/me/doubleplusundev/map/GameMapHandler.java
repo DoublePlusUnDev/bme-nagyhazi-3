@@ -1,22 +1,18 @@
 package me.doubleplusundev.map;
 
-import me.doubleplusundev.game.UpdateManager;
-import me.doubleplusundev.map.resourcenodes.ResourceNodeFactory;
-import me.doubleplusundev.map.resourcenodes.ResourceNodeType;
-import me.doubleplusundev.map.structures.StructureFactory;
-import me.doubleplusundev.map.structures.StructureType;
 import me.doubleplusundev.map.worldgen.WorldGenerator;
-import me.doubleplusundev.resource.ResourceManager;
+import me.doubleplusundev.map.worldobject.WorldObject;
+import me.doubleplusundev.map.worldobject.WorldObjectFactory;
+import me.doubleplusundev.map.worldobject.WorldObjectType;
+import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
 
 public class GameMapHandler {
     private GameMap map;
-    private final UpdateManager updateManager;
-    private final ResourceManager resourceManager;
+    private final WorldObjectFactory worldObjectFactory;
 
-    public GameMapHandler(UpdateManager updateManager, ResourceManager resourceManager) {
-        this.updateManager = updateManager;
-        this.resourceManager = resourceManager;
-        this.map = WorldGenerator.generateWorld(500, 500, 0, resourceManager, updateManager);
+    public GameMapHandler(WorldObjectFactory worldObjectFactory) {
+        this.worldObjectFactory = worldObjectFactory;
+        this.map = WorldGenerator.generateWorld(500, 500, 0, worldObjectFactory);
     }
 
     public TileType getTile(int x, int y){
@@ -33,21 +29,27 @@ public class GameMapHandler {
             return null;
     }
 
-    public void buildStructure(int x, int y, StructureType type) {
+    public void buildStructure(int x, int y, WorldObjectType type) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            StructureFactory.create(x, y, type, map, resourceManager, updateManager);
-        }
-    }
-
-     public void spawnResourceNode(int x, int y, ResourceNodeType type) {
-        if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            ResourceNodeFactory.create(x, y, type, map, resourceManager, updateManager);
+            map.setWorldObject(x, y, worldObjectFactory.create(type, x, y));
         }
     }
 
     public void destroyWorldObject(int x, int y) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight() && map.getWorldObject(x, y) != null) {
-            map.getWorldObject(x, y).destroy();
+            boolean canDestroy = true;
+            
+            HarvestableComponent harvestable = map.getWorldObject(x, y).getComponent(HarvestableComponent.class);
+            if (harvestable != null) {
+                boolean canHarvest = harvestable.tryHarvest();
+                if (!canHarvest) {
+                    canDestroy = false;
+                }
+            }
+
+            if (canDestroy)
+                map.setWorldObject(x, y, null);
+            
         }
     }
 

@@ -8,8 +8,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import me.doubleplusundev.map.TileType;
-import me.doubleplusundev.map.resourcenodes.ResourceNodeType;
-import me.doubleplusundev.map.structures.StructureType;
+import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.ui.ExceptionUI;
 
@@ -25,20 +24,16 @@ public class TextureManager {
     );
     private static final EnumMap<TileType, BufferedImage> tileImages;
 
-    private static final Map<StructureType, String> structurePaths = Map.ofEntries(
-        Map.entry(StructureType.ROAD, "/textures/road.png"),
-        Map.entry(StructureType.CENTER, "/textures/center.png"),
-        Map.entry(StructureType.LUMBERHUT, "/textures/lumberhut.png"),
-        Map.entry(StructureType.QUARRY, "/textures/quarry.png"),
-        Map.entry(StructureType.BLACKSMITH, "/textures/blacksmith.png")
+    private static final Map<WorldObjectType, String> worldObjectPaths = Map.ofEntries(
+        Map.entry(WorldObjectType.ROAD, "/textures/road.png"),
+        Map.entry(WorldObjectType.CENTER, "/textures/center.png"),
+        Map.entry(WorldObjectType.LUMBERHUT, "/textures/lumberhut.png"),
+        Map.entry(WorldObjectType.QUARRY, "/textures/quarry.png"),
+        Map.entry(WorldObjectType.BLACKSMITH, "/textures/blacksmith.png"),
+        Map.entry(WorldObjectType.TREE, "/textures/tree.png"),
+        Map.entry(WorldObjectType.BOULDER, "/textures/boulder.png")
     );
-    private static final Map<StructureType, BufferedImage> structureImages;
-
-    private static final Map<ResourceNodeType, String> resourceNodePaths = Map.ofEntries(
-        Map.entry(ResourceNodeType.TREE, "/textures/tree.png"),
-        Map.entry(ResourceNodeType.BOULDER, "/textures/boulder.png")
-    );
-    private static final EnumMap<ResourceNodeType, BufferedImage> resourceNodeImages;
+    private static final Map<WorldObjectType, BufferedImage> worldObjectImages;
 
     private static final Map<ResourceType, String> resourcePaths = Map.ofEntries(
         Map.entry(ResourceType.WOOD, "/textures/wood.png"),
@@ -58,20 +53,10 @@ public class TextureManager {
             }
         }
 
-        structureImages = new EnumMap<>(StructureType.class);
-        for (Map.Entry<StructureType, String> structure : structurePaths.entrySet()) {
+        worldObjectImages = new EnumMap<>(WorldObjectType.class);
+        for (Map.Entry<WorldObjectType, String> structure : worldObjectPaths.entrySet()) {
             try{
-                structureImages.put(structure.getKey(), ImageIO.read(TextureManager.class.getResource(structure.getValue())));
-            }
-            catch (IOException e){
-                ExceptionUI.showException(e);
-            }
-        }
-
-        resourceNodeImages = new EnumMap<>(ResourceNodeType.class);
-        for (Map.Entry<ResourceNodeType, String> resourceNode : resourceNodePaths.entrySet()) {
-            try{
-                resourceNodeImages.put(resourceNode.getKey(), ImageIO.read(TextureManager.class.getResource(resourceNode.getValue())));
+                worldObjectImages.put(structure.getKey(), ImageIO.read(TextureManager.class.getResource(structure.getValue())));
             }
             catch (IOException e){
                 ExceptionUI.showException(e);
@@ -97,15 +82,11 @@ public class TextureManager {
         return tileImages.get(tile);
     }
 
-    public static BufferedImage getStructure(StructureType structure) {
-        return structureImages.get(structure);
+    public static BufferedImage getWorldObject(WorldObjectType worldObject) {
+        return worldObjectImages.get(worldObject);
     }
 
-    public static BufferedImage getResourceNode(ResourceNodeType resourceNode) {
-        return resourceNodeImages.get(resourceNode);
-    }
-
-    public static BufferedImage getResource(ResourceType resource) {
-        return resourceImages.get(resource);
+    public static BufferedImage getResource(ResourceType resourceType) {
+        return resourceImages.get(resourceType);
     }
 }

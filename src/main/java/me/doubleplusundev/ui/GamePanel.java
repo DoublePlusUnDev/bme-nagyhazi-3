@@ -10,9 +10,8 @@ import javax.swing.JPanel;
 import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.TileType;
-import me.doubleplusundev.map.WorldObject;
-import me.doubleplusundev.map.resourcenodes.ResourceNode;
-import me.doubleplusundev.map.structures.Structure;
+import me.doubleplusundev.map.worldobject.WorldObject;
+import me.doubleplusundev.map.worldobject.component.TypeComponent;
 import me.doubleplusundev.player.GameInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
@@ -67,12 +66,8 @@ public class GamePanel extends JPanel implements IUpdatable {
 
                 graphics.drawImage(TextureManager.getTile(tile), drawX, drawY, tileSize, tileSize, null);
             
-                if (worldObject instanceof Structure structure) 
-                    graphics.drawImage(TextureManager.getStructure(structure.getType()), drawX, drawY, tileSize, tileSize, null);
-                
-                if (worldObject instanceof ResourceNode resourceNode) 
-                    graphics.drawImage(TextureManager.getResourceNode(resourceNode.getType()), drawX, drawY, tileSize, tileSize, null);
-                
+                if (worldObject != null)
+                    graphics.drawImage(TextureManager.getWorldObject(worldObject.getComponent(TypeComponent.class).getType()), drawX, drawY, tileSize, tileSize, null);
             }
         }
     }

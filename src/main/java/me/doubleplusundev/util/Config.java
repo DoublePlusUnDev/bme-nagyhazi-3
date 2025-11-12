@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import me.doubleplusundev.ui.ExceptionUI;
+
 public class Config {
     private static final Properties properties = new Properties();
     
@@ -12,7 +14,7 @@ public class Config {
             InputStream in = Config.class.getResourceAsStream("/config/config.properties");
             properties.load(in);
         } catch (IOException e) {
-            e.printStackTrace();
+            ExceptionUI.showException(e);
         }
     }
 

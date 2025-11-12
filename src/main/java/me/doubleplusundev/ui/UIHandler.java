@@ -26,7 +26,7 @@ import javax.swing.event.DocumentListener;
 
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
-import me.doubleplusundev.map.structures.StructureType;
+import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.player.GameInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
@@ -54,7 +54,7 @@ public class UIHandler {
         this.playerController = playerController;
         this.keyInputManager = keyInputManager;
         this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController);
-        this.saveGameManager = new SaveGameManager(gameMapHandler, resourceManager);
+        this.saveGameManager = new SaveGameManager(gameMapHandler, resourceManager, updateManager);
     }
     
     public void initialize() {
@@ -173,8 +173,9 @@ public class UIHandler {
        top.add(buttonRow);
 
         structureRow = new JPanel(new FlowLayout());
-        for (StructureType structure : StructureType.values()) {
-            JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getStructure(structure).getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
+        for (WorldObjectType structure : new WorldObjectType[]{ WorldObjectType.CENTER, 
+            WorldObjectType.ROAD, WorldObjectType.LUMBERHUT, WorldObjectType.QUARRY, WorldObjectType.BLACKSMITH }) {
+            JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getWorldObject(structure).getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
             imageLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -183,7 +184,7 @@ public class UIHandler {
                 }
             });
 
-            if (structure == StructureType.CENTER) {
+            if (structure == WorldObjectType.CENTER) {
                 selectLabel(structure, imageLabel);
             }
 
@@ -194,7 +195,7 @@ public class UIHandler {
         frame.add(top, BorderLayout.NORTH);
     }
 
-    private void selectLabel(StructureType structure, JLabel imageLabel) {
+    private void selectLabel(WorldObjectType structure, JLabel imageLabel) {
         if (lastSelectedLabel != null)
             lastSelectedLabel.setBorder(BorderFactory.createEmptyBorder());
         playerController.selectStructure(structure);
