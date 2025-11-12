@@ -1,18 +1,26 @@
 package me.doubleplusundev.map;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import me.doubleplusundev.map.worldgen.WorldGenerator;
 import me.doubleplusundev.map.worldobject.WorldObject;
 import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
+import me.doubleplusundev.map.worldobject.component.BuildingComponent;
 import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
+import me.doubleplusundev.map.worldobject.component.TypeComponent;
+import me.doubleplusundev.resource.ResourceManager;
 
 public class GameMapHandler {
+    private Map<WorldObjectType, Integer> worldObjectCount = new EnumMap<>(WorldObjectType.class);
+
     private GameMap map;
     private final WorldObjectFactory worldObjectFactory;
 
     public GameMapHandler(WorldObjectFactory worldObjectFactory) {
         this.worldObjectFactory = worldObjectFactory;
-        this.map = WorldGenerator.generateWorld(500, 500, 0, worldObjectFactory);
+        setMap(WorldGenerator.generateWorld(500, 500, 0, worldObjectFactory));
     }
 
     public TileType getTile(int x, int y){
@@ -29,10 +37,22 @@ public class GameMapHandler {
             return null;
     }
 
-    public void buildStructure(int x, int y, WorldObjectType type) {
-        if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            map.setWorldObject(x, y, worldObjectFactory.create(type, x, y));
-        }
+    public boolean tryBuildStructure(int x, int y, WorldObjectType type, ResourceManager resourceManager) {
+        if (x < 0 || map.getWidth() <= x || y < 0 || map.getHeight() <= y)
+            return false;
+        
+        if (getWorldObject(x, y) != null)
+            return false;
+
+        WorldObject worldObject = worldObjectFactory.create(type, x, y);
+        BuildingComponent buildingComponent = worldObject.getComponent(BuildingComponent.class);
+        int instanceCount = getWorldObjectCount(worldObject.getComponent(TypeComponent.class).getType());
+        if (buildingComponent != null && !buildingComponent.tryBuild(resourceManager.getResources(), getTile(x, y), instanceCount))
+            return false;
+        
+        
+        setWorldObject(x, y, worldObject);
+        return true;
     }
 
     public void destroyWorldObject(int x, int y) {
@@ -47,15 +67,20 @@ public class GameMapHandler {
                 }
             }
 
-            if (canDestroy)
+            if (canDestroy) {
+                WorldObject worldObject = map.getWorldObject(x, y);
                 map.setWorldObject(x, y, null);
-            
+    
+                if (worldObject != null)
+                    addWorldObjectToCounter(worldObject.getComponent(TypeComponent.class).getType(), -1);
+            }
         }
     }
 
-    public void setWorldObject(int x, int y, WorldObject object) {
+    public void setWorldObject(int x, int y, WorldObject worldObject) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight()) {
-            map.setWorldObject(x, y, object);
+            map.setWorldObject(x, y, worldObject);
+            addWorldObjectToCounter(worldObject.getComponent(TypeComponent.class).getType(), 1);
         }
     }    
 
@@ -63,7 +88,29 @@ public class GameMapHandler {
         return map;
     }
 
-    public void setMap(GameMap map) {
+    public final void setMap(GameMap map) {
+        worldObjectCount = new EnumMap<>(WorldObjectType.class);
+
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                WorldObject worldObject = map.getWorldObject(x, y);
+                if (worldObject != null) {
+                    addWorldObjectToCounter(worldObject.getComponent(TypeComponent.class).getType(), 1);
+                }
+            }
+        }
+
         this.map = map;
+    }
+
+    private int getWorldObjectCount(WorldObjectType worldObjectType) {
+        return worldObjectCount.getOrDefault(worldObjectType,  0);
+    }
+
+    private void addWorldObjectToCounter(WorldObjectType worldObjectType, int amount) {
+        if (worldObjectCount.containsKey(worldObjectType))
+            worldObjectCount.merge(worldObjectType, amount, Integer::sum);
+        else
+            worldObjectCount.put(worldObjectType, amount);
     }
 }

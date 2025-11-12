@@ -2,8 +2,10 @@ package me.doubleplusundev.map.worldobject;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 
 import me.doubleplusundev.game.UpdateManager;
+import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.worldobject.component.BuildingComponent;
 import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
 import me.doubleplusundev.map.worldobject.component.ProductionComponent;
@@ -24,6 +26,8 @@ public class WorldObjectFactory {
     private final UpdateManager updateManager;
     private final ResourceManager resourceManager;
     
+    private static final Set<TileType> LAND_TILES = Set.of(TileType.GRASS, TileType.SAND, TileType.ROCK, TileType.SNOW);
+
     public WorldObjectFactory(UpdateManager updateManager, ResourceManager resourceManager) {
         this.updateManager = updateManager;
         this.resourceManager = resourceManager;
@@ -42,21 +46,21 @@ public class WorldObjectFactory {
     private void registerAssemblers() {
         assemblerRegistry.put(WorldObjectType.CENTER, (x, y) -> {
             WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceStore()));
+            worldObject.addComponent(new BuildingComponent(new ResourceStore(), LAND_TILES));
             worldObject.addComponent(new TypeComponent(WorldObjectType.CENTER));
             return worldObject;
         });
 
         assemblerRegistry.put(WorldObjectType.ROAD, (x, y) -> {
             WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.STONE, 20.0))));
+            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.STONE, -20.0)), LAND_TILES));
             worldObject.addComponent(new TypeComponent(WorldObjectType.ROAD));
             return worldObject;
         });
 
         assemblerRegistry.put(WorldObjectType.LUMBERHUT, (x, y) -> {
             WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.WOOD, 50.0))));
+            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
             worldObject.addComponent(new ProductionComponent(new ResourceStore(Map.of(ResourceType.WOOD, 0.3)), resourceManager));
             worldObject.addComponent(new TypeComponent(WorldObjectType.LUMBERHUT));
             updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
@@ -65,7 +69,7 @@ public class WorldObjectFactory {
 
         assemblerRegistry.put(WorldObjectType.QUARRY, (x, y) -> {
             WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.WOOD, 50.0))));
+            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
             worldObject.addComponent(new ProductionComponent(new ResourceStore(Map.of(ResourceType.STONE, 0.2)), resourceManager));
             worldObject.addComponent(new TypeComponent(WorldObjectType.QUARRY));
             updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
@@ -74,7 +78,7 @@ public class WorldObjectFactory {
         
         assemblerRegistry.put(WorldObjectType.BLACKSMITH, (x, y) -> {
             WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.STONE, 100.0, ResourceType.WOOD, 200.0))));
+            worldObject.addComponent(new BuildingComponent(new ResourceStore(Map.of(ResourceType.STONE, -100.0, ResourceType.WOOD, -200.0)), LAND_TILES));
             worldObject.addComponent(new ProductionComponent(new ResourceStore(Map.of(ResourceType.STONE, -0.2, ResourceType.WOOD, -0.3, ResourceType.IRON, 0.2)), resourceManager));
             worldObject.addComponent(new TypeComponent(WorldObjectType.BLACKSMITH));
             updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));

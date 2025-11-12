@@ -53,7 +53,7 @@ public class UIHandler {
         this.updateManager = updateManager;
         this.playerController = playerController;
         this.keyInputManager = keyInputManager;
-        this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController);
+        this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController, resourceManager);
         this.saveGameManager = new SaveGameManager(gameMapHandler, resourceManager, updateManager);
     }
     
