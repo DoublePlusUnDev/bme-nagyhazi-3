@@ -25,16 +25,23 @@ public class ActivatorComponent extends Component implements ITickable {
         Set<WorldObject> alreadyChecked = new HashSet<>();
         toCheck.add(this.getOwner());
 
+        boolean initial = true;
+
         while (!toCheck.isEmpty()) {
             WorldObject check = toCheck.remove();
-            List<WorldObject> neighbours = getNeighbours(check);
-            
-            for (WorldObject neighbour : neighbours) {
-                if (alreadyChecked.contains(neighbour))
-                    continue;
 
-                toCheck.add(neighbour);
-                alreadyChecked.add(neighbour);
+            ActivationChannelComponent activationChannel = check.getComponent(ActivationChannelComponent.class);
+            if (activationChannel != null || initial)
+            {
+                List<WorldObject> neighbours = getNeighbours(check);
+                
+                for (WorldObject neighbour : neighbours) {
+                    if (alreadyChecked.contains(neighbour))
+                        continue;
+
+                    toCheck.add(neighbour);
+                    alreadyChecked.add(neighbour);
+                }
             }
 
             ActivableComponent activableComponent = check.getComponent(ActivableComponent.class);
@@ -42,6 +49,8 @@ public class ActivatorComponent extends Component implements ITickable {
             if (activableComponent != null) {
                 activableComponent.activate();
             }
+
+            initial = false;
         }
     }
 

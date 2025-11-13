@@ -90,9 +90,17 @@ public class GameMapHandler {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 WorldObject worldObject = map.getWorldObject(x, y);
-                if (worldObject != null) {
-                    addWorldObjectToCounter(worldObject.getComponent(TypeComponent.class).getType(), 1);
-                }
+
+                if (worldObject == null)
+                    continue;
+
+                TypeComponent typeComponent = worldObject.getComponent(TypeComponent.class);
+
+                if (typeComponent == null) 
+                    continue;
+
+                addWorldObjectToCounter(typeComponent.getType(), 1);
+                
             }
         }
 

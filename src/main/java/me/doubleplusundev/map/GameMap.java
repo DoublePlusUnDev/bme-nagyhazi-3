@@ -50,18 +50,18 @@ public class GameMap implements Serializable{
         return worldObjects[x][y];
     }
 
+    public void setWorldObject(int x, int y, WorldObject object) {
+        if (x < 0 || width <= x || y < 0 || height <= y){
+            throw new IllegalArgumentException();
+        }
+        worldObjects[x][y] = object;
+    }
+
     public int getWidth() {
         return width;
     }
 
     public int getHeight() {
         return height;
-    }
-
-    public void setWorldObject(int x, int y, WorldObject object) {
-        if (x < 0 || width <= x || y < 0 || height <= y){
-            throw new IllegalArgumentException();
-        }
-        worldObjects[x][y] = object;
     }
 }
