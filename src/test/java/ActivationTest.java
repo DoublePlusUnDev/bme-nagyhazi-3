@@ -1,5 +1,4 @@
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +54,16 @@ class ActivationTest {
 
         boolean isActive = gameMapHandler.getWorldObject(4, 2).getComponent(ActivableComponent.class).isActive();
         assertTrue(isActive);
+    }
+
+    @Test 
+    void testBetweenTicks() {
+        tickActivables();
+        assertFalse(gameMapHandler.getWorldObject(0, 0).getComponent(ActivableComponent.class).isActive());
+        assertFalse(gameMapHandler.getWorldObject(2, 1).getComponent(ActivableComponent.class).isActive());
+        assertFalse(gameMapHandler.getWorldObject(4, 1).getComponent(ActivableComponent.class).isActive());
+        assertFalse(gameMapHandler.getWorldObject(4, 2).getComponent(ActivableComponent.class).isActive());
+
     }
 
     private WorldObject createActivable(int posX, int posY) {
