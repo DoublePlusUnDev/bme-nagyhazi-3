@@ -1,13 +1,13 @@
 package me.doubleplusundev.savegame;
 
 import me.doubleplusundev.map.GameMap;
-import me.doubleplusundev.resource.ResourceStore;
+import me.doubleplusundev.resource.ResourceBank;
 
 public class SaveData {
     private final GameMap gameMap;
-    private final ResourceStore resourceStore;
+    private final ResourceBank resourceStore;
     
-    public SaveData(GameMap gameMap, ResourceStore resourceStore) {
+    public SaveData(GameMap gameMap, ResourceBank resourceStore) {
         this.gameMap = gameMap;
         this.resourceStore = resourceStore;
     }
@@ -16,7 +16,7 @@ public class SaveData {
         return gameMap;
     }   
 
-    public ResourceStore getResources() {
+    public ResourceBank getResources() {
         return resourceStore;
     }
 }

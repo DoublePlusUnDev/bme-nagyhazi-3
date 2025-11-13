@@ -1,10 +1,10 @@
 package me.doubleplusundev.resource;
 
 public class ResourceManager {
-    private ResourceStore resources;
+    private ResourceBank resources;
 
     public ResourceManager() {
-        resources = new ResourceStore();
+        resources = new ResourceBank();
     }
     
     public void setResource(ResourceType type, double amount) {
@@ -15,19 +15,19 @@ public class ResourceManager {
         return resources.getResource(type);
     }
 
-    public void mergeResources(ResourceStore other) {
+    public void mergeResources(ResourceBank other) {
         resources.forceMerge(other);
     }
 
-    public boolean tryMergeResources(ResourceStore other) {
+    public boolean tryMergeResources(ResourceBank other) {
         return resources.tryMerge(other);
     }
 
-    public ResourceStore getResources() {
+    public ResourceBank getResources() {
         return resources;
     }
 
-    public void setResources(ResourceStore resources) {
+    public void setResources(ResourceBank resources) {
         this.resources = resources;
     }
 }

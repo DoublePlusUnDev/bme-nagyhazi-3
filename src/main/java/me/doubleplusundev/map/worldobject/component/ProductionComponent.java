@@ -2,13 +2,13 @@ package me.doubleplusundev.map.worldobject.component;
 
 import me.doubleplusundev.game.ITickable;
 import me.doubleplusundev.resource.ResourceManager;
-import me.doubleplusundev.resource.ResourceStore;
+import me.doubleplusundev.resource.ResourceBank;
 
 public class ProductionComponent extends Component implements ITickable {
-    private final ResourceStore resourceStore;
+    private final ResourceBank resourceStore;
     private transient ResourceManager resourceManager;
 
-    public ProductionComponent(ResourceStore resourceStore, ResourceManager resourceManager){
+    public ProductionComponent(ResourceBank resourceStore, ResourceManager resourceManager){
         this.resourceStore = resourceStore;
         this.resourceManager = resourceManager;    
     }
