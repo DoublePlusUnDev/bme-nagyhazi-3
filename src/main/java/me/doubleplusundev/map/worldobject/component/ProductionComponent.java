@@ -16,7 +16,7 @@ public class ProductionComponent extends Component implements ITickable {
     @Override
     public void tick(int count) {
         ActivableComponent activable = getOwner().getComponent(ActivableComponent.class);
-        
+
         if (activable != null && !activable.isActive())
             return;
 
