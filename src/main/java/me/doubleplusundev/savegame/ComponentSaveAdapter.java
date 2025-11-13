@@ -11,6 +11,10 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import me.doubleplusundev.game.UpdateManager;
+import me.doubleplusundev.map.GameMapHandler;
+import me.doubleplusundev.map.worldobject.component.ActivableComponent;
+import me.doubleplusundev.map.worldobject.component.ActivationChannelComponent;
+import me.doubleplusundev.map.worldobject.component.ActivatorComponent;
 import me.doubleplusundev.map.worldobject.component.BuildingComponent;
 import me.doubleplusundev.map.worldobject.component.Component;
 import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
@@ -22,16 +26,22 @@ public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDese
 
     private final ResourceManager resourceManager;
     private final UpdateManager updateManager;
+    private final GameMapHandler gameMapHandler;
 
     private static final String COMPONENT_PROPERTY = "component";
+
     private static final String BUILDING_VALUE = "building";
     private static final String HARVESTABLE_VALUE = "harvestable";
     private static final String PRODUCTION_VALUE = "production";
     private static final String TYPE_VALUE = "type";
+    private static final String ACTIVATION_CHANNEL_VALUE = "channel";
+    private static final String ACTIVATIVABLE_VALUE = "activable";
+    private static final String ACTIVATOR_VALUE = "activator";
 
-    public ComponentSaveAdapter(ResourceManager resourceManager, UpdateManager updateManager) {
+    public ComponentSaveAdapter(ResourceManager resourceManager, UpdateManager updateManager, GameMapHandler gameMapHandler) {
         this.resourceManager = resourceManager;
         this.updateManager = updateManager;
+        this.gameMapHandler = gameMapHandler;
     }
 
     @Override
@@ -42,6 +52,9 @@ public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDese
         if (src instanceof HarvestableComponent) object.addProperty(COMPONENT_PROPERTY, HARVESTABLE_VALUE);
         if (src instanceof ProductionComponent) object.addProperty(COMPONENT_PROPERTY, PRODUCTION_VALUE);
         if (src instanceof TypeComponent) object.addProperty(COMPONENT_PROPERTY, TYPE_VALUE);
+        if (src instanceof ActivationChannelComponent) object.addProperty(COMPONENT_PROPERTY, ACTIVATION_CHANNEL_VALUE);
+        if (src instanceof ActivableComponent) object.addProperty(COMPONENT_PROPERTY, ACTIVATIVABLE_VALUE);
+        if (src instanceof ActivatorComponent) object.addProperty(COMPONENT_PROPERTY, ACTIVATOR_VALUE);
 
         return object;
     }
@@ -68,6 +81,18 @@ public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDese
             }
             case TYPE_VALUE -> {
                 return context.deserialize(json, TypeComponent.class);
+            }
+            case ACTIVATION_CHANNEL_VALUE -> {
+                return context.deserialize(json, ActivationChannelComponent.class);
+            }
+            case ACTIVATIVABLE_VALUE -> {
+                return context.deserialize(json, ActivableComponent.class);
+            }
+            case ACTIVATOR_VALUE -> {
+                ActivatorComponent component = context.deserialize(json, ActivatorComponent.class);
+                component.loadBack(gameMapHandler);
+                updateManager.registerForTick(component);
+                return component;
             }
             default -> throw new JsonParseException("Unknown type:" + componentType);
         }

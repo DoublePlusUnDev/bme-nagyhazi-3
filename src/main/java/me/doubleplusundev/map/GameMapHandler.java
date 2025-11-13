@@ -3,9 +3,7 @@ package me.doubleplusundev.map;
 import java.util.EnumMap;
 import java.util.Map;
 
-import me.doubleplusundev.map.worldgen.WorldGenerator;
 import me.doubleplusundev.map.worldobject.WorldObject;
-import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.map.worldobject.component.BuildingComponent;
 import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
@@ -16,16 +14,10 @@ public class GameMapHandler {
     private Map<WorldObjectType, Integer> worldObjectCount = new EnumMap<>(WorldObjectType.class);
 
     private GameMap map;
-    private final WorldObjectFactory worldObjectFactory;
 
-    public GameMapHandler(WorldObjectFactory worldObjectFactory) {
-        this.worldObjectFactory = worldObjectFactory;
+    public GameMapHandler() {
 
         map = new GameMap(0, 0);
-    }
-
-    public void generateWorld(long seed) {
-        setMap(WorldGenerator.generateWorld(500, 500, seed, worldObjectFactory));
     }
 
     public TileType getTile(int x, int y){
@@ -42,14 +34,13 @@ public class GameMapHandler {
             return null;
     }
 
-    public boolean tryBuildStructure(int x, int y, WorldObjectType type, ResourceManager resourceManager) {
+    public boolean tryBuildStructure(int x, int y, WorldObject worldObject, ResourceManager resourceManager) {
         if (x < 0 || map.getWidth() <= x || y < 0 || map.getHeight() <= y)
             return false;
         
         if (getWorldObject(x, y) != null)
             return false;
 
-        WorldObject worldObject = worldObjectFactory.create(type, x, y);
         BuildingComponent buildingComponent = worldObject.getComponent(BuildingComponent.class);
         int instanceCount = getWorldObjectCount(worldObject.getComponent(TypeComponent.class).getType());
         if (buildingComponent != null && !buildingComponent.tryBuild(resourceManager.getResources(), getTile(x, y), instanceCount))
@@ -117,5 +108,13 @@ public class GameMapHandler {
             worldObjectCount.merge(worldObjectType, amount, Integer::sum);
         else
             worldObjectCount.put(worldObjectType, amount);
+    }
+
+    public int getWidth() {
+        return map.getWidth();
+    }
+
+    public int getHeight() {
+        return map.getHeight();
     }
 }

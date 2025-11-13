@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import me.doubleplusundev.map.GameMapHandler;
+import me.doubleplusundev.map.worldgen.WorldGenerator;
 import me.doubleplusundev.savegame.SaveGameManager;
 import me.doubleplusundev.util.UIUtils;
 
@@ -18,15 +19,17 @@ public class MainMenuUI {
     private final UIHandler uiHandler;
     private final GameMapHandler gameMapHandler;
     private final SaveGameManager saveGameManager;
+    private final WorldGenerator worldGenerator;
     private final Random random;
 
     private JTextField seedField;
     private JTextField saveField;
 
-    public MainMenuUI(UIHandler uiHandler, GameMapHandler gameMapHandler, SaveGameManager saveGameManager) {
+    public MainMenuUI(UIHandler uiHandler, GameMapHandler gameMapHandler, SaveGameManager saveGameManager, WorldGenerator worldGenerator) {
         this.uiHandler = uiHandler;
         this.gameMapHandler = gameMapHandler;
         this.saveGameManager = saveGameManager;
+        this.worldGenerator = worldGenerator;
         this.random = new Random();
     }
 
@@ -40,10 +43,12 @@ public class MainMenuUI {
         JButton newGameButton = new JButton("Start New Game");
         newGameButton.addActionListener(event -> {
             if (seedField.getText().equals("Random seed...")){
-                gameMapHandler.generateWorld(random.nextLong());
+                gameMapHandler.setMap(worldGenerator.generateWorld(250, 250, random.nextLong()));
             }
-            else
-                gameMapHandler.generateWorld(seedField.getText().hashCode());
+            else {
+                gameMapHandler.setMap(worldGenerator.generateWorld(250, 250, seedField.getText().hashCode()));
+            }
+            
             uiHandler.initialize();
             frame.setVisible(false);
         });

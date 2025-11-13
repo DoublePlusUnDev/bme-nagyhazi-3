@@ -27,9 +27,8 @@ public class SaveGameManager {
         this.gameMapHandler = gameMapHandler;
         this.resourceManager = resourceManager;
 
-        gson = new GsonBuilder().registerTypeAdapter(Component.class, new ComponentSaveAdapter(resourceManager, updateManager)).create();
+        gson = new GsonBuilder().registerTypeAdapter(Component.class, new ComponentSaveAdapter(resourceManager, updateManager, gameMapHandler)).create();
     }
-
 
     public void save() {
         SaveData saveData = new SaveData(gameMapHandler.getMap(), resourceManager.getResources());
@@ -49,7 +48,11 @@ public class SaveGameManager {
 
             for (int x = 0; x < saveData.getMap().getWidth(); x++) {
                 for (int y = 0; y < saveData.getMap().getHeight(); y++) {
-                    WorldObject worldObject = new WorldObject(x, y);
+                    WorldObject worldObject = saveData.getMap().getWorldObject(x, y);
+
+                    if (worldObject == null)
+                        continue;
+
                     for (Component component : worldObject.getComponents()) {
                         component.setOwner(worldObject);
                     }
@@ -62,7 +65,6 @@ public class SaveGameManager {
         catch (IOException | JsonSyntaxException exception) {
             ExceptionUI.showException(exception);
         }
-        
     }
     
     public void setLocation(String location) {

@@ -8,7 +8,13 @@ import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 
 public class WorldGenerator {
-    public static GameMap generateWorld(int xSize, int ySize, long seed, WorldObjectFactory worldObjectFactory){
+    private final WorldObjectFactory worldObjectFactory;
+
+    public WorldGenerator(WorldObjectFactory worldObjectFactory) {
+        this.worldObjectFactory = worldObjectFactory;
+    }
+
+    public GameMap generateWorld(int xSize, int ySize, long seed){
         GameMap map = new GameMap(xSize, ySize);
         
         PerlinNoise.setSeed(seed);
@@ -26,7 +32,7 @@ public class WorldGenerator {
 
                 double height = noise - mask;
                 
-                TileType tile = generateTile(map, random, x, y, height, worldObjectFactory);
+                TileType tile = generateTile(map, random, x, y, height);
 
                 map.setTile(x, y, tile);
             }
@@ -35,7 +41,7 @@ public class WorldGenerator {
         return map;
     }
 
-    private static TileType generateTile(GameMap map, Random random, int x, int y, double height, WorldObjectFactory worldObjectFactory) {
+    private TileType generateTile(GameMap map, Random random, int x, int y, double height) {
         TileType tile;
         
         if (height > 0.35){
@@ -67,8 +73,4 @@ public class WorldGenerator {
         }
         return tile;
     } 
-    
-    private WorldGenerator() {
-
-    }
 }

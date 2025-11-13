@@ -24,6 +24,7 @@ import javax.swing.event.DocumentListener;
 
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
+import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.player.GameInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
@@ -46,15 +47,15 @@ public class UIHandler {
     private JPanel structureRow;
     private JLabel lastSelectedLabel;
 
-    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, SaveGameManager saveGameManager,
-                     PlayerController playerController, KeyInputManager keyInputManager){
+    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, WorldObjectFactory worldObjectFactory,
+                     SaveGameManager saveGameManager, PlayerController playerController, KeyInputManager keyInputManager){
         this.gameMapHandler = gameMapHandler;
         this.resourceManager = resourceManager;
         this.updateManager = updateManager;
         this.saveGameManager = saveGameManager;
         this.playerController = playerController;
         this.keyInputManager = keyInputManager;
-        this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController, resourceManager);
+        this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController, resourceManager, worldObjectFactory);
     }
     
     public void initialize() {

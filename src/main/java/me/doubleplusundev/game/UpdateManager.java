@@ -2,6 +2,8 @@ package me.doubleplusundev.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.Timer;
 
@@ -10,7 +12,7 @@ import me.doubleplusundev.util.Config;
 //implement proper deltatime later
 public class UpdateManager {
     private final List<IUpdatable> updatables;
-    private final List<ITickable> tickables;
+    private final Set<ITickable> tickables;
     private final Timer updateTimer;
     private final Timer tickTimer;
     private final int updateRate;
@@ -25,7 +27,7 @@ public class UpdateManager {
         tickTimer = new Timer(1000 / tickRate, e -> tick());
 
         updatables = new ArrayList<>();
-        tickables = new ArrayList<>();
+        tickables = new TreeSet<>(new TickableComparator());
 
         tickCount = 0;
     }
@@ -41,7 +43,7 @@ public class UpdateManager {
         }
     }
 
-    private void tick(){
+    private void tick() {
         for (ITickable tickable : tickables){
             tickable.tick(tickCount);
         }
