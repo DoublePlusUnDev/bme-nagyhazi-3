@@ -86,7 +86,9 @@ public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDese
                 return context.deserialize(json, ActivationChannelComponent.class);
             }
             case ACTIVATIVABLE_VALUE -> {
-                return context.deserialize(json, ActivableComponent.class);
+                ActivableComponent component = context.deserialize(json, ActivableComponent.class);
+                updateManager.registerForTick(component);
+                return component;
             }
             case ACTIVATOR_VALUE -> {
                 ActivatorComponent component = context.deserialize(json, ActivatorComponent.class);
