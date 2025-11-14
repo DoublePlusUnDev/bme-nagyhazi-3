@@ -35,7 +35,7 @@ public class ProductionComponent extends Component implements ITickable {
     }
 
     /**
-     * 
+     * Used at loading a worldfile, assigns the dependencies.
      * @param resourceManager
      */
     public void loadBack(ResourceManager resourceManager) {

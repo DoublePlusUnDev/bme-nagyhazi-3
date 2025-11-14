@@ -13,6 +13,10 @@ public class TypeComponent extends Component {
         this.type = type;
     }
 
+    /**
+     * Getter for the type enum.
+     * @return
+     */
     public WorldObjectType getType() {
         return type;
     }

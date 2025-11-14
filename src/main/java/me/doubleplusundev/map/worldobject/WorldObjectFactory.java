@@ -1,6 +1,5 @@
 package me.doubleplusundev.map.worldobject;
 
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,100 +17,92 @@ import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceBank;
 import me.doubleplusundev.resource.ResourceType;
 
+/**
+ * The class responsible for creating a world object given it's type.
+ */
 public class WorldObjectFactory {
-    
-    @FunctionalInterface
-    interface WorldObjectAssembler {
-        WorldObject create(int posX, int posY);
-    }
-
-    private final Map<WorldObjectType, WorldObjectAssembler> assemblerRegistry = new EnumMap<>(WorldObjectType.class);
-
+   
     private final UpdateManager updateManager;
     private final ResourceManager resourceManager;
     private final GameMapHandler gameMapHandler;
     
-    private static final Set<TileType> LAND_TILES = Set.of(TileType.GRASS, TileType.SAND, TileType.ROCK, TileType.SNOW);
+    /** A list if tiles that are counted as land tiles, most building will require this preset. */
+    private static final Set<TileType> LAND_TILES = Set.of(TileType.GRASS, TileType.SAND, TileType.ROCK, TileType.SNOW); 
 
     public WorldObjectFactory(UpdateManager updateManager, ResourceManager resourceManager, GameMapHandler gameMapHandler) {
         this.updateManager = updateManager;
         this.resourceManager = resourceManager;
         this.gameMapHandler = gameMapHandler;
-
-        registerAssemblers();
     }
 
+    /**
+     * Creates a world object of a given type at the specified position.
+     * It also sets up it's components, dependencies and registers them.
+     * @param type The worldtype, the basis for the preset.
+     * @param xPos The X position of the created object.
+     * @param yPos The Y position of the created object.
+     * @return
+     */
     public WorldObject create(WorldObjectType type, int xPos, int yPos) {
-        WorldObjectAssembler assembler = assemblerRegistry.get(type);
-        if (assembler == null) {
-            throw new IllegalArgumentException("No assember for " + type.toString());
+        switch (type) {
+            case TREE -> {
+                WorldObject worldObject = new WorldObject(xPos, yPos);
+                worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.WOOD, 30.0))));
+                worldObject.addComponent(new TypeComponent(WorldObjectType.TREE));
+                return worldObject;
+            }
+            case BOULDER -> {
+                WorldObject worldObject = new WorldObject(xPos, yPos);
+                worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.STONE, 20.0))));
+                worldObject.addComponent(new TypeComponent(WorldObjectType.BOULDER));
+                return worldObject;
+            }
+            case CENTER -> {
+                WorldObject worldObject = new WorldObject(xPos, yPos);
+                worldObject.addComponent(new BuildingComponent(new ResourceBank(), LAND_TILES));
+                worldObject.addComponent(new TypeComponent(WorldObjectType.CENTER));
+                worldObject.addComponent(new ActivatonSourceComponent(gameMapHandler));
+                updateManager.registerForTick(worldObject.getComponent(ActivatonSourceComponent.class));
+                return worldObject;
+            }
+            case ROAD -> {
+                WorldObject worldObject = new WorldObject(xPos, yPos);
+                worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.STONE, -20.0)), LAND_TILES));
+                worldObject.addComponent(new TypeComponent(WorldObjectType.ROAD));
+                worldObject.addComponent(new ActivationChannelComponent());
+                return worldObject;
+            }
+            case LUMBERHUT -> {
+                WorldObject worldObject = new WorldObject(xPos, yPos);
+                worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
+                worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.WOOD, 0.3)), resourceManager));
+                worldObject.addComponent(new TypeComponent(WorldObjectType.LUMBERHUT));
+                worldObject.addComponent(new ActivableComponent());
+                updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
+                updateManager.registerForTick(worldObject.getComponent(ActivableComponent.class));
+                return worldObject;
+            }
+            case QUARRY -> {
+                WorldObject worldObject = new WorldObject(xPos, yPos);
+                worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
+                worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.STONE, 0.2)), resourceManager));
+                worldObject.addComponent(new TypeComponent(WorldObjectType.QUARRY));
+                worldObject.addComponent(new ActivableComponent());
+                updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
+                updateManager.registerForTick(worldObject.getComponent(ActivableComponent.class));
+                return worldObject;
+            }
+            case BLACKSMITH -> {
+                WorldObject worldObject = new WorldObject(xPos, yPos);
+                worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.STONE, -100.0, ResourceType.WOOD, -200.0)), LAND_TILES));
+                worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.STONE, -0.2, ResourceType.WOOD, -0.3, ResourceType.IRON, 0.2)), resourceManager));
+                worldObject.addComponent(new TypeComponent(WorldObjectType.BLACKSMITH));
+                worldObject.addComponent(new ActivableComponent());
+                updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
+                updateManager.registerForTick(worldObject.getComponent(ActivableComponent.class));
+                return worldObject;
+            }
+            default -> throw new AssertionError();
         }
-        return assembler.create(xPos, yPos);
-    }
-
-    private void registerAssemblers() {
-        assemblerRegistry.put(WorldObjectType.CENTER, (x, y) -> {
-            WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceBank(), LAND_TILES));
-            worldObject.addComponent(new TypeComponent(WorldObjectType.CENTER));
-            worldObject.addComponent(new ActivatonSourceComponent(gameMapHandler));
-            updateManager.registerForTick(worldObject.getComponent(ActivatonSourceComponent.class));
-            return worldObject;
-        });
-
-        assemblerRegistry.put(WorldObjectType.ROAD, (x, y) -> {
-            WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.STONE, -20.0)), LAND_TILES));
-            worldObject.addComponent(new TypeComponent(WorldObjectType.ROAD));
-            worldObject.addComponent(new ActivationChannelComponent());
-            return worldObject;
-        });
-
-        assemblerRegistry.put(WorldObjectType.LUMBERHUT, (x, y) -> {
-            WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
-            worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.WOOD, 0.3)), resourceManager));
-            worldObject.addComponent(new TypeComponent(WorldObjectType.LUMBERHUT));
-            worldObject.addComponent(new ActivableComponent());
-            updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
-            updateManager.registerForTick(worldObject.getComponent(ActivableComponent.class));
-            return worldObject;
-        });
-
-        assemblerRegistry.put(WorldObjectType.QUARRY, (x, y) -> {
-            WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
-            worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.STONE, 0.2)), resourceManager));
-            worldObject.addComponent(new TypeComponent(WorldObjectType.QUARRY));
-            worldObject.addComponent(new ActivableComponent());
-            updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
-            updateManager.registerForTick(worldObject.getComponent(ActivableComponent.class));
-            return worldObject;
-        });
-        
-        assemblerRegistry.put(WorldObjectType.BLACKSMITH, (x, y) -> {
-            WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.STONE, -100.0, ResourceType.WOOD, -200.0)), LAND_TILES));
-            worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.STONE, -0.2, ResourceType.WOOD, -0.3, ResourceType.IRON, 0.2)), resourceManager));
-            worldObject.addComponent(new TypeComponent(WorldObjectType.BLACKSMITH));
-            worldObject.addComponent(new ActivableComponent());
-            updateManager.registerForTick(worldObject.getComponent(ProductionComponent.class));
-            updateManager.registerForTick(worldObject.getComponent(ActivableComponent.class));
-            return worldObject;
-        });
-
-        assemblerRegistry.put(WorldObjectType.TREE, (x, y) -> {
-            WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.WOOD, 30.0))));
-            worldObject.addComponent(new TypeComponent(WorldObjectType.TREE));
-            return worldObject;
-        });
-
-        assemblerRegistry.put(WorldObjectType.BOULDER, (x, y) -> {
-            WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.STONE, 20.0))));
-            worldObject.addComponent(new TypeComponent(WorldObjectType.BOULDER));
-            return worldObject;
-        });
     }
 }

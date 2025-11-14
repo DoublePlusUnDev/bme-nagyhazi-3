@@ -32,7 +32,7 @@ public class GameInteractionManager extends MouseAdapter{
         int x = pixelToTile(event.getPoint()).x;
         int y = pixelToTile(event.getPoint()).y;
         if (playerController.getInteractionMode() == PlayerController.PlayerInteractionMode.BUILD)
-            gameMapHandler.tryBuildStructure(x, y, worldObjectFactory.create(playerController.getSelectedBuilding(), x, y), resourceManager);
+            gameMapHandler.tryBuildStructure(x, y, worldObjectFactory.create(playerController.getSelectedBuilding(), x, y), resourceManager.getResources());
         else
             gameMapHandler.destroyWorldObject(x, y, resourceManager.getResources());
     }
