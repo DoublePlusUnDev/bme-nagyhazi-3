@@ -12,12 +12,12 @@ import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldobject.WorldObject;
 import me.doubleplusundev.map.worldobject.component.ActivableComponent;
 import me.doubleplusundev.map.worldobject.component.ActivationChannelComponent;
-import me.doubleplusundev.map.worldobject.component.ActivatorComponent;
+import me.doubleplusundev.map.worldobject.component.ActivatonSourceComponent;
 
 class ActivationTest {
     private List<ActivableComponent> activables;
     private List<ActivationChannelComponent> channels;
-    private List<ActivatorComponent> activators;
+    private List<ActivatonSourceComponent> activators;
     private GameMapHandler gameMapHandler;
 
     @Test
@@ -80,7 +80,7 @@ class ActivationTest {
 
     private WorldObject createActivator(int posX, int posY, GameMapHandler gameMapHandler) {
         WorldObject worldObject = new WorldObject(posX, posY);
-        worldObject.addComponent(new ActivatorComponent(gameMapHandler));
+        worldObject.addComponent(new ActivatonSourceComponent(gameMapHandler));
         return worldObject;
     }
     
@@ -172,7 +172,7 @@ class ActivationTest {
         xPos = 2;
         yPos = 2;
         map.setWorldObject(xPos, yPos, createActivator(yPos, yPos, gameMapHandler));
-        activators.add(map.getWorldObject(xPos, yPos).getComponent(ActivatorComponent.class));
+        activators.add(map.getWorldObject(xPos, yPos).getComponent(ActivatonSourceComponent.class));
 
         gameMapHandler.setMap(map);
     }    
@@ -184,7 +184,7 @@ class ActivationTest {
     }
 
     private void tickActivators() {
-        for (ActivatorComponent activator : activators) {
+        for (ActivatonSourceComponent activator : activators) {
             activator.tick(0);
         }
     }
