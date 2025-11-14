@@ -7,6 +7,9 @@ import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 
+/**
+ * Class responsible for generating a GameMap with given paramters. 
+ */
 public class WorldGenerator {
     private final WorldObjectFactory worldObjectFactory;
 
@@ -14,6 +17,13 @@ public class WorldGenerator {
         this.worldObjectFactory = worldObjectFactory;
     }
 
+    /**
+     * Generates a GameMap objecet of the given size based on the given world seed
+     * @param xSize Width
+     * @param ySize Height
+     * @param seed World seed
+     * @return A GameMap object
+     */
     public GameMap generateWorld(int xSize, int ySize, long seed){
         GameMap map = new GameMap(xSize, ySize);
         
@@ -32,16 +42,23 @@ public class WorldGenerator {
 
                 double height = noise - mask;
                 
-                TileType tile = generateTile(map, random, x, y, height);
-
-                map.setTile(x, y, tile);
+                generateTile(map, random, x, y, height);
             }
         }
 
         return map;
     }
 
-    private TileType generateTile(GameMap map, Random random, int x, int y, double height) {
+    /**
+     * Generates a tile on the given position, based on the perlin height inputted.
+     * Also attempts to generate a WorldObject when applicable.
+     * @param map
+     * @param random
+     * @param x
+     * @param y
+     * @param height
+     */
+    private void generateTile(GameMap map, Random random, int x, int y, double height) {
         TileType tile;
         
         if (height > 0.35){
@@ -71,6 +88,7 @@ public class WorldGenerator {
         else {
             tile = TileType.SEA_DEEP;
         }
-        return tile;
+        
+        map.setTile(x, y, tile);
     } 
 }

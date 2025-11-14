@@ -8,6 +8,7 @@ import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.map.worldobject.component.BuildingComponent;
 import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
 import me.doubleplusundev.map.worldobject.component.TypeComponent;
+import me.doubleplusundev.resource.ResourceBank;
 import me.doubleplusundev.resource.ResourceManager;
 
 public class GameMapHandler {
@@ -51,13 +52,13 @@ public class GameMapHandler {
         return true;
     }
 
-    public void destroyWorldObject(int x, int y) {
+    public void destroyWorldObject(int x, int y, ResourceBank resourceBank) {
         if (0 <= x && x < map.getWidth() && 0 <= y && y < map.getHeight() && map.getWorldObject(x, y) != null) {
             boolean canDestroy = true;
             
             HarvestableComponent harvestable = map.getWorldObject(x, y).getComponent(HarvestableComponent.class);
             if (harvestable != null) {
-                boolean canHarvest = harvestable.tryHarvest();
+                boolean canHarvest = harvestable.tryHarvest(resourceBank);
                 if (!canHarvest) {
                     canDestroy = false;
                 }

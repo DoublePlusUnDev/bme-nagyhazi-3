@@ -2,6 +2,11 @@ package me.doubleplusundev.game;
 
 import java.util.Comparator;
 
+/**
+ * Compares two ITickables priority.
+ * If the priority is the same, yet the objects are not
+ * it compares based on the hash of the objects.
+ */
 public class TickableComparator implements Comparator<ITickable> {
 
     @Override

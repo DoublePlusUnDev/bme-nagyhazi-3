@@ -14,7 +14,7 @@ import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldobject.component.ActivableComponent;
 import me.doubleplusundev.map.worldobject.component.ActivationChannelComponent;
-import me.doubleplusundev.map.worldobject.component.ActivatorComponent;
+import me.doubleplusundev.map.worldobject.component.ActivatonSourceComponent;
 import me.doubleplusundev.map.worldobject.component.BuildingComponent;
 import me.doubleplusundev.map.worldobject.component.Component;
 import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
@@ -54,7 +54,7 @@ public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDese
         if (src instanceof TypeComponent) object.addProperty(COMPONENT_PROPERTY, TYPE_VALUE);
         if (src instanceof ActivationChannelComponent) object.addProperty(COMPONENT_PROPERTY, ACTIVATION_CHANNEL_VALUE);
         if (src instanceof ActivableComponent) object.addProperty(COMPONENT_PROPERTY, ACTIVATIVABLE_VALUE);
-        if (src instanceof ActivatorComponent) object.addProperty(COMPONENT_PROPERTY, ACTIVATOR_VALUE);
+        if (src instanceof ActivatonSourceComponent) object.addProperty(COMPONENT_PROPERTY, ACTIVATOR_VALUE);
 
         return object;
     }
@@ -68,10 +68,8 @@ public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDese
             case BUILDING_VALUE -> {
                 return context.deserialize(json, BuildingComponent.class);
             }
-            case HARVESTABLE_VALUE -> {
-                HarvestableComponent component = context.deserialize(json, HarvestableComponent.class); 
-                component.loadBack(resourceManager);
-                return component; 
+            case HARVESTABLE_VALUE -> { 
+                return context.deserialize(json, HarvestableComponent.class); 
             }
             case PRODUCTION_VALUE -> {
                 ProductionComponent component = context.deserialize(json, ProductionComponent.class);
@@ -91,7 +89,7 @@ public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDese
                 return component;
             }
             case ACTIVATOR_VALUE -> {
-                ActivatorComponent component = context.deserialize(json, ActivatorComponent.class);
+                ActivatonSourceComponent component = context.deserialize(json, ActivatonSourceComponent.class);
                 component.loadBack(gameMapHandler);
                 updateManager.registerForTick(component);
                 return component;

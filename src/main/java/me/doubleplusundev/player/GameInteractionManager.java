@@ -34,7 +34,7 @@ public class GameInteractionManager extends MouseAdapter{
         if (playerController.getInteractionMode() == PlayerController.PlayerInteractionMode.BUILD)
             gameMapHandler.tryBuildStructure(x, y, worldObjectFactory.create(playerController.getSelectedBuilding(), x, y), resourceManager);
         else
-            gameMapHandler.destroyWorldObject(x, y);
+            gameMapHandler.destroyWorldObject(x, y, resourceManager.getResources());
     }
 
     private Point pixelToTile(Point pixelCoords) {

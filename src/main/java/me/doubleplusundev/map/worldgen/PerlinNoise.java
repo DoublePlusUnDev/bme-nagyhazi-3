@@ -8,9 +8,21 @@ import java.util.Random;
 
 // JAVA REFERENCE IMPLEMENTATION OF IMPROVED NOISE - COPYRIGHT 2002 KEN PERLIN.
 
+/**
+ * Perlin noise generator class.
+ * Using a reference implementation from https://cs.nyu.edu/~perlin/noise/.
+ * Modified to be able to use a seed.
+ */
 //suppress warnings coming from reference code
 @SuppressWarnings({"java:S1118", "java:S1124", "java:S117", "java:S1659", "java:S3358", "java:S1197"})
 public class PerlinNoise {
+    /**
+     * Generates perlin noise at the given values.
+     * @param x
+     * @param y
+     * @param z
+     * @return Noise height at x, y, z positions.
+     */
     static public double noise(double x, double y, double z) {
       int X = (int)Math.floor(x) & 255,                  // FIND UNIT CUBE THAT
           Y = (int)Math.floor(y) & 255,                  // CONTAINS POINT.
@@ -59,6 +71,10 @@ public class PerlinNoise {
 
    static int[] pshuffled = Arrays.copyOf(p, p.length);
 
+   /**
+    * Provide a seed based for the noise.
+    * @param seed
+    */
    static void setSeed(long seed) {
         System.arraycopy(p, 0, pshuffled, 0, 256);
 

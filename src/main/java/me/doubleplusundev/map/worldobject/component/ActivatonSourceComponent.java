@@ -12,13 +12,19 @@ import me.doubleplusundev.game.TickPriority;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldobject.WorldObject;
 
-public class ActivatorComponent extends Component implements ITickable {
+/**
+ * Activates either directly or thorugh activation channels connected activables. 
+ */
+public class ActivatonSourceComponent extends Component implements ITickable {
     private transient GameMapHandler gameMapHandler;
 
-    public ActivatorComponent(GameMapHandler gameMapHandler) {
+    public ActivatonSourceComponent(GameMapHandler gameMapHandler) {
         this.gameMapHandler = gameMapHandler;
     }
 
+    /**
+     * Runs BFS through the network of connected channels, sets activates activables when it finds them.
+     */
     @Override
     public void tick(int count) {
         Queue<WorldObject> toCheck = new LinkedList<>();
@@ -54,6 +60,12 @@ public class ActivatorComponent extends Component implements ITickable {
         }
     }
 
+    /**
+     * Returns a list of neighbours which have either a channel or an activable components.
+     * If none found returns empty list.
+     * @param origin The center of search.
+     * @return The list of neighbours with proper components.
+     */
     private List<WorldObject> getNeighbours(WorldObject origin) {
         List<WorldObject> neighbours = new ArrayList<>();
 
@@ -89,6 +101,9 @@ public class ActivatorComponent extends Component implements ITickable {
         this.gameMapHandler = gameMapHandler;
     }
 
+    /**
+     * Runs after ACTIVATION_ERASE, reenables components that are still connected.
+     */
     @Override
     public TickPriority getPriority() {
         return TickPriority.ACTIVATE;

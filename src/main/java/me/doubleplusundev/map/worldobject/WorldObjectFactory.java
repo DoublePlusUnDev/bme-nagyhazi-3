@@ -9,7 +9,7 @@ import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.worldobject.component.ActivableComponent;
 import me.doubleplusundev.map.worldobject.component.ActivationChannelComponent;
-import me.doubleplusundev.map.worldobject.component.ActivatorComponent;
+import me.doubleplusundev.map.worldobject.component.ActivatonSourceComponent;
 import me.doubleplusundev.map.worldobject.component.BuildingComponent;
 import me.doubleplusundev.map.worldobject.component.HarvestableComponent;
 import me.doubleplusundev.map.worldobject.component.ProductionComponent;
@@ -54,8 +54,8 @@ public class WorldObjectFactory {
             WorldObject worldObject = new WorldObject(x, y);
             worldObject.addComponent(new BuildingComponent(new ResourceBank(), LAND_TILES));
             worldObject.addComponent(new TypeComponent(WorldObjectType.CENTER));
-            worldObject.addComponent(new ActivatorComponent(gameMapHandler));
-            updateManager.registerForTick(worldObject.getComponent(ActivatorComponent.class));
+            worldObject.addComponent(new ActivatonSourceComponent(gameMapHandler));
+            updateManager.registerForTick(worldObject.getComponent(ActivatonSourceComponent.class));
             return worldObject;
         });
 
@@ -102,14 +102,14 @@ public class WorldObjectFactory {
 
         assemblerRegistry.put(WorldObjectType.TREE, (x, y) -> {
             WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.WOOD, 30.0)), resourceManager));
+            worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.WOOD, 30.0))));
             worldObject.addComponent(new TypeComponent(WorldObjectType.TREE));
             return worldObject;
         });
 
         assemblerRegistry.put(WorldObjectType.BOULDER, (x, y) -> {
             WorldObject worldObject = new WorldObject(x, y);
-            worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.STONE, 20.0)), resourceManager));
+            worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.STONE, 20.0))));
             worldObject.addComponent(new TypeComponent(WorldObjectType.BOULDER));
             return worldObject;
         });

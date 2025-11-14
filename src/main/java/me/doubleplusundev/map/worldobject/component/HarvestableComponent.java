@@ -1,22 +1,24 @@
 package me.doubleplusundev.map.worldobject.component;
 
-import me.doubleplusundev.resource.ResourceManager;
 import me.doubleplusundev.resource.ResourceBank;
 
+/**
+ * Some worldobject when removed by the player give resources or may require certain resources for the removal process.
+ * The removal is only possible if the required resources are present.
+ */
 public class HarvestableComponent extends Component {
-    private final ResourceBank resourceStore;
-    private transient ResourceManager resourceManager;
+    private final ResourceBank resourceBack; /** The resources provided by/required for object removal.*/
 
-    public HarvestableComponent(ResourceBank resourceStore, ResourceManager resourceManager) {
-        this.resourceStore = resourceStore;
-        this.resourceManager = resourceManager;
+    public HarvestableComponent(ResourceBank resourceBank) {
+        this.resourceBack = resourceBank;
     }
 
-    public boolean tryHarvest() {
-        return  resourceManager.tryMergeResources(resourceStore);
-    }
-
-    public void loadBack(ResourceManager resourceManager) {
-        this.resourceManager = resourceManager;
+    /**
+     * Returns whether the harvest is possible with the provided resources and if so modifies the resources accordingly.
+     * @param resources
+     * @return Whether the removal is possible.
+     */
+    public boolean tryHarvest(ResourceBank resources) {
+        return resources.tryMerge(resourceBack);
     }
 }
