@@ -78,16 +78,21 @@ public class GameMap implements Serializable {
 
     /**
      * Overwrites the world object at position x and y.
+     * Sets the internal position of the worldobject to the proper position.
      * @param x X position.
      * @param y Y position.
-     * @param object The new worldobject.
+     * @param worldObject The new worldobject.
      * @throws IllegalArgumentException If the x and y are out of bounds of the map.
      */
-    public void setWorldObject(int x, int y, WorldObject object) {
+    public void setWorldObject(int x, int y, WorldObject worldObject) {
         if (x < 0 || width <= x || y < 0 || height <= y){
             throw new IllegalArgumentException();
         }
-        worldObjects[x][y] = object;
+        
+        worldObjects[x][y] = worldObject;
+        
+        if (worldObject != null)
+            worldObject.setPosition(x, y);
     }
 
     /**

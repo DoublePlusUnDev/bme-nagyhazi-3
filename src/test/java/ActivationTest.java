@@ -66,20 +66,20 @@ class ActivationTest {
 
     }
 
-    private WorldObject createActivable(int posX, int posY) {
-        WorldObject worldObject = new WorldObject(posX, posY);
+    private WorldObject createActivable() {
+        WorldObject worldObject = new WorldObject();
         worldObject.addComponent(new ActivableComponent());
         return worldObject;
     }
 
-    private WorldObject createChannel(int posX, int posY) {
-        WorldObject worldObject = new WorldObject(posX, posY);
+    private WorldObject createChannel() {
+        WorldObject worldObject = new WorldObject();
         worldObject.addComponent(new ActivationChannelComponent());
         return worldObject;
     }
 
-    private WorldObject createActivator(int posX, int posY, GameMapHandler gameMapHandler) {
-        WorldObject worldObject = new WorldObject(posX, posY);
+    private WorldObject createActivator(GameMapHandler gameMapHandler) {
+        WorldObject worldObject = new WorldObject();
         worldObject.addComponent(new ActivatonSourceComponent(gameMapHandler));
         return worldObject;
     }
@@ -103,75 +103,75 @@ class ActivationTest {
         activables = new ArrayList<>();
         xPos = 0;
         yPos = 0;
-        map.setWorldObject(xPos, yPos, createActivable(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createActivable());
         activables.add(map.getWorldObject(xPos, yPos).getComponent(ActivableComponent.class));
 
         xPos = 2;
         yPos = 1;
-        map.setWorldObject(xPos, yPos, createActivable(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createActivable());
         activables.add(map.getWorldObject(xPos, yPos).getComponent(ActivableComponent.class));
 
         xPos = 4;
         yPos = 1;
-        map.setWorldObject(xPos, yPos, createActivable(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createActivable());
         activables.add(map.getWorldObject(xPos, yPos).getComponent(ActivableComponent.class));
 
         xPos = 4;
         yPos = 2;
-        map.setWorldObject(xPos, yPos, createActivable(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createActivable());
         activables.add(map.getWorldObject(xPos, yPos).getComponent(ActivableComponent.class));
 
         channels = new ArrayList<>();
 
         xPos = 0;
         yPos = 2;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 1;
         yPos = 2;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 0;
         yPos = 3;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 4;
         yPos = 3;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 0;
         yPos = 4;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 1;
         yPos = 4;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 2;
         yPos = 4;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 3;
         yPos = 4;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         xPos = 4;
         yPos = 4;
-        map.setWorldObject(xPos, yPos, createChannel(xPos, yPos));
+        map.setWorldObject(xPos, yPos, createChannel());
         channels.add(map.getWorldObject(xPos, yPos).getComponent(ActivationChannelComponent.class));
 
         activators = new ArrayList<>();
         xPos = 2;
         yPos = 2;
-        map.setWorldObject(xPos, yPos, createActivator(yPos, yPos, gameMapHandler));
+        map.setWorldObject(xPos, yPos, createActivator(gameMapHandler));
         activators.add(map.getWorldObject(xPos, yPos).getComponent(ActivatonSourceComponent.class));
 
         gameMapHandler.setMap(map);

@@ -12,14 +12,9 @@ import me.doubleplusundev.map.worldobject.component.Component;
  * May have several component that allow for extra functionalites or behaviour.
  */
 public class WorldObject implements Serializable {
-    private final int xPos; /** X position on the map. */
-    private final int yPos; /** Y position on the map. */
+    private int xPos; /** X position on the map. */
+    private int yPos; /** Y position on the map. */
     private final List<Component> components = new ArrayList<>(); /** The component list. */
-    
-    public WorldObject(int xPos, int yPos) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-    }
 
     /**
      * Adds a new component to the worldobject.
@@ -69,6 +64,11 @@ public class WorldObject implements Serializable {
             }
         }
         return null;
+    }
+
+    public void setPosition(int xPos, int yPos) {
+        this.xPos = xPos;
+        this.yPos = yPos;
     }
 
     /**

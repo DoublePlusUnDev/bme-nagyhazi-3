@@ -64,19 +64,19 @@ public class WorldGenerator {
         if (height > 0.35){
             tile = TileType.SNOW;
             if (random.nextDouble() < 0.15) {
-                map.setWorldObject(x, y, worldObjectFactory.create(WorldObjectType.BOULDER, x, y));
+                map.setWorldObject(x, y, worldObjectFactory.create(WorldObjectType.BOULDER));
             }
         }   
         else if (height  > 0.15) {
             tile = TileType.ROCK;
             if (random.nextDouble() < 0.3) {
-                map.setWorldObject(x, y, worldObjectFactory.create(WorldObjectType.BOULDER, x, y));
+                map.setWorldObject(x, y, worldObjectFactory.create(WorldObjectType.BOULDER));
             }
         }
         else if (height  > -0.1) {
             tile = TileType.GRASS;
             if (random.nextDouble() < 0.1) {
-                map.setWorldObject(x, y, worldObjectFactory.create(WorldObjectType.TREE, x, y));
+                map.setWorldObject(x, y, worldObjectFactory.create(WorldObjectType.TREE));
             }
         }
         else if (height  > -0.2) {

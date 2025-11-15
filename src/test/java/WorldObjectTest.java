@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
+import me.doubleplusundev.map.GameMap;
 import me.doubleplusundev.map.worldobject.WorldObject;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.map.worldobject.component.ActivableComponent;
@@ -11,8 +12,10 @@ import me.doubleplusundev.map.worldobject.component.TypeComponent;
 
 class WorldObjectTest {
     @Test
-    void testInit() {
-        WorldObject worldObject = new WorldObject(6, 7);
+    void testPositioning() {
+        GameMap gameMap = new GameMap(10, 10);
+        WorldObject worldObject = new WorldObject();
+        gameMap.setWorldObject(6, 7, worldObject);
         assertEquals(6, worldObject.getX());
         assertEquals(7, worldObject.getY());
 
@@ -22,7 +25,7 @@ class WorldObjectTest {
 
     @Test
     void addComponent() {
-        WorldObject worldObject = new WorldObject(6, 7);
+        WorldObject worldObject = new WorldObject();
 
         assertNull(worldObject.getComponent(TypeComponent.class));
 
@@ -34,7 +37,7 @@ class WorldObjectTest {
 
     @Test
     void listComponents() {
-        WorldObject worldObject = new WorldObject(6, 7);
+        WorldObject worldObject = new WorldObject();
 
         worldObject.addComponent(new TypeComponent(WorldObjectType.BLACKSMITH));
         worldObject.addComponent(new ActivableComponent());

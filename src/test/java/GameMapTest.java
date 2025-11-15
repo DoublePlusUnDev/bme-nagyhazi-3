@@ -47,7 +47,7 @@ class GameMapTest {
     @Test
     void testSetWorldObject() {
         gameMap.setWorldObject(0, 0, null);
-        WorldObject worldObject = new WorldObject(1, 1);
+        WorldObject worldObject = new WorldObject();
         worldObject.addComponent(new TypeComponent(WorldObjectType.BLACKSMITH));
         gameMap.setWorldObject(1, 1, worldObject);
 
@@ -89,18 +89,13 @@ class GameMapTest {
         gameMap.setTile(1, 1, TileType.GRASS);
 
         WorldObject worldObject;
-        int xPos, yPos;
 
-        xPos = 0;
-        yPos = 0;
-        worldObject = new WorldObject(xPos, yPos);
+        worldObject = new WorldObject();
         worldObject.addComponent(new TypeComponent(WorldObjectType.TREE));
-        gameMap.setWorldObject(xPos, yPos, worldObject);
+        gameMap.setWorldObject(0, 0, worldObject);
 
-        xPos = 0;
-        yPos = 1;
-        worldObject = new WorldObject(xPos, yPos);
+        worldObject = new WorldObject();
         worldObject.addComponent(new TypeComponent(WorldObjectType.BOULDER));
-        gameMap.setWorldObject(xPos, yPos, worldObject);
+        gameMap.setWorldObject(0, 1, worldObject);
     }   
 }

@@ -199,7 +199,7 @@ public class UIHandler {
     private void selectLabel(WorldObjectType structure, JLabel imageLabel) {
         if (lastSelectedLabel != null)
             lastSelectedLabel.setBorder(BorderFactory.createEmptyBorder());
-        playerController.selectStructure(structure);
+        playerController.selectBuilding(structure);
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
         lastSelectedLabel = imageLabel;
     }

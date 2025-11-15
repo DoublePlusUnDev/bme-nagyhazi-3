@@ -8,7 +8,13 @@ import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.Vector2;
 
+/**
+ * The class responsible for controlling the player's position and interaction mode.
+ */
 public class PlayerController implements IUpdatable {
+    /**
+     * The enum that determines what happens on an interaction with the map.
+     */
     public enum PlayerInteractionMode {
         BUILD,
         DESTROY
@@ -17,11 +23,11 @@ public class PlayerController implements IUpdatable {
     private final UpdateManager updateManager;
     private final KeyInputManager keyInputManager;
 
-    private PlayerInteractionMode interactionMode = PlayerInteractionMode.BUILD;
-    private WorldObjectType selectedBuilding = WorldObjectType.CENTER;
+    private PlayerInteractionMode interactionMode = PlayerInteractionMode.BUILD; /** The current interaction mode. */
+    private WorldObjectType selectedBuilding = WorldObjectType.CENTER; /** If the interaction needs a building type argument this will be used. */
 
-    private final Vector2 position;
-    private final double speed;
+    private final Vector2 position; /** Players map position, floating point number must be floored to get corresponding tile. */
+    private final double speed; /** The hover speed over the map. */
 
     public  PlayerController(UpdateManager updateManager, KeyInputManager keyInputManager) {
         this.updateManager = updateManager;
@@ -31,12 +37,18 @@ public class PlayerController implements IUpdatable {
         speed = Config.getInt("player_speed", 10);
     }
 
-    public Vector2 getPosition(){
-        return position;
-    }
-
+    /**
+     * Updates the player's position each update.
+     */
     @Override
     public void update() {
+        updatePlayerPosition();
+    }
+
+    /**
+     * Updates the player's position based on the pressed down keys adjusted for frame time.
+     */
+    private void updatePlayerPosition() {
         boolean upPressed = keyInputManager.isKeyPressed(KeyEvent.VK_W) || keyInputManager.isKeyPressed(KeyEvent.VK_UP);
         boolean downPressed = keyInputManager.isKeyPressed(KeyEvent.VK_S) || keyInputManager.isKeyPressed(KeyEvent.VK_DOWN);
         boolean leftPressed = keyInputManager.isKeyPressed(KeyEvent.VK_A) || keyInputManager.isKeyPressed(KeyEvent.VK_LEFT);
@@ -57,19 +69,43 @@ public class PlayerController implements IUpdatable {
         }
     }
 
+    /**
+     * Getter forthe player's floating point position. 
+     * @return The player's floating point position.
+     */
+    public Vector2 getPosition(){
+        return position;
+    }
+
+    /**
+     * Getter for the interactin mode.
+     * @return The interaction mode.
+     */
     public PlayerInteractionMode getInteractionMode() {
         return interactionMode;
     }
     
+    /**
+     * Setter for the interaction mode.
+     * @param mode The interaction mode.
+     */
     public void setInteractionMode(PlayerInteractionMode mode) {
         this.interactionMode = mode;
     }    
 
-    public void selectStructure(WorldObjectType type) {
-        this.selectedBuilding = type;
-    }
-
+    /**
+     * Getter for the selected building.
+     * @return The selected building.
+     */
     public WorldObjectType getSelectedBuilding() {
         return selectedBuilding;
+    }
+    
+    /**
+     * Setter for the selected building.
+     * @param type The type of the selected building.
+     */
+    public void selectBuilding(WorldObjectType type) {
+        this.selectedBuilding = type;
     }
 }

@@ -43,22 +43,22 @@ public class WorldObjectFactory {
      * @param yPos The Y position of the created object.
      * @return
      */
-    public WorldObject create(WorldObjectType type, int xPos, int yPos) {
+    public WorldObject create(WorldObjectType type) {
         switch (type) {
             case TREE -> {
-                WorldObject worldObject = new WorldObject(xPos, yPos);
+                WorldObject worldObject = new WorldObject();
                 worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.WOOD, 30.0))));
                 worldObject.addComponent(new TypeComponent(WorldObjectType.TREE));
                 return worldObject;
             }
             case BOULDER -> {
-                WorldObject worldObject = new WorldObject(xPos, yPos);
+                WorldObject worldObject = new WorldObject();
                 worldObject.addComponent(new HarvestableComponent(new ResourceBank(Map.of(ResourceType.STONE, 20.0))));
                 worldObject.addComponent(new TypeComponent(WorldObjectType.BOULDER));
                 return worldObject;
             }
             case CENTER -> {
-                WorldObject worldObject = new WorldObject(xPos, yPos);
+                WorldObject worldObject = new WorldObject();
                 worldObject.addComponent(new BuildingComponent(new ResourceBank(), LAND_TILES));
                 worldObject.addComponent(new TypeComponent(WorldObjectType.CENTER));
                 worldObject.addComponent(new ActivatonSourceComponent(gameMapHandler));
@@ -66,14 +66,14 @@ public class WorldObjectFactory {
                 return worldObject;
             }
             case ROAD -> {
-                WorldObject worldObject = new WorldObject(xPos, yPos);
+                WorldObject worldObject = new WorldObject();
                 worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.STONE, -20.0)), LAND_TILES));
                 worldObject.addComponent(new TypeComponent(WorldObjectType.ROAD));
                 worldObject.addComponent(new ActivationChannelComponent());
                 return worldObject;
             }
             case LUMBERHUT -> {
-                WorldObject worldObject = new WorldObject(xPos, yPos);
+                WorldObject worldObject = new WorldObject();
                 worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
                 worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.WOOD, 0.3)), resourceManager));
                 worldObject.addComponent(new TypeComponent(WorldObjectType.LUMBERHUT));
@@ -83,7 +83,7 @@ public class WorldObjectFactory {
                 return worldObject;
             }
             case QUARRY -> {
-                WorldObject worldObject = new WorldObject(xPos, yPos);
+                WorldObject worldObject = new WorldObject();
                 worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.WOOD, -50.0)), LAND_TILES));
                 worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.STONE, 0.2)), resourceManager));
                 worldObject.addComponent(new TypeComponent(WorldObjectType.QUARRY));
@@ -93,7 +93,7 @@ public class WorldObjectFactory {
                 return worldObject;
             }
             case BLACKSMITH -> {
-                WorldObject worldObject = new WorldObject(xPos, yPos);
+                WorldObject worldObject = new WorldObject();
                 worldObject.addComponent(new BuildingComponent(new ResourceBank(Map.of(ResourceType.STONE, -100.0, ResourceType.WOOD, -200.0)), LAND_TILES));
                 worldObject.addComponent(new ProductionComponent(new ResourceBank(Map.of(ResourceType.STONE, -0.2, ResourceType.WOOD, -0.3, ResourceType.IRON, 0.2)), resourceManager));
                 worldObject.addComponent(new TypeComponent(WorldObjectType.BLACKSMITH));
