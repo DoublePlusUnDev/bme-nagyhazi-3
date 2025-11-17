@@ -19,6 +19,11 @@ import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.TextureManager;
 import me.doubleplusundev.util.Vector2;
 
+/**
+ * The panel rendering the actual game.
+ * Fetches map data to draw the tiles and worldobjects.
+ * Displays the chunk of the map around the players position.
+ */
 public class GamePanel extends JPanel implements IUpdatable {
     private final transient PlayerController playerController;
     private final transient GameMapHandler gameMapHandler;
@@ -43,26 +48,35 @@ public class GamePanel extends JPanel implements IUpdatable {
         tileSize = Config.getInt("tile_render_size", 40);
     }
 
+    /**
+     * Overwrites the paintcomponent functions in order to render the sprites for tiles and worldobjects.
+     * Top left corner at the player position.
+     * Worldobjects are drawn after tiles, naturally they appear on top of them.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D graphics = (Graphics2D)g;
 
-        Vector2 playerPosition = playerController.getPosition();
-        double leftXCoord = playerPosition.getX();
-        double topYCoord = playerPosition.getY();
- 
-        int leftXFloor = (int)Math.floor(leftXCoord);
-        int topYFloor = (int)Math.floor(topYCoord);
+        double coordWidth = (double)getWidth() / tileSize;
+        double coordHeight = (double)getHeight() / tileSize;
 
-        for (int x = leftXFloor; (x - leftXFloor - 1) * tileSize < getWidth(); x++){
-            for (int y = topYFloor; (y - topYFloor - 1) * tileSize < getHeight(); y++){
+        Vector2 origin = playerController.getPosition();
+        
+        int leftXFloor = (int)Math.floor(origin.getX());
+        int topYFloor = (int)Math.floor(origin.getY());
+
+        int rightXCeil = (int)Math.ceil(origin.getX() + coordWidth);
+        int bottomYCeil = (int)Math.ceil(origin.getY() + coordHeight);
+
+        for (int x = leftXFloor; x < rightXCeil; x++){
+            for (int y = topYFloor; y < bottomYCeil; y++){
                 TileType tile = gameMapHandler.getTile(x, y);
                 WorldObject worldObject = gameMapHandler.getWorldObject(x, y);
 
-                int drawX = (int) Math.round((x - leftXCoord) * tileSize);
-                int drawY = (int) Math.round((y - topYCoord ) * tileSize);
+                int drawX = (int) Math.round((x - (origin.getX())) * tileSize);
+                int drawY = (int) Math.round((y - (origin.getY())) * tileSize);
 
                 graphics.drawImage(TextureManager.getTile(tile), drawX, drawY, tileSize, tileSize, null);
             
@@ -72,6 +86,9 @@ public class GamePanel extends JPanel implements IUpdatable {
         }
     }
 
+    /**
+     * Rerenders on each update.
+     */
     @Override
     public void update() {
         repaint();

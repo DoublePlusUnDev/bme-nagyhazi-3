@@ -1,5 +1,6 @@
 package me.doubleplusundev.util;
 
+//A 2D vector, used for managing "D coordinates with floating point precision, the double equivalent of Point from awt."
 public class Vector2 {
     private double x;
     private double y;

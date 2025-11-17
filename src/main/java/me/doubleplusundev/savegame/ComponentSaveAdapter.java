@@ -22,12 +22,20 @@ import me.doubleplusundev.map.worldobject.component.ProductionComponent;
 import me.doubleplusundev.map.worldobject.component.TypeComponent;
 import me.doubleplusundev.resource.ResourceManager;
 
+/**
+ * Used for reconstructing components.
+ * They cannot normally be serialized since worldobjects stores a list of abtract classes.
+ * Also, assignes the components their dependencies.
+ */
 public class ComponentSaveAdapter implements JsonSerializer<Component>, JsonDeserializer<Component> {
 
     private final ResourceManager resourceManager;
     private final UpdateManager updateManager;
     private final GameMapHandler gameMapHandler;
 
+    /** 
+     * Consts used for adding extra data to distinguish the type of component on deserialization.
+     */
     private static final String COMPONENT_PROPERTY = "component";
 
     private static final String BUILDING_VALUE = "building";

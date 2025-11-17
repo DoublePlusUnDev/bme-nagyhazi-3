@@ -14,14 +14,18 @@ import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldobject.WorldObject;
 import me.doubleplusundev.map.worldobject.component.Component;
 import me.doubleplusundev.resource.ResourceManager;
-import me.doubleplusundev.ui.ExceptionUI;
+import me.doubleplusundev.util.UIUtils;
 
+/**
+ * Responsible for handling saving the game data and loading it back.
+ * Used gson to handle json.
+ */
 public class SaveGameManager {
-    Gson gson;
+    private final Gson gson;
     private final GameMapHandler gameMapHandler;
     private final ResourceManager resourceManager;
 
-    private String saveGameLocation;
+    private String saveGameLocation; /** Where the game data will be saved and loaded back from. */
 
     public SaveGameManager(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager) {
         this.gameMapHandler = gameMapHandler;
@@ -30,6 +34,9 @@ public class SaveGameManager {
         gson = new GsonBuilder().registerTypeAdapter(Component.class, new ComponentSaveAdapter(resourceManager, updateManager, gameMapHandler)).create();
     }
 
+    /**
+     * Saves the current state of the game to the save location.
+     */
     public void save() {
         SaveData saveData = new SaveData(gameMapHandler.getMap(), resourceManager.getResources());
         String jsonString = gson.toJson(saveData);
@@ -37,10 +44,13 @@ public class SaveGameManager {
             fw.write(jsonString);
         }
         catch (IOException exception) {
-            ExceptionUI.showException(exception);
+            UIUtils.showException(exception);
         }
     }
 
+    /**
+     * Loads the state of the game from the save location.
+     */
     public void load() {
         try {
             String jsonString = Files.readString(new File(saveGameLocation).toPath());
@@ -63,10 +73,14 @@ public class SaveGameManager {
             resourceManager.setResources(saveData.getResources());
         }
         catch (IOException | JsonSyntaxException exception) {
-            ExceptionUI.showException(exception);
+            UIUtils.showException(exception);
         }
     }
     
+    /**
+     * Sets the specified save/load location.
+     * @param location The new location.
+     */
     public void setLocation(String location) {
         this.saveGameLocation = location;
     }

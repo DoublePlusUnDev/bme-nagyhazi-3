@@ -15,6 +15,12 @@ import me.doubleplusundev.map.worldgen.WorldGenerator;
 import me.doubleplusundev.savegame.SaveGameManager;
 import me.doubleplusundev.util.UIUtils;
 
+/**
+ * Class for handling the main menu GUI.
+ * It has a a button for generating a new world based on the seed inputted.
+ * Also has a button for loading a world from the specified file.
+ * When an option is selected the UIhandler is started and the main menu is discarded.
+ */
 public class MainMenuUI {
     private final UIHandler uiHandler;
     private final GameMapHandler gameMapHandler;
@@ -33,6 +39,9 @@ public class MainMenuUI {
         this.random = new Random();
     }
 
+    /**
+     * Creates the main menu UI.
+     */
     public void initialize() {
         JFrame frame = new JFrame("NHF3 Main Menu");
         frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));

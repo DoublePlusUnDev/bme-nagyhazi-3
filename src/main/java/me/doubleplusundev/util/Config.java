@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import me.doubleplusundev.ui.ExceptionUI;
-
+/**
+ * A config utility, allows easy access to the values defined in the config file.
+ */
 public class Config {
     private static final Properties properties = new Properties();
     
@@ -14,7 +15,7 @@ public class Config {
             InputStream in = Config.class.getResourceAsStream("/config/config.properties");
             properties.load(in);
         } catch (IOException e) {
-            ExceptionUI.showException(e);
+            UIUtils.showException(e);
         }
     }
 

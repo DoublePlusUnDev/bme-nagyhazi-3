@@ -10,8 +10,10 @@ import javax.imageio.ImageIO;
 import me.doubleplusundev.map.TileType;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.resource.ResourceType;
-import me.doubleplusundev.ui.ExceptionUI;
 
+/**
+ * Allows easy access to cached images based on the type of tile/worldobject/resource.
+ */
 public class TextureManager {
     private static final Map<TileType, String> tilePaths = Map.ofEntries(
         Map.entry(TileType.GRASS, "/textures/grass.png"),
@@ -49,7 +51,7 @@ public class TextureManager {
                 tileImages.put(tile.getKey(), ImageIO.read(TextureManager.class.getResource(tile.getValue())));
             }
             catch (IOException e){
-                ExceptionUI.showException(e);
+                UIUtils.showException(e);
             }
         }
 
@@ -59,7 +61,7 @@ public class TextureManager {
                 worldObjectImages.put(structure.getKey(), ImageIO.read(TextureManager.class.getResource(structure.getValue())));
             }
             catch (IOException e){
-                ExceptionUI.showException(e);
+                UIUtils.showException(e);
             }
         }
 
@@ -69,7 +71,7 @@ public class TextureManager {
                 resourceImages.put(resource.getKey(), ImageIO.read(TextureManager.class.getResource(resource.getValue())));
             }
             catch (IOException e){
-                ExceptionUI.showException(e);
+                UIUtils.showException(e);
             }
         }
     }
@@ -78,14 +80,29 @@ public class TextureManager {
         
     }
     
+    /**
+     * Returns the image to the corresponding tile type.
+     * @param tile
+     * @return
+     */
     public static BufferedImage getTile(TileType tile) {
         return tileImages.get(tile);
     }
 
+    /**
+     * Returns the image to the corresponding worldobject type.
+     * @param tile
+     * @return
+     */
     public static BufferedImage getWorldObject(WorldObjectType worldObject) {
         return worldObjectImages.get(worldObject);
     }
 
+    /**
+     * Returns the image to the corresponding resource type.
+     * @param tile
+     * @return
+     */
     public static BufferedImage getResource(ResourceType resourceType) {
         return resourceImages.get(resourceType);
     }

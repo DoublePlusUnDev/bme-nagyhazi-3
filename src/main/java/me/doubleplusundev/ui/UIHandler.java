@@ -24,7 +24,6 @@ import javax.swing.event.DocumentListener;
 
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
-import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.player.GameInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
@@ -35,6 +34,16 @@ import me.doubleplusundev.savegame.SaveGameManager;
 import me.doubleplusundev.util.TextureManager;
 import me.doubleplusundev.util.UIUtils;
 
+/**
+ * The top row has a list of buttons for possible player interactions.
+ * An optional building selection row may appear below it when the building action is selected.
+ * 
+ * On the left there is a resource monitor screen for each in-game resource measuring the current amount and it's delta.
+ * 
+ * In the bottom row there are the save/load options.
+ * 
+ * The gamepanel handles the rendering of the game.
+ */
 public class UIHandler {
     private final GameMapHandler gameMapHandler;
     private final ResourceManager resourceManager;
@@ -44,20 +53,22 @@ public class UIHandler {
     private final KeyInputManager keyInputManager;
     private final GameInteractionManager gameInteractionManager;
 
-    private JPanel structureRow;
+    private JPanel buildingSelectorRow;
     private JLabel lastSelectedLabel;
 
-    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, WorldObjectFactory worldObjectFactory,
-                     SaveGameManager saveGameManager, PlayerController playerController, KeyInputManager keyInputManager){
+    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, SaveGameManager saveGameManager, PlayerController playerController, GameInteractionManager gameInteractionManager, KeyInputManager keyInputManager){
         this.gameMapHandler = gameMapHandler;
         this.resourceManager = resourceManager;
         this.updateManager = updateManager;
         this.saveGameManager = saveGameManager;
         this.playerController = playerController;
+        this.gameInteractionManager = gameInteractionManager; 
         this.keyInputManager = keyInputManager;
-        this.gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController, resourceManager, worldObjectFactory);
     }
     
+    /**
+     * Initializes the main GUI of the game and sets up the ui functionality.
+     */
     public void initialize() {
         JFrame frame = new JFrame("NHF3");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -68,15 +79,68 @@ public class UIHandler {
         
         initializeTop(frame);
 
-        initializeGamePanel(frame);
-
         initializeResourcePanel(frame);
+
+        initializeGamePanel(frame);
 
         initializeBottomRow(frame);
 
         frame.setVisible(true);
     }
 
+    /**
+     * Initializes the top row; the interaction buttons and the optional building selector row.
+     * @param frame
+     */
+    private void initializeTop(JFrame frame) {
+        JPanel top = new JPanel();
+        top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
+        JPanel buttonRow = new JPanel(new FlowLayout());
+
+        JButton buildButton = new JButton("Build");
+        buildButton.setFocusable(false);
+        buildButton.addActionListener(event -> { 
+            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.BUILD);
+            buildingSelectorRow.setVisible(true);
+        });
+        buttonRow.add(buildButton);
+
+        JButton destroyButton = new JButton("Destroy");
+        destroyButton.setFocusable(false);
+        destroyButton.addActionListener(event -> { 
+            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.DESTROY);
+            buildingSelectorRow.setVisible(false);
+        });
+        buttonRow.add(destroyButton);
+       top.add(buttonRow);
+
+        buildingSelectorRow = new JPanel(new FlowLayout());
+        for (WorldObjectType structure : new WorldObjectType[]{ WorldObjectType.CENTER, 
+            WorldObjectType.ROAD, WorldObjectType.LUMBERHUT, WorldObjectType.QUARRY, WorldObjectType.BLACKSMITH }) {
+            JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getWorldObject(structure).getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
+            imageLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    selectBuildingLabel(structure, imageLabel);
+                }
+            });
+
+            if (structure == WorldObjectType.CENTER) {
+                selectBuildingLabel(structure, imageLabel);
+            }
+
+            buildingSelectorRow.add(imageLabel);
+        }
+        top.add(buildingSelectorRow);
+
+        frame.add(top, BorderLayout.NORTH);
+    }
+
+    /**
+     * Sets up a panel on the left, a row of resource monitors, one for each resource in game.
+     * @param frame
+     */
     private void initializeResourcePanel(JFrame frame) {
         JPanel resourcePanel = new JPanel();
         resourcePanel.setLayout(new BoxLayout(resourcePanel, BoxLayout.Y_AXIS));
@@ -102,12 +166,20 @@ public class UIHandler {
         frame.add(resourcePanel, BorderLayout.WEST);
     }
 
+    /**
+     * Sets up the game renderer panel.
+     * @param frame
+     */
     private void initializeGamePanel(JFrame frame) {
         GamePanel gamePanel = new GamePanel(gameMapHandler, playerController, gameInteractionManager, keyInputManager);     
         updateManager.registerForUpdate(gamePanel);   
         frame.add(gamePanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Initializes the panel responsible for handling saving and loading the map.
+     * @param frame
+     */
     private void initializeBottomRow(JFrame frame) {
         JPanel bottomRow = new JPanel(new FlowLayout());
 
@@ -151,52 +223,12 @@ public class UIHandler {
         bottomRow.add(quitButton);
     }
 
-    private void initializeTop(JFrame frame) {
-        JPanel top = new JPanel();
-        top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
-        JPanel buttonRow = new JPanel(new FlowLayout());
-
-        JButton buildButton = new JButton("Build");
-        buildButton.setFocusable(false);
-        buildButton.addActionListener(event -> { 
-            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.BUILD);
-            structureRow.setVisible(true);
-        });
-        buttonRow.add(buildButton);
-
-        JButton destroyButton = new JButton("Destroy");
-        destroyButton.setFocusable(false);
-        destroyButton.addActionListener(event -> { 
-            playerController.setInteractionMode(PlayerController.PlayerInteractionMode.DESTROY);
-            structureRow.setVisible(false);
-        });
-        buttonRow.add(destroyButton);
-       top.add(buttonRow);
-
-        structureRow = new JPanel(new FlowLayout());
-        for (WorldObjectType structure : new WorldObjectType[]{ WorldObjectType.CENTER, 
-            WorldObjectType.ROAD, WorldObjectType.LUMBERHUT, WorldObjectType.QUARRY, WorldObjectType.BLACKSMITH }) {
-            JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getWorldObject(structure).getScaledInstance(20, 20, Image.SCALE_DEFAULT)));
-            imageLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-                    selectLabel(structure, imageLabel);
-                }
-            });
-
-            if (structure == WorldObjectType.CENTER) {
-                selectLabel(structure, imageLabel);
-            }
-
-            structureRow.add(imageLabel);
-        }
-        top.add(structureRow);
-
-        frame.add(top, BorderLayout.NORTH);
-    }
-
-    private void selectLabel(WorldObjectType structure, JLabel imageLabel) {
+    /**
+     * Sets the building selector UI to the given imagelabel, and sets the selected structure type. 
+     * @param structure
+     * @param imageLabel
+     */
+    private void selectBuildingLabel(WorldObjectType structure, JLabel imageLabel) {
         if (lastSelectedLabel != null)
             lastSelectedLabel.setBorder(BorderFactory.createEmptyBorder());
         playerController.selectBuilding(structure);

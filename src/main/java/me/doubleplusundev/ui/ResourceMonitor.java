@@ -16,6 +16,10 @@ import me.doubleplusundev.resource.ResourceType;
 import me.doubleplusundev.util.Config;
 import me.doubleplusundev.util.TextureManager;
 
+/**
+ * A GUI element comprised of the resource image, the current amount and the change in the amount laid out in a row.
+ * The values are update in each update call.
+ */
 public class ResourceMonitor extends JPanel implements IUpdatable {    
     private final transient ResourceManager resourceManager;
     
@@ -26,8 +30,8 @@ public class ResourceMonitor extends JPanel implements IUpdatable {
     
     private final int tickRate;
     private double currentValue;
-    private final LinkedList<Double> previousValues = new LinkedList<>();
-    private static final int TRACKLENGTH = 113;
+    private final LinkedList<Double> previousValues = new LinkedList<>(); /** A linked list of previous values used for tracking change. */
+    private static final int TRACKLENGTH = 113; /** Number of values tracked. */
 
     public ResourceMonitor(ResourceType type, ResourceManager resourceManager) {
         super();
@@ -39,13 +43,14 @@ public class ResourceMonitor extends JPanel implements IUpdatable {
         this.type = type;
 
         tickRate = Config.getInt("tick_speed", 20);
-        setupUI(type);
-
-        
+        setupUI();
     }
 
-    private void setupUI(ResourceType type1) {
-        JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getResource(type1)));
+    /**
+     * Creates the elements tracking the value and delta.
+     */
+    private void setupUI() {
+        JLabel imageLabel = new JLabel(new ImageIcon(TextureManager.getResource(type)));
         add(imageLabel);
 
         amountText = new JTextArea();
@@ -65,6 +70,9 @@ public class ResourceMonitor extends JPanel implements IUpdatable {
         add(changeText); 
     }
 
+    /**
+     * Each updates the newest values and fetched and the delta is recalculated.
+     */
     @Override
     public void update() {
         currentValue = resourceManager.getResource(type);
@@ -75,10 +83,16 @@ public class ResourceMonitor extends JPanel implements IUpdatable {
             previousValues.removeLast();
     }
 
+    /**
+     * Updates the current value.
+     */
     private void updateAmount() {
         amountText.setText(String.format("%10.1f", currentValue));
     }
 
+    /**
+     * Calculates the rate of change based on past data and updates the data.
+     */
     private void updateChange() {
         double totalChange = 0;
         double previousValue = 0;

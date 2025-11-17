@@ -8,11 +8,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+/**
+ * A class that contains slef made helper methods to make working with UI easier.
+ */
 public class UIUtils {
     private UIUtils() {
 
     }
 
+    /**
+     * A default value can be set to a JTextField, which if the field is empty will be displayed in lightgrey color.
+     * If the user enters a value that will be displayed.
+     * Most UI libs allow for a something similar, however i could find no inbuilt solution for Swing, so i had to roll my own implementation.
+     * @param field
+     * @param placeHolderText
+     */
     public static void addPlaceHolder(JTextField field, String placeHolderText) {
         Color placeHolderColor = Color.LIGHT_GRAY;
         field.setForeground(placeHolderColor);
@@ -37,6 +47,10 @@ public class UIUtils {
         });
     }
     
+    /**
+     * When an exception occurs, allows the exception to be displayed in a pop-up windows to the user.
+     * @param exception
+     */
     public static void showException(Exception exception) {
         SwingUtilities.invokeLater(() -> 
             JOptionPane.showMessageDialog(null, 
