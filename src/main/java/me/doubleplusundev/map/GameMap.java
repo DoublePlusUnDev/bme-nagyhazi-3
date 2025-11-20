@@ -2,6 +2,7 @@ package me.doubleplusundev.map;
 
 import java.io.Serializable;
 
+import me.doubleplusundev.map.tiles.TileType;
 import me.doubleplusundev.map.worldobject.WorldObject;
 
 /**
@@ -10,6 +11,8 @@ import me.doubleplusundev.map.worldobject.WorldObject;
  * Tiles are an width * height matrix of enums.
  * Worldobject are entities occupying one gridspace on top of the tiles matrix.
  * Not everygridspace has a worldobject.
+ * The class provides direct access to the map, however when possible use it through a GameMapHandler,
+ * as it manages instance count and won't throw error messages when out of bounds.
  */
 public class GameMap implements Serializable {
     private final int width; /** Width of the matrix. */

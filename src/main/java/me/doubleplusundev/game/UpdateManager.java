@@ -11,6 +11,7 @@ import me.doubleplusundev.util.Config;
 
 /**
  * Used for timing updates and ticks.
+ * Only starts calling updates and ticks, once it's been started with it's start method.
  * Ticks are called in order of priority.
  */
 public class UpdateManager {

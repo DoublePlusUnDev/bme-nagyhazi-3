@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 
 import me.doubleplusundev.game.IUpdatable;
 import me.doubleplusundev.map.GameMapHandler;
-import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.tiles.TileType;
 import me.doubleplusundev.map.worldobject.WorldObject;
 import me.doubleplusundev.map.worldobject.component.TypeComponent;
-import me.doubleplusundev.player.GameInteractionManager;
+import me.doubleplusundev.player.PlayerInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.util.Config;
@@ -29,13 +29,13 @@ public class GamePanel extends JPanel implements IUpdatable {
     private final transient GameMapHandler gameMapHandler;
     private final int tileSize;
 
-    public GamePanel(GameMapHandler gameMapHandler, PlayerController playerController, GameInteractionManager gameInteractionManager, KeyInputManager keyInputManager) {
+    public GamePanel(GameMapHandler gameMapHandler, PlayerController playerController, PlayerInteractionManager playerInteractionManager, KeyInputManager keyInputManager) {
         super();
         this.gameMapHandler = gameMapHandler;
         this.playerController = playerController;
 
         setFocusable(true);
-        addMouseListener(gameInteractionManager);
+        addMouseListener(playerInteractionManager);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {

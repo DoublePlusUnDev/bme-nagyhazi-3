@@ -13,7 +13,7 @@ import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldobject.WorldObject;
 
 /**
- * Activates either directly or thorugh activation channels connected activables. 
+ * Activates activables either directly or through connected activation channels. 
  */
 public class ActivatonSourceComponent extends Component implements ITickable {
     private transient GameMapHandler gameMapHandler;
@@ -23,7 +23,7 @@ public class ActivatonSourceComponent extends Component implements ITickable {
     }
 
     /**
-     * Runs BFS through the network of connected channels, sets activates activables when it finds them.
+     * Runs BFS through the network of connected channels, sets found activables active.
      */
     @Override
     public void tick(int count) {

@@ -7,12 +7,12 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.tiles.TileType;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.resource.ResourceType;
 
 /**
- * Allows easy access to cached images based on the type of tile/worldobject/resource.
+ * Allows for access to cached images for each type of tile/worldobject/resource.
  */
 public class TextureManager {
     private static final Map<TileType, String> tilePaths = Map.ofEntries(

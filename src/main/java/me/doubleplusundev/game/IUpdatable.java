@@ -1,7 +1,7 @@
 package me.doubleplusundev.game;
 
 /*
- * An interface that can be registered for receivig ticks.
+ * An interface that allows an object to be registered for receivig updates.
  */
 public interface IUpdatable {
     /**

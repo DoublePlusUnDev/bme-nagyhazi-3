@@ -3,14 +3,14 @@ package me.doubleplusundev.map.worldobject.component;
 import java.util.Map;
 import java.util.Set;
 
-import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.tiles.TileType;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.resource.ResourceBank;
 
 /**
  * Player buildable structures.
- * A build limit may be set for certain types of buildings.
- * May have a building cost, only buildable if the necessary resources are provided.
+ * A build instance limit may be set for certain types of buildings.
+ * Some buildings may have a building cost, only constructable if the necessary resources are present.
  * Some buildings may only be built on certain types of tiles.
  */
 public class BuildingComponent extends Component {

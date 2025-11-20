@@ -7,7 +7,7 @@ import java.util.List;
 import me.doubleplusundev.map.worldobject.component.Component;
 
 /**
- * An object can be placed in the worldgrid.
+ * An object, that can be placed in the worldgrid.
  * Unlike tiles it has a state and not every gridspace requires a worldobject.
  * May have several component that allow for extra functionalites or behaviour.
  */

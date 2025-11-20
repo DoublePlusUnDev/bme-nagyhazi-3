@@ -3,12 +3,14 @@ package me.doubleplusundev.map.worldgen;
 import java.util.Random;
 
 import me.doubleplusundev.map.GameMap;
-import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.tiles.TileType;
 import me.doubleplusundev.map.worldobject.WorldObjectFactory;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 
 /**
- * Class responsible for generating a GameMap with given paramters. 
+ * Class responsible for generating a GameMap with given parameters. 
+ * Parameters are x and y dimensions of the map, and also seed.
+ * Different seeds may result in different maps, the same seed will always generate the exact same map.
  */
 public class WorldGenerator {
     private final WorldObjectFactory worldObjectFactory;

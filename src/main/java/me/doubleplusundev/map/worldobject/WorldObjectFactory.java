@@ -5,7 +5,7 @@ import java.util.Set;
 
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
-import me.doubleplusundev.map.TileType;
+import me.doubleplusundev.map.tiles.TileType;
 import me.doubleplusundev.map.worldobject.component.ActivableComponent;
 import me.doubleplusundev.map.worldobject.component.ActivationChannelComponent;
 import me.doubleplusundev.map.worldobject.component.ActivatonSourceComponent;
@@ -18,7 +18,7 @@ import me.doubleplusundev.resource.ResourceBank;
 import me.doubleplusundev.resource.ResourceType;
 
 /**
- * The class responsible for creating a world object given it's type.
+ * The class responsible for creating a world object given only it's type.
  */
 public class WorldObjectFactory {
    

@@ -4,7 +4,7 @@ import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldgen.WorldGenerator;
 import me.doubleplusundev.map.worldobject.WorldObjectFactory;
-import me.doubleplusundev.player.GameInteractionManager;
+import me.doubleplusundev.player.PlayerInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.resource.ResourceManager;
@@ -31,9 +31,9 @@ public class Main {
         PlayerController playerController = new PlayerController(updateManager, keyInputManager);
         updateManager.registerForUpdate(playerController);
 
-        GameInteractionManager gameInteractionManager = new GameInteractionManager(gameMapHandler, playerController, resourceManager, worldObjectFactory);
+        PlayerInteractionManager playerInteractionManager = new PlayerInteractionManager(gameMapHandler, playerController, resourceManager, worldObjectFactory);
 
-        UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, saveGameManager, playerController, gameInteractionManager, keyInputManager);
+        UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, saveGameManager, playerController, playerInteractionManager, keyInputManager);
         
         MainMenuUI mainMenuUI = new MainMenuUI(uiHandler, gameMapHandler, saveGameManager, worldGenerator);
         mainMenuUI.initialize();

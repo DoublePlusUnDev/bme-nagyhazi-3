@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * A config utility, allows easy access to the values defined in the config file.
+ * A config utility, allows access to the values defined in the config file.
  */
 public class Config {
     private static final Properties properties = new Properties();

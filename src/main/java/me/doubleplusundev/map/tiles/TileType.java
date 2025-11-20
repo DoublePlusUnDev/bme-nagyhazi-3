@@ -1,4 +1,4 @@
-package me.doubleplusundev.map;
+package me.doubleplusundev.map.tiles;
 
 /**
  * Type of a map tile.

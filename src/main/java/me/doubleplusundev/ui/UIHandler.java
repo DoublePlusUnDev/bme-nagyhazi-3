@@ -25,7 +25,7 @@ import javax.swing.event.DocumentListener;
 import me.doubleplusundev.game.UpdateManager;
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
-import me.doubleplusundev.player.GameInteractionManager;
+import me.doubleplusundev.player.PlayerInteractionManager;
 import me.doubleplusundev.player.KeyInputManager;
 import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.resource.ResourceManager;
@@ -51,18 +51,18 @@ public class UIHandler {
     private final SaveGameManager saveGameManager;
     private final PlayerController playerController;
     private final KeyInputManager keyInputManager;
-    private final GameInteractionManager gameInteractionManager;
+    private final PlayerInteractionManager playerInteractionManager;
 
     private JPanel buildingSelectorRow;
     private JLabel lastSelectedLabel;
 
-    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, SaveGameManager saveGameManager, PlayerController playerController, GameInteractionManager gameInteractionManager, KeyInputManager keyInputManager){
+    public UIHandler(GameMapHandler gameMapHandler, ResourceManager resourceManager, UpdateManager updateManager, SaveGameManager saveGameManager, PlayerController playerController, PlayerInteractionManager playerInteractionManager, KeyInputManager keyInputManager){
         this.gameMapHandler = gameMapHandler;
         this.resourceManager = resourceManager;
         this.updateManager = updateManager;
         this.saveGameManager = saveGameManager;
         this.playerController = playerController;
-        this.gameInteractionManager = gameInteractionManager; 
+        this.playerInteractionManager = playerInteractionManager; 
         this.keyInputManager = keyInputManager;
     }
     
@@ -171,7 +171,7 @@ public class UIHandler {
      * @param frame
      */
     private void initializeGamePanel(JFrame frame) {
-        GamePanel gamePanel = new GamePanel(gameMapHandler, playerController, gameInteractionManager, keyInputManager);     
+        GamePanel gamePanel = new GamePanel(gameMapHandler, playerController, playerInteractionManager, keyInputManager);     
         updateManager.registerForUpdate(gamePanel);   
         frame.add(gamePanel, BorderLayout.CENTER);
     }

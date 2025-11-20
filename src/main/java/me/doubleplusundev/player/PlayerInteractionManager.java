@@ -14,7 +14,7 @@ import me.doubleplusundev.util.Vector2;
 /**
  * Handles player interaction with the map.
  */
-public class GameInteractionManager extends MouseAdapter{
+public class PlayerInteractionManager extends MouseAdapter{
     private final GameMapHandler gameMapHandler;
     private final PlayerController playerController;
     private final ResourceManager resourceManager;
@@ -22,7 +22,7 @@ public class GameInteractionManager extends MouseAdapter{
 
     private final int tileSize;
 
-    public GameInteractionManager(GameMapHandler gameMapHandler, PlayerController playerController, ResourceManager resourceManager, WorldObjectFactory worldObjectFactory) {
+    public PlayerInteractionManager(GameMapHandler gameMapHandler, PlayerController playerController, ResourceManager resourceManager, WorldObjectFactory worldObjectFactory) {
         this.gameMapHandler = gameMapHandler;
         this.playerController = playerController;
         this.resourceManager = resourceManager;

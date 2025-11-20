@@ -5,8 +5,8 @@ import me.doubleplusundev.game.TickPriority;
 
 /**
  * A component which gets activated when connected to a source through activation channels.
- * Other componenets may mutate their behaviour based on the activation staus.
- * Must be registered for ACTIVATION_ERASE priority.
+ * Other componenets may act differently based on the activation status.
+ * Must be registered for ACTIVATION_ERASE priority, to clear activation before each reactivation cycle.
  */
 public class ActivableComponent extends Component implements ITickable {
     private boolean active = false; /** Activation status */
@@ -20,7 +20,7 @@ public class ActivableComponent extends Component implements ITickable {
 
     /**
      * Returns whether the object is active.
-     * When very low tick priority objects query it may returns incorrect value.
+     * When tickables with the wrong priority query it, it may return incorrect value.
      * Make sure to read it either before ACTIVATION_ERASE or after ACTIVATE priority.
      * @return Activation status.
      */
@@ -37,7 +37,8 @@ public class ActivableComponent extends Component implements ITickable {
     }
 
     /**
-     * Registered for ARCITVATION_ERASE, wipes activation before source attempts to reactivate.
+     * Registered for ACTIVATION_ERASE, so it wipes activation before source attempts to reactivate.
+     * If not registered and once activated it won't ever lose it's activation state even if source is disconnected. 
      */
     @Override
     public TickPriority getPriority() {

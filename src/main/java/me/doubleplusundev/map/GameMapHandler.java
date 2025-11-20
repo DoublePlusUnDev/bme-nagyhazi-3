@@ -3,6 +3,7 @@ package me.doubleplusundev.map;
 import java.util.EnumMap;
 import java.util.Map;
 
+import me.doubleplusundev.map.tiles.TileType;
 import me.doubleplusundev.map.worldobject.WorldObject;
 import me.doubleplusundev.map.worldobject.WorldObjectType;
 import me.doubleplusundev.map.worldobject.component.BuildingComponent;
@@ -11,9 +12,9 @@ import me.doubleplusundev.map.worldobject.component.TypeComponent;
 import me.doubleplusundev.resource.ResourceBank;
 
 /**
- * Wrapper for the gamemap.
- * The underlying gamemap can be switched out for a new map at any moement.
- * Keeps count how many of each type of worldobject exists on the map. This is useful for enforcing build limits.
+ * A handler for the gamemap.
+ * The underlying gamemap can be switched out for a new map at any moment.
+ * Keeps count how of the instance count for each worldobject on the map. This is useful for enforcing build limits.
  * Provides helper methods for working with build (tryBuild) and harvest (tryHarvest) componens.
  */
 public class GameMapHandler {
@@ -57,7 +58,7 @@ public class GameMapHandler {
             map.setTile(x, y, tile);
         }
         catch (IllegalArgumentException e) {
-            // Intentionally ignored — invalid placement is not fatal
+            // Intentionally ignored — invalid placement is not fatal.
         }
     }
 
@@ -92,7 +93,7 @@ public class GameMapHandler {
             addToCounter(worldObject, 1);
         }
         catch (IllegalArgumentException e) {
-            // Intentionally ignored — invalid placement is not fatal
+            // Intentionally ignored — invalid placement is not fatal.
         }
     }   
 
@@ -142,8 +143,9 @@ public class GameMapHandler {
     }
 
     /**
-     * Getter for a map object.
-     * You should use the map write only, as directly accessing the map won't update counters in maphandler.
+     * Getter for a GameMap object.
+     * You should use the map read only, as directly accessing the map won't update counters in maphandler.
+     * If despite my warning, you directly edit the map, you should either call updateCounters or setMap afterwards. 
      * Should really only be used for serialization.
      * @return The map object.
      */
@@ -158,6 +160,16 @@ public class GameMapHandler {
      * @param map The new map object.
      */
     public final void setMap(GameMap map) {
+        this.map = map;
+
+        rebuildCounters();
+    }
+
+    /**
+     * Used for forcibly rebuilding the instance counter for worldobjects.
+     * When map is accessed directly and modified, this method should be ran.
+     */
+    public void rebuildCounters() {
         worldObjectCount = new EnumMap<>(WorldObjectType.class);
 
         for (int x = 0; x < map.getWidth(); x++) {
@@ -166,8 +178,6 @@ public class GameMapHandler {
                 
             }
         }
-
-        this.map = map;
     }
 
     /**
