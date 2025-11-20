@@ -35,7 +35,7 @@ public class Main {
 
         UIHandler uiHandler = new UIHandler(gameMapHandler, resourceManager, updateManager, saveGameManager, playerController, playerInteractionManager, keyInputManager);
         
-        MainMenuUI mainMenuUI = new MainMenuUI(uiHandler, gameMapHandler, saveGameManager, worldGenerator);
+        MainMenuUI mainMenuUI = new MainMenuUI(uiHandler, gameMapHandler, saveGameManager, worldGenerator, playerController);
         mainMenuUI.initialize();
 
         updateManager.start();

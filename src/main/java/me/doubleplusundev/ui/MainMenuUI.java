@@ -12,8 +12,10 @@ import javax.swing.WindowConstants;
 
 import me.doubleplusundev.map.GameMapHandler;
 import me.doubleplusundev.map.worldgen.WorldGenerator;
+import me.doubleplusundev.player.PlayerController;
 import me.doubleplusundev.savegame.SaveGameManager;
 import me.doubleplusundev.util.UIUtils;
+import me.doubleplusundev.util.Vector2;
 
 /**
  * Class for handling the main menu GUI.
@@ -26,16 +28,18 @@ public class MainMenuUI {
     private final GameMapHandler gameMapHandler;
     private final SaveGameManager saveGameManager;
     private final WorldGenerator worldGenerator;
+    private final PlayerController playerController;
     private final Random random;
 
     private JTextField seedField;
     private JTextField saveField;
 
-    public MainMenuUI(UIHandler uiHandler, GameMapHandler gameMapHandler, SaveGameManager saveGameManager, WorldGenerator worldGenerator) {
+    public MainMenuUI(UIHandler uiHandler, GameMapHandler gameMapHandler, SaveGameManager saveGameManager, WorldGenerator worldGenerator, PlayerController playerController) {
         this.uiHandler = uiHandler;
         this.gameMapHandler = gameMapHandler;
         this.saveGameManager = saveGameManager;
         this.worldGenerator = worldGenerator;
+        this.playerController = playerController;
         this.random = new Random();
     }
 
@@ -57,7 +61,8 @@ public class MainMenuUI {
             else {
                 gameMapHandler.setMap(worldGenerator.generateWorld(250, 250, seedField.getText().hashCode()));
             }
-            
+
+            playerController.setPosition(new Vector2(gameMapHandler.getWidth() / 2.0, gameMapHandler.getHeight() / 2.0));
             uiHandler.initialize();
             frame.setVisible(false);
         });
@@ -74,6 +79,8 @@ public class MainMenuUI {
         loadGameButton.addActionListener(event -> {
             saveGameManager.setLocation(saveField.getText());
             saveGameManager.load();
+
+            playerController.setPosition(new Vector2(gameMapHandler.getWidth() / 2.0, gameMapHandler.getHeight() / 2.0));
             uiHandler.initialize();
             frame.setVisible(false);
         });

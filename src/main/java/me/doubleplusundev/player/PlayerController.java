@@ -26,7 +26,7 @@ public class PlayerController implements IUpdatable {
     private PlayerInteractionMode interactionMode = PlayerInteractionMode.BUILD; /** The current interaction mode. */
     private WorldObjectType selectedBuilding = WorldObjectType.CENTER; /** If the interaction needs a building type argument this will be used. */
 
-    private final Vector2 position; /** Players map position, floating point number must be floored to get corresponding tile. */
+    private Vector2 position; /** Players map position, floating point number must be floored to get corresponding tile. */
     private final double speed; /** The hover speed over the map. */
 
     public  PlayerController(UpdateManager updateManager, KeyInputManager keyInputManager) {
@@ -107,5 +107,14 @@ public class PlayerController implements IUpdatable {
      */
     public void selectBuilding(WorldObjectType type) {
         this.selectedBuilding = type;
+    }
+
+    /**
+     * Setter for the player's position.
+     * @param posX X Component of the position.
+     * @param posY Y Component of the position.
+     */
+    public void setPosition(Vector2 position) {
+        this.position = position;
     }
 }
