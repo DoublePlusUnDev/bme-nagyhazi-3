@@ -1,0 +1,165 @@
+[Main]
+[Main] 1+-1 [UpdateManager]
+[Main] 1+-1 [ResourceManager]
+[Main] 1+-1 [GameMapHandler]
+[Main] 1+-1 [WorldObjectFactory]
+[Main] 1+-1 [WorldGenerator]
+[Main] 1+-1 [KeyInputManager]
+[Main] 1+-1 [SaveGameManager]
+[Main] 1+-1 [PlayerController]
+[Main] 1+-1 [UIHandler]
+[Main] 1+-1 [MainMenuUI]
+
+[UpdateManager]
+[UpdateManager] 1+-0...* [IUpdatable]
+[UpdateManager] 1+-0...* [ITickable]
+
+[IUpdatable]
+
+[ITickable]
+
+[\<\<Enumeration\>\>
+TickPriority
+|
+Activation_Erase
+Activate
+Default]
+
+[ResourceManager]
+[ResourceManager] 1+-1 [ResourceBank]
+
+[ResourceBank]
+
+[\<\<Enumeration\>\>
+ResourceType
+|
+Wood
+Stone
+Iron] 
+
+[GameMapHandler]
+[GameMapHandler] +- [GameMap]
+
+[GameMap]
+[GameMap] 1+-height*width [WorldObject]
+
+[\<\<Enumeration\>\>
+TileType
+|
+Grass,
+Lake,
+Rock,
+Sand,
+Sea_deep
+Sea_shore,
+Snow
+]
+
+[WorldObject]
+[WorldObject] 1+-0...* [Component]
+
+[\<\<Enumeration\>\>
+WorldObjectType
+|
+Center
+Road
+LumberHut
+Quarry
+Blacksmith
+Tree
+Boulder]
+
+[Component]
+
+[ActivableComponent]
+[ActivableComponent] --:> [ITickable]
+[Component] <:- [ActivableComponent] 
+
+[ActivationChannelComponent]
+[Component] <:- [ActivationChannelComponent] 
+
+[ActivationSourceComponent]
+[ActivationSourceComponent] --:> [ITickable]
+[Component] <:- [ActivationSourceComponent]
+[ActivationSourceComponent] <-- [GameMapHandler]
+
+[BuildingComponent]
+[Component] <:- [BuildingComponent]
+
+[HarvestableComponent]
+[Component] <:- [HarvestableComponent]
+
+[ProductionComponent]
+[ProductionComponent] --:> [ITickable]
+[ProductionComponent] <-- [ResourceManager]
+[Component] <:- [ProductionComponent]
+
+[TypeComponent]
+[Component] <:- [TypeComponent]
+
+[WorldObjectFactory]
+[WorldObject] --> [WorldObjectFactory]
+[WorldObjectFactory] <-- [UpdateManager]
+[WorldObjectFactory] <-- [ResourceManager]
+[WorldObjectFactory] <-- [GameMapHandler]
+
+[WorldGenerator]
+[WorldGenerator] <-- [WorldObjectFactory]
+
+[KeyInputManager]
+
+[SaveGameManager]
+[SaveGameManager] <-- [GameMapHandler]
+[SaveGameManager] <-- [ResourceManager]
+
+[PlayerController]
+[PlayerController] --:> [IUpdatable]
+[PlayerController] <-- [UpdateManager]
+[PlayerController] <-- [KeyInputManager]
+
+
+[\<\<Enumeration\>\>
+PlayerInteractionMode
+|
+Build
+Destroy]
+
+[UIHandler]
+[UIHandler] <-- [GameMapHandler]
+[UIHandler] <-- [ResourceManager]
+[UIHandler] <-- [UpdateManager]
+[UIHandler] <-- [SaveGameManager]
+[UIHandler] <-- [PlayerController]
+[UIHandler] <-- [KeyInputManager]
+[UIHandler] <-- [PlayerInteractionManager]
+[UIHandler] +- [GamePanel]
+[UIHandler] +- [ResourceMonitor]
+
+[GamePanel]
+[GamePanel] --:> [IUpdatable]
+[GamePanel] <-- [PlayerController]
+[GamePanel] <-- [GameMapHandler]
+
+[ResourceMonitor]
+[ResourceMonitor] --:> [IUpdatable]
+[ResourceMonitor] <-- [ResourceManager]
+
+[MainMenuUI]
+[MainMenuUI] <-- [UIHandler]
+[MainMenuUI] <-- [GameMapHandler]
+[MainMenuUI] <-- [SaveGameManager]
+[MainMenuUI] <-- [WorldGenerator]
+[MainMenuUI] <-- [PlayerController]
+
+
+
+
+
+
+
+
+
+
+
+
+
