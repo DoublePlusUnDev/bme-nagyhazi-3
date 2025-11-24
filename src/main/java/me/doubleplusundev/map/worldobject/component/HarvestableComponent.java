@@ -7,10 +7,10 @@ import me.doubleplusundev.resource.ResourceBank;
  * The removal is only possible if the required resources are present.
  */
 public class HarvestableComponent extends Component {
-    private final ResourceBank resourceBack; /** The resources provided by/required for object removal.*/
+    private final ResourceBank resourceBank; /** The resources provided by/required for object removal.*/
 
     public HarvestableComponent(ResourceBank resourceBank) {
-        this.resourceBack = resourceBank;
+        this.resourceBank = resourceBank;
     }
 
     /**
@@ -19,6 +19,6 @@ public class HarvestableComponent extends Component {
      * @return Whether the removal is possible.
      */
     public boolean tryHarvest(ResourceBank resources) {
-        return resources.tryMerge(resourceBack);
+        return resources.tryMerge(resourceBank);
     }
 }
