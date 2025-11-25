@@ -10,13 +10,39 @@
 [Main] 1+-1 [UIHandler]
 [Main] 1+-1 [MainMenuUI]
 
-[UpdateManager]
+[
+UpdateManager
+|
+-updateTimer : Timer
+-tickTimer : Time
+-updateRate : int
+-tickRate : int
+-tickCount : int
+|
++start() : void
+-update() : void
+-tick() : void
++registerForUpdate(updatable : IUpdatable) : void
++registerForTick(tickable : ITickable) : void
++getDeltaTime() : double
++getDeltaTick() : double
+]
 [UpdateManager] 1+-0...* [IUpdatable]
 [UpdateManager] 1+-0...* [ITickable]
 
-[IUpdatable]
+[
+IUpdatable
+|
+|
++update() : void
+]
 
-[ITickable]
+[
+ITickable
+|
++tick(count : int) : void
++getPriority() : TickPriority
+]
 
 [\<\<Enumeration\>\>
 TickPriority
@@ -69,25 +95,61 @@ Blacksmith
 Tree
 Boulder]
 
-[Component]
+[
+Component
+|
+\#owner : WorldObject
+|
++setOwner(owner : WorldObject) : void
++getOwner() : WorldObject
+]
 
-[ActivableComponent]
+[
+ActivableComponent
+|
+-active : boolean
+|
++isActive() : boolean
++tick(count : int) : void
++getPriority() : TickPriority
+]
 [ActivableComponent] --:> [ITickable]
 [Component] <:- [ActivableComponent] 
 
 [ActivationChannelComponent]
 [Component] <:- [ActivationChannelComponent] 
 
-[ActivationSourceComponent]
+[ActivationSourceComponent
+|
+|
++tick(count : int) : void
+-getNeighbours(origin : WorldObject) : WorldObject\[\]
++loadBack(gameMapHandler : GameMapHandler) : void
++getPriority() : TickPriority
+]
 [ActivationSourceComponent] --:> [ITickable]
 [Component] <:- [ActivationSourceComponent]
 [ActivationSourceComponent] <-- [GameMapHandler]
 
-[BuildingComponent]
+[BuildingComponent
+|
+-<<Static>>maxInstances : \[WorldObjectType, int\]
+-buildingCost : ResourceBank
+- suitableTiles : Tile\[\]
+|
++tryBuild(availableResources : ResourceBank, baseTile : TileType, instanceCount : int)
+]
 [Component] <:- [BuildingComponent]
+[BuildingComponent] 1+-1 [ResourceBank]
 
-[HarvestableComponent]
+[
+HarvestableComponent
+|
++resourceBank : ResourceBank
+|
+]
 [Component] <:- [HarvestableComponent]
+[HarvestableComponent] 1+-1 [ResourceBank]
 
 [ProductionComponent]
 [ProductionComponent] --:> [ITickable]
@@ -103,7 +165,13 @@ Boulder]
 [WorldObjectFactory] <-- [ResourceManager]
 [WorldObjectFactory] <-- [GameMapHandler]
 
-[WorldGenerator]
+[
+WorldGenerator
+|
+|
++generateWorld(xSize : int, ySize : int, seed : long)
+-generateTile(map : GameMap, random : Random, x : int, y : int, height : double)
+]
 [WorldGenerator] <-- [WorldObjectFactory]
 
 [KeyInputManager]
@@ -150,16 +218,5 @@ Destroy]
 [MainMenuUI] <-- [SaveGameManager]
 [MainMenuUI] <-- [WorldGenerator]
 [MainMenuUI] <-- [PlayerController]
-
-
-
-
-
-
-
-
-
-
-
 
 
