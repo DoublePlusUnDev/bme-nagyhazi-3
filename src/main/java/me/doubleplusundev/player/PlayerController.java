@@ -70,14 +70,6 @@ public class PlayerController implements IUpdatable {
     }
 
     /**
-     * Getter forthe player's floating point position. 
-     * @return The player's floating point position.
-     */
-    public Vector2 getPosition(){
-        return position;
-    }
-
-    /**
      * Getter for the interactin mode.
      * @return The interaction mode.
      */
@@ -107,6 +99,14 @@ public class PlayerController implements IUpdatable {
      */
     public void selectBuilding(WorldObjectType type) {
         this.selectedBuilding = type;
+    }
+
+    /**
+     * Getter forthe player's floating point position. 
+     * @return The player's floating point position.
+     */
+    public Vector2 getPosition(){
+        return position;
     }
 
     /**

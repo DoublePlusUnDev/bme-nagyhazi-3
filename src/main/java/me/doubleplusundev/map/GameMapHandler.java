@@ -106,7 +106,7 @@ public class GameMapHandler {
      * @param y
      * @param buildingComponent
      * @param resourceBank
-     * @return
+     * @return Whether building was possible
      */
     public boolean tryBuild(int x, int y, BuildingComponent buildingComponent, ResourceBank resourceBank) {
         if (getWorldObject(x, y) != null)
@@ -127,19 +127,21 @@ public class GameMapHandler {
      * @param x X position.
      * @param y Y position.
      * @param resourceBank The resource source for the harvestable component.
+     * @return Whether harvesting was possible
      */
-    public void tryHarvest(int x, int y, ResourceBank resourceBank) {
+    public boolean tryHarvest(int x, int y, ResourceBank resourceBank) {
         if(getWorldObject(x, y) == null) 
-            return;
+            return false;
 
         HarvestableComponent harvestable = map.getWorldObject(x, y).getComponent(HarvestableComponent.class);
         if (harvestable == null)
-            return;
+            return false;
 
         if (!harvestable.tryHarvest(resourceBank))
-           return;
+           return false;
 
         setWorldObject(x, y, null);
+        return true;
     }
 
     /**
@@ -159,7 +161,7 @@ public class GameMapHandler {
      * Intended for deserialization and setting a completely new map.
      * @param map The new map object.
      */
-    public final void setMap(GameMap map) {
+    public void setMap(GameMap map) {
         this.map = map;
 
         rebuildCounters();

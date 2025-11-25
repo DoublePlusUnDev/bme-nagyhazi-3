@@ -14,7 +14,7 @@ import me.doubleplusundev.resource.ResourceBank;
  * Some buildings may only be built on certain types of tiles.
  */
 public class BuildingComponent extends Component {
-    private static final Map<WorldObjectType, Integer> maxInstances = Map.of(WorldObjectType.CENTER, 1);
+    private static final Map<WorldObjectType, Integer> MAX_INSTANCES = Map.of(WorldObjectType.CENTER, 1);
     
     private final ResourceBank buildingCost; /** The amount of resourcs that will be merged into the resourcehandlers bank upon building.
                                                 Building costs are negative in amount, resources gained upon building are positive. */
@@ -34,7 +34,7 @@ public class BuildingComponent extends Component {
      * @return Whether building is possible.
      */
     public boolean tryBuild(ResourceBank availableResources, TileType baseTile, int instanceCount) {
-        if (instanceCount >= maxInstances.getOrDefault(getOwner().getComponent(TypeComponent.class).getType(), 10000))
+        if (instanceCount >= MAX_INSTANCES.getOrDefault(getOwner().getComponent(TypeComponent.class).getType(), 10000))
             return false; 
 
         if (!suitableTiles.isEmpty() && !suitableTiles.contains(baseTile))

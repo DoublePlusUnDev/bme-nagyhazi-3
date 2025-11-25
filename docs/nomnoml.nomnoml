@@ -51,10 +51,29 @@ Activation_Erase
 Activate
 Default]
 
-[ResourceManager]
+[
+ResourceManager
+|
+|
++setResource(type : ResourceType, amount : double) : void
++getResource(type : ResourceType) : double
++mergeResources(other : ResourceBank) : void
++tryMergeResources(other : ResourceBank) : boolean
++getResources() : ResourceBank
++setResources(resources : ResourceBank) : void
+]
 [ResourceManager] 1+-1 [ResourceBank]
 
-[ResourceBank]
+[
+ResourceBank
+|
+-resources : \[ResourceType, double\]
+|
++getResource(type : ResourceType) : double
++setResource(type : ResourceType, amount : double) : void
++tryMerge(other : ResourceBank) : boolean
++forceMerge(other : ResourceBank) : void
+]
 
 [\<\<Enumeration\>\>
 ResourceType
@@ -63,10 +82,44 @@ Wood
 Stone
 Iron] 
 
-[GameMapHandler]
+[
+GameMapHandler
+|
+-worldObjectCount : \[WorldObjectType, int\]
+|
++getTile(x : int, y : int) : TileType
++setTile(x : int, y : int, type : TileType) : void
++getWorldObject(x : int, y : int) : void
++setWorldObject(x : int, y : int, worldObject : WorldObject) : void
++tryBuild(x : int, y : int, buildingComponenet : BuildingComponent, resourceBank : ResourceBank)
++tryHarvest(x : int, y : int, resourceBank : ResourceBank) : boolean
++getMap() : GameMap
++setMap(gameMap : GameMap) : void
++rebuildCounters() : void
++getWorldObjectCount(worldObjectType : WorldObjectType) : int
++getWorldObjectCount(worldObject : WorldObject) : int
+-addToCounter(worldObjectType : WorldObjectType, amount : int)
+-addToCounter(worldObject : WorldObject, amount : int) : void
++getWidth() : int
++getHeight() : int
+]
 [GameMapHandler] +- [GameMap]
 
-[GameMap]
+[
+GameMap
+|
+-width : int
+-height : int
+-tiles : TileType\[\]\[\]
+-worldObjects : WorldObject\[\]\[\]
+|
++getTile(x : int, y : int) : TileType
++setTile(x : int, y : int, tile : TileType) : void
++getWorldObject(x : int, y : int) : WorldObject
++setWorldObject(x : int, y : int, worldObject : WorldObject) : void
++getWidth() : int
++getHeight() : int
+]
 [GameMap] 1+-height*width [WorldObject]
 
 [\<\<Enumeration\>\>
@@ -81,7 +134,19 @@ Sea_shore,
 Snow
 ]
 
-[WorldObject]
+[
+WorldObject
+|
+-xPos : int
+-yPos : int
+|
++addComponent(component : Component) : void
++getComponents() : \[Component\]
++getComponents(type : Class<T>) : \[T\]
++setPosition(xPos : int, yPos : int) : void
++getX() : int
++getY() : int
+]
 [WorldObject] 1+-0...* [Component]
 
 [\<\<Enumeration\>\>
@@ -103,6 +168,7 @@ Component
 +setOwner(owner : WorldObject) : void
 +getOwner() : WorldObject
 ]
+[Component] -> [WorldObject-]
 
 [
 ActivableComponent
@@ -133,7 +199,7 @@ ActivableComponent
 
 [BuildingComponent
 |
--<<Static>>maxInstances : \[WorldObjectType, int\]
+-<<Static>> MAX_INSTANCES: \[WorldObjectType, int\]
 -buildingCost : ResourceBank
 - suitableTiles : Tile\[\]
 |
@@ -147,19 +213,39 @@ HarvestableComponent
 |
 +resourceBank : ResourceBank
 |
++tryHarvest(resources : ResourceBank) : boolean
 ]
 [Component] <:- [HarvestableComponent]
 [HarvestableComponent] 1+-1 [ResourceBank]
 
-[ProductionComponent]
+[
+ProductionComponent
+|
++resourceBank : ResourceBank
+|
++tick(count : int) : void
++loadBack(resourceManager : ResourceManager) : void
+]
 [ProductionComponent] --:> [ITickable]
 [ProductionComponent] <-- [ResourceManager]
 [Component] <:- [ProductionComponent]
 
-[TypeComponent]
+[
+TypeComponent
+|
+type : WorldObjectType
+|
++getType() : WorldObjectType
+]
 [Component] <:- [TypeComponent]
 
-[WorldObjectFactory]
+[
+WorldObjectFactory
+|
+-<<Static>> LAND_TILES : \[\]
+|
++create(type : WorldObjectType) : WorldObject
+]
 [WorldObject] --> [WorldObjectFactory]
 [WorldObjectFactory] <-- [UpdateManager]
 [WorldObjectFactory] <-- [ResourceManager]
@@ -174,13 +260,46 @@ WorldGenerator
 ]
 [WorldGenerator] <-- [WorldObjectFactory]
 
-[KeyInputManager]
+[
+KeyInputManager
+|
+-pressedKeys : \[int\]
+|
++isKeyPressed(keyCode : int) : boolean
++keyPressed(event : KeyEvent) : void
++keyReleased(event : KeyEvent) : void
+]
 
-[SaveGameManager]
+[
+SaveGameManager
+|
+-gson : Gson
+-saveGameLocation : String
+|
++save() : void
++load() : void
++setLocation(location : String) : void
+]
 [SaveGameManager] <-- [GameMapHandler]
 [SaveGameManager] <-- [ResourceManager]
 
-[PlayerController]
+[
+PlayerController
+|
+-interactionMode : PlayerInteractionMode
+-selectedBuilding : WorldObjectType
+-position : Vector2
+-speed : double
+|
++update() : void
+-updatePlayerPosition() : void
++getInteractionMode() : PlayerInteractionMode
++setInteractionMode(mode : PlayerInteractionMode) : void
++getSelectedBuilding() : WorldObjectType
++setSelectedBuilding(type : WorldObjectTyoe) : void
++getPosition() : Vector2
++setPosition(position : Vector2) : void
+]
 [PlayerController] --:> [IUpdatable]
 [PlayerController] <-- [UpdateManager]
 [PlayerController] <-- [KeyInputManager]
@@ -192,7 +311,19 @@ PlayerInteractionMode
 Build
 Destroy]
 
-[UIHandler]
+[
+UIHandler
+|
+-buildingSelectorRow : JPanel
+-lastSelectedLabel : JLabel
+|
++initialize() : void
+-initializeTop(frame : JFrame) : void
+-initializeResourcePanel(frame : JFrame) : void
+-initializeGamePanel(frame : JFrame) : void
+-initializeBottomRow(frame : JFrame) _ void
+-selectBuildingLabel(structure : WorldObjectType, imageLabel : JLabel) : void
+]
 [UIHandler] <-- [GameMapHandler]
 [UIHandler] <-- [ResourceManager]
 [UIHandler] <-- [UpdateManager]
@@ -203,20 +334,60 @@ Destroy]
 [UIHandler] +- [GamePanel]
 [UIHandler] +- [ResourceMonitor]
 
-[GamePanel]
+[
+GamePanel
+|
+tileSize : int
+|
+\#paintComponent(g : Graphics) : void
++update() : void
+]
 [GamePanel] --:> [IUpdatable]
 [GamePanel] <-- [PlayerController]
 [GamePanel] <-- [GameMapHandler]
 
-[ResourceMonitor]
+[
+ResourceMonitor
+|
+-type : ResourceType
+-amountText : JTextArea
+-changeText : JTextArea
+-tickRate : int
+-currentValue : double
+-previousValues : \[double\]
+-<<Static>> trackLength : int
+|
+-setupUI() : void
++update() : void
+-updateAmount() : void
+-updateChange() : void
+]
 [ResourceMonitor] --:> [IUpdatable]
 [ResourceMonitor] <-- [ResourceManager]
 
-[MainMenuUI]
+[
+MainMenuUI
+|
+-seedField : JTextField
+-saveField : JTextField
+|
++initialize() : void
+]
 [MainMenuUI] <-- [UIHandler]
 [MainMenuUI] <-- [GameMapHandler]
 [MainMenuUI] <-- [SaveGameManager]
 [MainMenuUI] <-- [WorldGenerator]
 [MainMenuUI] <-- [PlayerController]
+
+
+
+
+
+
+
+
+
+
+
 
 
